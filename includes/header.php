@@ -1,3 +1,71 @@
+<?php
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get user input
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+
+    include 'db.php';
+
+    // Prepare and execute the query to check user credentials
+    $stmt = $conn->prepare("SELECT email, role FROM user WHERE email = ? AND password = ?");
+    $stmt->bind_param("ss", $email, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Check if a row is returned (authentication successful)
+    if ($result->num_rows == 1) {
+        // Fetch the user's role
+        $row = $result->fetch_assoc();
+        $user_role = $row['role'];
+
+        // Store email in the session
+        $_SESSION['email'] = $email;
+
+        // Store user role in the session
+        $_SESSION['role'] = $user_role;
+
+        $sql1 = "SELECT
+                ct_email
+                FROM
+                    customer
+                WHERE
+                    ct_email = ?";
+        $stmt1 = $conn->prepare($sql1);
+        $stmt1->bind_param("s", $email); // Assuming student_id is an integer
+
+        // Execute the query
+        $stmt1->execute();
+
+        // Get the result set
+        $result1 = $stmt1->get_result();
+        
+        // Redirect based on user role
+        if ($user_role == 'customer') {
+            header("Location: customer/home.php");
+            exit();
+        } else if ($user_role == 'shopper') {
+            header("Location: personal_shopper/home.php");
+            exit();
+        } else {
+            // Handle other roles or scenarios
+            // You can redirect to a default page or display an error message
+            $_SESSION['message'] = "Invalid user role.";
+            header("Location: ../index.php");
+            exit();
+        }
+    } else {
+        // Authentication failed; display an error message
+        $_SESSION['message'] = "Invalid username or password.";
+        header("Location: ../index.php");
+        exit();
+    }
+
+    // Close the database connection
+    $stmt->close();
+    $conn->close();
+}
+?>
 <html lang="en">
 
 <head>
@@ -34,8 +102,8 @@
 
     <nav class="fixed top-10 z-80 w-full bg-white border-gray-200 dark:bg-gray-900">
         <div class="flex justify-between items-center mx-auto max-w-screen-xl px-4 py-2">
-            <a href="index.php" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
+            <a href="home.php" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <img src="../assets/logo1.png" class="h-8" alt="Flowbite Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">myShopper</span>
             </a>
             <div class="flex-1 py-2 pl-16">
@@ -93,7 +161,7 @@
                 </div>
                 <!-- Modal body -->
                 <div class="p-4 md:p-5">
-                    <form class="space-y-4" action="#">
+                    <form class="space-y-4" action="" method="post">
                         <div>
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                             <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="name@company.com" required>
@@ -213,3 +281,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.1.1/flowbite.min.js"></script>
 
     <div class="mt-28">
+
