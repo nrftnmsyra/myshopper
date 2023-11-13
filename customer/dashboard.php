@@ -1,7 +1,7 @@
-<?php include '../includes/header.php'; ?>
+<?php include 'includes/header.php'; ?>
 
 <!-- NAVIGATION PAGE -->
-<?php include '../includes/navigation.php'; ?>
+<?php include 'includes/navigation.php'; ?>
 
 <main class="flex-grow p-4">
     <div id="ordersContent" class="rounded-lg p-4">
@@ -51,7 +51,7 @@
 </div>
 </div>
 
-<?php include '../includes/footer.php'; ?>
+<?php include 'includes/footer.php'; ?>
 
 </body>
 

@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <nav class="fixed top-10 z-80 w-full bg-white border-gray-200 dark:bg-gray-900">
         <div class="flex justify-between items-center mx-auto max-w-screen-xl px-4 py-2">
             <a href="home.php" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="../assets/logo1.png" class="h-8" alt="Flowbite Logo" />
+                <img src="../customer/assets/logo1.png" class="h-8" alt="Flowbite Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">myShopper</span>
             </a>
             <div class="flex-1 py-2 pl-16">
