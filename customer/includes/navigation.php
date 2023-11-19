@@ -10,6 +10,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="request.php" class="flex border-b items-center p-3  hover:bg-gray-200">
+                            <span class="ml-3">Requests</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="order.php" class="flex border-b items-center p-3  hover:bg-gray-200 group">
                             <span class="ml-3">Orders</span>
                         </a>

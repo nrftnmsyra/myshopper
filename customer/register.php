@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ph_num = $_POST['phnum'];
     $role = 'customer';
 
-    $uploadDirectory = __DIR__ . '/../img/';
+    $uploadDirectory = '../img/';
 
     foreach ($_FILES["files"]["tmp_name"] as $key => $tmp_name) {
         $file_name = $_FILES["files"]["name"][$key];
@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($insert_account_stmt->execute() && $insert_customer_stmt->execute()) {
             // Registration successful
-            echo '<script>alert("Registration successful. You can now login."); window.location = "../customer/index.php";</script>';
+            echo '<script>alert("Registration successful. You can now login."); window.location = "../index.php";</script>';
         } else {
             // Registration failed
             echo '<script>alert("Registration failed. Please try again.")</script>';

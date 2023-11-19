@@ -8,6 +8,6 @@ $_SESSION = array();
 session_destroy();
 
 // Redirect to the login page or any other appropriate location
-header("Location: ../customer/index.php");
+header("Location: ../index.php");
 exit();
 ?>

@@ -8,59 +8,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     include 'db.php';
 
-    // // Prepare and execute the query to check user credentials
-    // $stmt = $conn->prepare("SELECT email, role FROM user WHERE email = ? AND password = ?");
-    // $stmt->bind_param("ss", $email, $password);
-    // $stmt->execute();
-    // $result = $stmt->get_result();
+    // Prepare and execute the query to check user credentials
+    $stmt = $conn->prepare("SELECT email, role FROM user WHERE email = ? AND password = ?");
+    $stmt->bind_param("ss", $email, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    // $stmt1 = $conn->prepare("SELECT ct_username FROM customer WHERE ct_email = ?");
-    // $stmt1->bind_param("s", $email);
-    // $stmt1->execute();
-    // $result1 = $stmt1->get_result();
+    $stmt1 = $conn->prepare("SELECT ct_username FROM customer WHERE ct_email = ?");
+    $stmt1->bind_param("s", $email);
+    $stmt1->execute();
+    $result1 = $stmt1->get_result();
 
-    // if ($result1->num_rows == 1) {
-    //     // Fetch the username
-    //     $row1 = $result1->fetch_assoc();
-    //     $username = $row1['ct_username'];
-    //     $_SESSION['username'] = $username;
-    //     // Store email in the session
-    //     // $_SESSION['username'] = $username;
-    // }
+    if ($result1->num_rows == 1) {
+        // Fetch the username
+        $row1 = $result1->fetch_assoc();
+        $username = $row1['ct_username'];
+        $_SESSION['username'] = $username;
+        // Store email in the session
+        // $_SESSION['username'] = $username;
+    }
 
     // Check if a row is returned (authentication successful)
-    // if ($result->num_rows == 1) {
-    //     // Fetch the user's role
-    //     $row = $result->fetch_assoc();
-    //     $user_role = $row['role'];
+    if ($result->num_rows == 1) {
+        // Fetch the user's role
+        $row = $result->fetch_assoc();
+        $user_role = $row['role'];
 
-    //     // Store email in the session
-    //     $_SESSION['email'] = $email;
+        // Store email in the session
+        $_SESSION['email'] = $email;
 
-    //     // Store user role in the session
-    //     $_SESSION['role'] = $user_role;
+        // Store user role in the session
+        $_SESSION['role'] = $user_role;
         
-    //     // Redirect based on user role
-    //     if ($user_role == 'customer') {
-    //         header("Location: index.php");
-    //         exit();
-    //     } else {
-    //         // Handle other roles or scenarios
-    //         // You can redirect to a default page or display an error message
-    //         $_SESSION['message'] = "Invalid user role.";
-    //         header("Location: index.php");
-    //         exit();
-    //     }
-    // } else {
-    //     // Authentication failed; display an error message
-    //     $_SESSION['message'] = "Invalid username or password.";
-    //     header("Location: index.php");
-    //     exit();
-    // }
+        // Redirect based on user role
+        if ($user_role == 'customer') {
+            header("Location: customer/index.php");
+            exit();
+        } else {
+            // Handle other roles or scenarios
+            // You can redirect to a default page or display an error message
+            $_SESSION['message'] = "Invalid user role.";
+            header("Location: index.php");
+            exit();
+        }
+    } else {
+        // Authentication failed; display an error message
+        $_SESSION['message'] = "Invalid username or password.";
+        header("Location: index.php");
+        exit();
+    }
 
     // Close the database connection
-    // $stmt->close();
-    // $stmt1->close();
+    $stmt->close();
+    $stmt1->close();
     $conn->close();
 }
 ?>
@@ -82,10 +82,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="flex items-center">
                 <ul class="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
                     <li>
-                        <a href="dashboard.php" class="text-gray-900 dark:text-white hover:underline" aria-current="page">My Account</a>
+                        <a href="#" class="text-gray-900 dark:text-white hover:underline" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">My Account</a>
                     </li>
                     <li>
-                        <a class="text-gray-900 dark:text-white">WELCOME &nbsp; <?php echo $username = $_SESSION['username']; ?></a>
+                        <a href="#" class="text-gray-900 dark:text-white"></a>
                     </li>
                 </ul>
             </div>
@@ -95,11 +95,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <nav class="fixed top-10 z-80 w-full bg-white border-gray-200 dark:bg-gray-900">
         <div class="flex justify-between items-center mx-auto max-w-screen-xl px-4 py-2">
             <a href="index.php" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="../customer/assets/logo1.png" class="h-8" alt="Flowbite Logo" />
+                <img src="assets/logo1.png" class="h-8" alt="Flowbite Logo" />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">myShopper</span>
             </a>
             <div class="flex-1 py-2 pl-16">
-                <form class="m-0" id="search" method="post" action="">
+                <form class="m-0">
                     <label for="default-search" class="text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                     <div class="relative w-full">
                         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -107,27 +107,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="search" id="searchInput" onkeyup="myFunction()" class="block w-full h-10 p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search things that you wanna lookup..." required>
-                        <button type="submit" class="hidden">Search</button>
+                        <input type="search" id="default-search" class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search things that you wanna lookup..." required>
+                        <button type="submit" class="text-white absolute end-2.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
                     </div>
                 </form>
             </div>
             <div class="pl-2 pr-16">
-                <button data-modal-target="request_modal" data-modal-toggle="request_modal" class="block text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700" type="button">
+                <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                     Request +
                 </button>
             </div>
             <div class="flex items-center space-x-6 rtl:space-x-reverse">
-                <a href="#" class="text-sm text-blue-500 dark:text-blue-500 hover:underline">
+                <a href="#" class="text-sm  text-blue-600 dark:text-blue-500 hover:underline" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                         <path fill-rule="evenodd" d="M6.912 3a3 3 0 00-2.868 2.118l-2.411 7.838a3 3 0 00-.133.882V18a3 3 0 003 3h15a3 3 0 003-3v-4.162c0-.299-.045-.596-.133-.882l-2.412-7.838A3 3 0 0017.088 3H6.912zm13.823 9.75l-2.213-7.191A1.5 1.5 0 0017.088 4.5H6.912a1.5 1.5 0 00-1.434 1.059L3.265 12.75H6.11a3 3 0 012.684 1.658l.256.513a1.5 1.5 0 001.342.829h3.218a1.5 1.5 0 001.342-.83l.256-.512a3 3 0 012.684-1.658h2.844z" clip-rule="evenodd" />
                     </svg>
                 </a>
-                <a href="cart.php" class="text-sm text-blue-500 dark:text-blue-500 hover:underline">
-                    <button class="text-sm pr-2 text-blue-600 dark:text-blue-500 type=" button">
-                        Cart
-                    </button>
-                </a>
+                <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="text-sm pr-2 text-blue-600 dark:text-blue-500 type=" button">
+                    Login
+                </button>
             </div>
         </div>
     </nav>
@@ -173,9 +171,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <a href="#" class="text-sm text-blue-700 hover:underline dark:text-blue-500">Lost Password?</a>
                         </div>
-                        <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">Login to your account</button>
+                        <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login to your account</button>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                            Not registered? <a href="register.php" class="text-blue-700 hover:underline dark:text-blue-500">Create account</a>
+                            Not registered? <a href="customer/register.php" class="text-blue-700 hover:underline dark:text-blue-500">Create account</a>
                         </div>
                     </form>
                 </div>
@@ -219,7 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
                         <textarea id="description" name="desc" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write product description here"></textarea>
                     </div>
-                    <button type="submit" class="text-white inline-flex items-center bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
+                    <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                         </svg>
@@ -272,36 +270,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         requestButton.addEventListener('click', openRequestModal);
         requestCloseButton.addEventListener('click', closeRequestModal);
     </script>
-
-<script>
-function myFunction() {
-    var input, filter, content, items, name, expertise, i, nameTxt, expertiseTxt;
-    input = document.getElementById("searchInput");
-    filter = input.value.toUpperCase();
-    content = document.getElementById("filteredContent");
-    items = content.getElementsByClassName("w-full");
-
-    for (i = 0; i < items.length; i++) {
-        name = items[i].getElementsByTagName("h5")[0];
-        expertise = items[i].getElementsByClassName("text-gray-400")[0];
-
-        nameTxt = name.textContent || name.innerText;
-        expertiseTxt = expertise.textContent || expertise.innerText;
-
-        // Adjust the condition based on your needs
-        if (
-            nameTxt.toUpperCase().indexOf(filter) > -1 ||
-            expertiseTxt.toUpperCase().indexOf(filter) > -1
-        ) {
-            items[i].style.display = "";
-        } else {
-            items[i].style.display = "none";
-        }
-    }
-}
-
-</script>
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.1.1/flowbite.min.js"></script>
 

@@ -3,47 +3,57 @@
 <!-- NAVIGATION PAGE -->
 <?php include 'includes/navigation.php'; ?>
 
-<main class="flex-grow p-4">
-    <div id="ordersContent" class="rounded-lg p-4">
-        <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+<?php
+session_start();
+$email = $_SESSION['email'];
+$username = $_SESSION['username'];
 
-        <div class="w-full bg-white border border-gray-200 rounded-lg shadow px-6 py-4 dark:bg-gray-800 dark:border-gray-900">
-            <div>
-                <h2 class="text-2xl tracking-tight text-gray-900 dark:text-white font-bold border-b border-gray-600 p-3">PS_NAME</h2>
-            </div>
-
-            <a href="order_details.php" class="flex items-center bg-white rounded-lg dark:bg-gray-800 dark:border-gray-700">
-                <div class="p-3 flex justify-center items-center">
-                    <!-- Image -->
-                    <img class="w-32 h-32 object-cover" src="assets/profile_pic.jpeg" alt="" />
-                </div>
-
-                <!-- Product Details -->
-                <div class="p-5 w-full">
-                    <div class="mb-2">
-                        <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white transition duration-300 hover:text-gray-300">
-                            Product Name
-                        </h5>
-                    </div>
-                    <div>
-                        <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">Quantity: 5</p>
-                        <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">Status: To Ship</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-center">
-                    <p class="text-xl font-semibold text-gray-900 dark:text-white whitespace-nowrap">Total: RM120</p>
-                </div>
-            </a>
-
-            <div class="border-t border-gray-600 flex justify-end p-3">
-                <button class="p-3 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Cancel
+include 'includes/db.php';
+// Select data from the table
+$selectQuery = "SELECT * FROM customer WHERE ct_email = '$email'";
+$result = $conn->query($selectQuery);
+?>
+<div><?php echo $email; ?></div>
+<?php
+// Check if there are rows in the result
+if ($result->num_rows > 0) {
+    // Fetch data from each row
+    while ($row = $result->fetch_assoc()) {
+        // Process data or store it in an array for later use
+        $ct_email = $row['ct_email'];
+        $ct_username = $row['ct_username'];
+        $ct_first_name = $row['ct_first_name'];
+        $ct_last_name = $row['ct_last_name'];
+        $ct_phnum = $row['ct_phnum'];
+        $ct_address = $row['ct_address'];
+        $ct_img = $row['ct_img'];
+        ?>
+        <main class="flex-grow p-4">
+            <div id="ordersContent" class="rounded-lg p-4">
+                <h1 class="text-2xl font-bold mb-4">Profile</h1>
+                <form action="" method="post">
+                <img class="pb-5 rounded-t-lg" src="<?php echo $ct_img;?>" alt="product image" />
+                <p>Username : <?php echo $ct_username; ?></p>
+                <p>Name : <?php echo $ct_first_name.' '.$ct_last_name; ?></p>
+                <p>Email : <?php echo $ct_email; ?></p>
+                <p>Phone Number : <?php echo $ct_phnum; ?></p>
+                <p>Address : <?php echo $ct_address; ?></p>
+                <button class="block text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700" type="button">
+                    Edit Profile
                 </button>
+                </form>
             </div>
-        </div>
-    </div>
-</main>
+    </main>
+    <?php
+    }
+} else {
+    echo "No records found";
+}
+
+// Close the database connection
+$conn->close();
+
+?>
 
 
 
