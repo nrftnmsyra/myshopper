@@ -1,5 +1,6 @@
 <?php include 'includes/header.php'; ?>
-<div class="max-w-screen-xl pt-5 px-4 py-3 mx-auto flex flex-wrap gap-4 justify-start">
+<script src="https://cdn.tailwindcss.com"></script>
+<div class="max-w-screen-xl px-4 py-3 mx-auto flex flex-wrap gap-4 justify-start">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <main class="flex-grow p-4" id="filteredContent">
     <div id="ordersContent" class="rounded-lg p-4">
@@ -13,6 +14,7 @@
         // Select data from the table
         $selectQuery = "SELECT
                         personalshopper.ps_username,
+                        personalshopper.ps_email,
                         product.pd_name,
                         product.pd_img,
                         cart.cart_ct_email,
@@ -39,15 +41,18 @@
         if ($result->num_rows > 0) {
             // Fetch data from each row and group by personal shopper
             while ($row = $result->fetch_assoc()) {
+                $ps_email = $row['ps_email'];
                 $ps_username = $row['ps_username'];
 
                 // Store product details in the array with the personal shopper as the key
-                $groupedProducts[$ps_username][] = $row;
+                $groupedProducts[$ps_email][] = $row;
             }
 
             // Iterate through the grouped products
-            foreach ($groupedProducts as $ps_username => $products) {
+            foreach ($groupedProducts as $ps_email => $products) {
+                $ps_username = $products[0]['ps_username']; // Assuming ps_username is the same for all products of the same personal shopper
                 $totalPrice = 0; // Initialize total price for the current personal shopper
+            
                 ?>
                 <div class="mb-5 w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-900 px-6 py-4">
                     <div>
@@ -68,25 +73,21 @@
                         <!-- Display product details for the current personal shopper -->
                         <div class="flex items-center bg-white rounded-lg dark:bg-gray-800 dark:border-gray-700">
                             <!-- Delete button for the current product -->
-                            <!-- <form action="delete_cart.php" method="post"> -->
                             <div>
-                                <input type="hidden" name="delete_email" value="<?php echo $cart_ct_email; ?>">
-                                <input type="hidden" name="delete_id" value="<?php echo $cart_pd_id; ?>">
                                 <!-- Delete button for the current product -->
-                                <button class="ml-2 text-gray-500 hover:text-red-500 focus:outline-none">
+                                <button type="button" class="ml-2 text-gray-500 hover:text-red-500 focus:outline-none" onclick="deleteCart('<?php echo $cart_pd_id; ?>','<?php echo $cart_ct_email; ?>')">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                                     </svg>
                                 </button>
                             </div>
-                            <!-- </form> -->
                             <div class="p-3 flex justify-center items-center">
                                 <!-- Square Image with Rounded Corners -->
                                 <img class="w-24 h-24 object-cover rounded-md" src="<?php echo $pd_img;?>" alt="" />
                             </div>
                             <!-- Product Details -->
                             <div class="p-5 w-full">
-                                <a href="order_details.php">
+                                <!-- <a href="order_details.php"> -->
                                 <div class="mb-2">
                                     <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white transition duration-300 hover:text-gray-300">
                                     <?php echo $pd_name;?>
@@ -102,7 +103,7 @@
                                             <button type="button" class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" data-hs-input-number-decrement onclick="decrementValue('<?php echo $cart_pd_id; ?>')">
                                                 <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
                                             </button>
-                                            <input class="p-0 w-6 bg-transparent border-0 text-gray-800 text-center focus:ring-0 dark:text-white" type="text" name="order_qty" oninput="updateTotal(<?php echo $cart_pd_price; ?>)" value="<?php echo $cart_qty; ?>" data-hs-input-number-input id="quantityInput_<?php echo $cart_pd_id; ?>">
+                                            <input class="p-0 w-6 bg-transparent border-0 text-gray-800 text-center focus:ring-0 dark:text-white" type="text" name="order_qty" oninput="updateTotal('<?php echo $cart_pd_price; ?>','<?php echo $cart_pd_id; ?>','<?php echo $ps_email; ?>')" value="<?php echo $cart_qty; ?>" data-hs-input-number-input id="quantityInput_<?php echo $cart_pd_id; ?>">
                                             <button type="button" class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" data-hs-input-number-increment onclick="incrementValue('<?php echo $cart_pd_id; ?>')">
                                                 <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                                             </button>
@@ -112,8 +113,7 @@
                             </div>
 
                             <div class="flex items-center justify-center">
-                            <input type="text" class="text-xl font-semibold text-gray-900 dark:text-black whitespace-nowrap" id="total" readonly>
-                                <!-- <p class="text-xl font-semibold text-gray-900 dark:text-white whitespace-nowrap" id="total" value="Total: RM<?php echo number_format($cart_pd_price, 2); ?>"></p> -->
+                            <h1 id="totalText" class="text-xl font-semibold text-gray-900 dark:text-white whitespace-nowrap">Total : RM</h1><p class="text-xl font-semibold text-gray-900 dark:text-white whitespace-nowrap" id="result_<?php echo $cart_pd_id; ?>"><?= number_format($cart_pd_price*$cart_qty, 2)?></p>
                             </div>
                             <div>
                                 <!-- Checkbox for the current product -->
@@ -126,7 +126,7 @@
                             <!-- Display total price and checkout button in a single div -->
                             <!-- Display total price and checkout button in a single div, sticking to the right -->
                             <div class="border-t border-gray-600 flex justify-between p-3">
-                                <p class="text-xl font-semibold text-gray-900 dark:text-white whitespace-nowrap">Total: RM<?php echo number_format($totalPrice, 2);?></p>
+                            <h1 id="totalPrice" class="text-xl font-semibold text-gray-900 dark:text-white whitespace-nowrap">Total : RM</h1><p class="text-xl font-semibold text-gray-900 dark:text-white whitespace-nowrap" id="total_<?php echo $ps_email; ?>"><?= number_format($totalPrice, 2)?></p>
                                 <div class="flex items-center ml-auto">
                                     <!-- Checkout button on the right side -->
                                     <button type="submit" class="p-3 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -157,61 +157,85 @@
 </div>
 
 <?php include 'includes/footer.php'; ?>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
 </body>
 </html>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-function updateTotal(price) {
-    // Get the quantity and product price
-    var quantity = document.querySelector('[name="order_qty"]').value;
+function updateTotal(price, cartPdId, psEmail) {
+    var quantity = document.getElementById('quantityInput_' + cartPdId).value;
     var productPrice = price;
-
-    // Calculate the new total
     var newTotal = quantity * productPrice;
+    document.getElementById('result_' + cartPdId).innerText = newTotal.toFixed(2);
 
-    // Update the total in the HTML
-    document.getElementById('total').value = newTotal.toFixed(2);
+    // Update the total for the personal shopper
+    updatePersonalShopperTotal(psEmail);
 }
 
-function incrementValue(cartPdId) {
+function incrementValue(cartPdId, psEmail) {
     var input = document.getElementById('quantityInput_' + cartPdId);
     input.value = parseInt(input.value) + 1;
-    updateQuantity('increment', cartPdId); // Call updateQuantity with the cartPdId
+    updateQuantity('increment', cartPdId, psEmail);
 }
 
-function decrementValue(cartPdId) {
+function decrementValue(cartPdId, psEmail) {
     var input = document.getElementById('quantityInput_' + cartPdId);
     if (parseInt(input.value) > 1) {
         input.value = parseInt(input.value) - 1;
     }
-    updateQuantity('decrement', cartPdId); // Call updateQuantity with the cartPdId
+    updateQuantity('decrement', cartPdId, psEmail);
 }
 
-function updateQuantity(operation, cartPdId) {
+function updateQuantity(operation, cartPdId, psEmail) {
     var input = document.getElementById('quantityInput_' + cartPdId);
     var newQuantity = parseInt(input.value);
-
-    // Update the quantity based on the operation (increment or decrement)
-    // var newQuantity = operation === 'increment' ? currentQuantity + 1 : Math.max(currentQuantity - 1, 1);
 
     // Update the input field with the new quantity
     input.value = newQuantity;
 
     // Send an AJAX request to update the quantity in the database
     $.ajax({
-    type: 'POST',
-    url: 'cart_update.php',
-    data: { quantity: newQuantity, cartPdId: cartPdId },
-    dataType: 'text',  // Change dataType to 'text'
-    success: function(response) {
-        console.log('New Quantity:', newQuantity);
-        console.log('Cart Product ID:', cartPdId);
-        console.log('Quantity updated successfully:', response);
-    },
-    error: function(xhr, status, error) {
-        console.error('AJAX request failed:', status, error);
-    }
-});
+        type: 'POST',
+        url: 'cart_update.php',
+        data: { quantity: newQuantity, cartPdId: cartPdId },
+        dataType: 'text',
+        success: function (response) {
+            console.log('New Quantity:', newQuantity);
+            console.log('Cart Product ID:', cartPdId);
+            console.log('Quantity updated successfully:', response);
+
+            // After updating quantity, also update the total
+            updateTotal(<?php echo $cart_pd_price; ?>, cartPdId, psEmail);
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX request failed:', status, error);
+        }
+    });
+}
+
+function updatePersonalShopperTotal(psEmail) {
+    // Calculate the new total for the personal shopper
+    var psTotal = 0;
+    $('[id^=result_]').each(function () {
+        var resultId = $(this).attr('id');
+        var resultPsEmail = resultId.split('_')[1];
+        if (resultPsEmail === psEmail) {
+            psTotal += parseFloat($(this).text());
+        }
+    });
+
+    // Log debug information to the console
+    console.log('psEmail:', psEmail);
+    console.log('Matching elements:', $('[id^=result_]').filter('[id$=' + psEmail + ']'));
+
+    // Find and update the total element for the personal shopper
+    $('#total_' + psEmail).text(psTotal.toFixed(2));
 }
 </script>
+<script>
+        function deleteCart(cart_pd_id, email) {
+            // Redirect to Page 2 with the ID as a URL parameter
+            window.location.href = 'delete_cart.php?delete_id=' + cart_pd_id + '&delete_email=' + email;
+        }
+    </script>

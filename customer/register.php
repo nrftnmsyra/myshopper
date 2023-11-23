@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="grid md:grid-cols-2 md:gap-6">
                     <div class="relative z-0 w-full mb-6 group">
-                        <input type="file" name="files[]" id="fileInput" multiple onchange="displaySelectedFiles(this.files)">
+                        <input type="file" name="files[]" id="fileInput" accept=".pdf, .jpg, .jpeg, .png" onchange="">
                         <label for="file_input" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 py-2.5 px-4">Profile Picture</label>
                     </div>
                     <div class="relative z-0 w-full mb-6 group">

@@ -2,10 +2,10 @@
 // Assuming you have a database connection established
 include 'includes/db.php';
 // Check if the request method is POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if(isset($_GET['delete_id']) && isset($_GET['delete_email'])){
     // Get the product ID and customer email from the request
-    $productId = $_POST['delete_id'];
-    $email = $_POST['delete_email'];
+    $productId = $_GET['delete_id'];
+    $email = $_GET['delete_email'];
 
     $stmt = $conn->prepare("DELETE FROM cart WHERE cart_ct_email = ? AND cart_pd_id = ?");
     $stmt->bind_param("ss", $email, $productId);
