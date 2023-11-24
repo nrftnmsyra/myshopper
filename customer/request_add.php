@@ -7,13 +7,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-
     // Get form data
     $email = $_POST['email'];
     $pd_name = $_POST['pd_name'];
     $desc = $_POST['desc'];
 
-    $uploadDirectory = __DIR__ . '/../img/';
+    $uploadDirectory ='../img/';
 
     foreach ($_FILES["files"]["tmp_name"] as $key => $tmp_name) {
         $file_name = $_FILES["files"]["name"][$key];
@@ -36,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($insert_stmt->execute()) {
             // Registration successful
+            echo json_encode($response);
             echo '<script>alert("Request successfully added."); window.location = "../customer/index.php";</script>';
         } else {
             // Registration failed

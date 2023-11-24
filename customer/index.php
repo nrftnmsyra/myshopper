@@ -31,11 +31,11 @@ if ($result->num_rows > 0) {
         $ps_img = $row['ps_img'];
         ?>
 <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 m">
-        <a href="#">
+        <a href="ps_details.php?ps_email=<?php echo $ps_email;?>">
             <img class="pb-5 rounded-t-lg" src="<?php echo $ps_img;?>" alt="product image" />
         </a>
         <div class="px-5 pb-5">
-            <a href="PS_details.php">
+            <a href="ps_details.php?ps_email=<?php echo $ps_email;?>">
                 <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white"><?php echo $ps_username;?></h5>
             </a>
             <p class="mt-2 text-sm text-gray-400"><?php echo $ps_expertise;?></p>
@@ -63,8 +63,8 @@ if ($result->num_rows > 0) {
                 <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3"><?php echo $ps_rating;?></span>
             </div>
             <div class="flex items-center justify-between">
-                <span class="text-3xl font-bold text-gray-900 dark:text-white">RM<?php echo $ps_fee;?></span>
-                <button class="block text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700" type="button">
+                <span class="text-3xl font-bold text-gray-900 dark:text-white">RM<?php echo number_format($ps_fee,2);?><span class="text-sm text-gray-500"> (service fee)</span></span>
+                <button class="block text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700" type="button" onClick="parent.location='ps_details.php?ps_email=<?php echo $ps_email;?>'">
                     View
                 </button>
             </div>
