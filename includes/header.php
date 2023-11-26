@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="flex justify-between items-center mx-auto max-w-screen-xl px-4 py-2">
             <a href="index.php" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="customer/assets/logo1.png" class="h-8" alt="Flowbite Logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">myShopper</span>
+                <span class="self-center text-2xl font-bold dark:text-white">myShopper</span>
             </a>
             <div class="flex-1 py-2 pl-16">
                 <form class="m-0" id="search" method="post" action="">

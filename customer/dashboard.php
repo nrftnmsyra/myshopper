@@ -13,7 +13,6 @@ include 'includes/db.php';
 $selectQuery = "SELECT * FROM customer WHERE ct_email = '$email'";
 $result = $conn->query($selectQuery);
 ?>
-<div><?php echo $email; ?></div>
 <?php
 // Check if there are rows in the result
 if ($result->num_rows > 0) {
@@ -29,19 +28,34 @@ if ($result->num_rows > 0) {
         $ct_img = $row['ct_img'];
         ?>
         <main class="flex-grow p-4">
-            <div id="ordersContent" class="rounded-lg p-4">
-                <h1 class="text-2xl font-bold mb-4">Profile</h1>
-                <form action="" method="post">
-                <img class="pb-5 rounded-t-lg" src="<?php echo $ct_img;?>" alt="product image" />
-                <p>Username : <?php echo $ct_username; ?></p>
-                <p>Name : <?php echo $ct_first_name.' '.$ct_last_name; ?></p>
-                <p>Email : <?php echo $ct_email; ?></p>
-                <p>Phone Number : <?php echo $ct_phnum; ?></p>
-                <p>Address : <?php echo $ct_address; ?></p>
-                <button class="block text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700" type="button">
-                    Edit Profile
-                </button>
-                </form>
+            <div class="w-full">
+                <div class="flex flex-col items-center pb-10">
+                    <div class="mt-10 w-36 h-36 mb-3 rounded-full shadow-lg overflow-hidden">
+                        <img src="<?php echo $ct_img;?>" alt="Image" class="object-cover w-full h-full">
+                    </div>
+                    <h5 class="mb-1 text-xl font-medium text-gray-900"><?php echo $ct_username; ?></h5>
+                    <span class="text-sm text-gray-500"><?php echo $ct_email; ?></span>
+                    <div class="flex mt-4 md:mt-6">
+                        <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">Edit Profile</a>
+                    </div>
+                    <dl class="w-full p-20 text-gray-900 divide-y divide-gray-200">
+                    <div class="flex flex-col py-3">
+                        <dt class="mb-1 text-gray-500 md:text-lg">Name</dt>
+                        <dd class="text-lg font-semibold"><?php echo $ct_first_name.' '.$ct_last_name; ?></dd>
+                    </div>
+                    <div class="flex flex-col py-3">
+                        <dt class="mb-1 text-gray-500 md:text-lg">Phone Number</dt>
+                        <dd class="text-lg font-semibold"><?php echo $ct_phnum; ?></dd>
+                    </div>
+                    <div class="flex flex-col py-3">
+                        <dt class="mb-1 text-gray-500 md:text-lg">Home address</dt>
+                        <dd class="text-lg font-semibold"><?php echo $ct_address; ?></dd>
+                    </div>
+                    <div class="flex flex-col pt-3">
+                        <dt class="mb-1 text-gray-500 md:text-lg"></dt>
+                    </div>
+                </dl>
+                </div>
             </div>
     </main>
     <?php

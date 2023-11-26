@@ -68,20 +68,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (!$stmtInsert->execute()) {
                     die('Error: ' . $stmtInsert->error);
                 }                
-                $result = $stmtInsert->get_result();
+                if ($result = $stmtInsert->get_result()) {
+                    $clearCartQuery = "DELETE FROM cart WHERE cart_ct_email = ? AND cart_pd_id = ?";
+                    $stmtClearCart = $conn->prepare($clearCartQuery);
+                    $stmtClearCart->bind_param("si", $email, $product['product_id']);
+                    $stmtClearCart->execute();
+                    $stmtClearCart->close();
+                }
             }
             $stmtInsert->close();
-        }
-
-        // Clear the cart after checkout (you may want to adapt this based on your logic)
-        // foreach ($checkoutProducts as $productId) {
-        // $clearCartQuery = "DELETE FROM cart WHERE cart_ct_email = ? AND cart_pd_id = ?";
-        // $stmtClearCart = $conn->prepare($clearCartQuery);
-        // $stmtClearCart->bind_param("si", $email, $productId);
-        // $stmtClearCart->execute();
-        // $stmtClearCart->close();
-        // }
-
+    }
         // Close the database connection
         $conn->close();
 

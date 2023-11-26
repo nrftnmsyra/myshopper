@@ -9,7 +9,6 @@ include 'includes/db.php';
 $selectQuery = "SELECT * FROM personalshopper";
 $result = $conn->query($selectQuery);
 ?>
-<div><?php echo $email; ?></div>
 <div class="max-w-screen-xl pt-5 px-4 py-3 mx-auto flex flex-wrap gap-4 justify-start" id="filteredContent">
 <?php
 // Check if there are rows in the result

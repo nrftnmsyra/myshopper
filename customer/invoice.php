@@ -61,7 +61,7 @@ foreach ($ProductIds as $productId1) {
         $pt_id = $row1['pt_id'];
 
         $sqlstatus = "UPDATE orders SET order_status='$orderstatus', order_payment_id = '$pt_id'
-        WHERE order_ct_email ='$pt_ct_email' AND order_pd_id = '$productId1'";
+        WHERE order_ct_email ='$pt_ct_email' AND order_pd_id = '$productId1' AND order_code = '$order_code'";
         $conn->query($sqlstatus);
 
         $sqlSelectIID ="SELECT iv_id FROM invoice WHERE iv_ct_email=? AND iv_order_code =?";
@@ -80,7 +80,7 @@ foreach ($ProductIds as $productId1) {
         }
 }
     $sqlupdate = "UPDATE orders SET order_invoice_id = '$iv_id'
-    WHERE order_ct_email ='$pt_ct_email' AND order_pd_id = '$productId1'";
+    WHERE order_ct_email ='$pt_ct_email' AND order_pd_id = '$productId1' AND order_code = '$order_code'";
     $conn->query($sqlupdate);
     }
 $conn->close();
@@ -176,7 +176,7 @@ foreach ($ProductIds as $productId3) {
             JOIN
                 product pr ON o.order_pd_id = pr.pd_id
             WHERE
-                o.order_ct_email = '$pt_ct_email' AND o.order_pd_id ='$productId3';
+                o.order_ct_email = '$pt_ct_email' AND o.order_pd_id ='$productId3' AND o.order_code = '$order_code';
             ";
   
   $resultP = mysqli_query($conn, $queryP);

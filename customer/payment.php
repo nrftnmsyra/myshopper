@@ -13,6 +13,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['checkoutIds'])) {
   $email = $_SESSION['email'];
   $ProductIds = $_SESSION['checkoutIds'];
   $total_price = 0;
+  $order_code = $_SESSION['order_c'];
   
   // Include the database connection file
   include 'includes/db.php';
@@ -26,7 +27,7 @@ if (isset($_SESSION['email']) && isset($_SESSION['checkoutIds'])) {
             JOIN product p ON o.order_pd_id = p.pd_id
             JOIN cart c ON p.pd_id = c.cart_pd_id
             JOIN customer ct ON c.cart_ct_email = ct.ct_email
-            WHERE o.order_ct_email = '$email' AND c.cart_ct_email = '$email' AND o.order_pd_id = '$productId'";
+            WHERE o.order_ct_email = '$email' AND c.cart_ct_email = '$email' AND o.order_pd_id = '$productId' AND o.order_code = '$order_code'";
 
 $result = mysqli_query($conn, $query);
 
@@ -37,8 +38,9 @@ if ($result) {
               $pro_id = $row['order_pd_id'];
               $ct_first_name = $row['ct_first_name'];
               $ct_last_name =$row['ct_last_name'];
+              $qty = $row['order_pd_qty'];
               $ct_address = $row['ct_address'];
-              $total_price = $total_price + $row['cart_pd_price'];
+              $total_price = $total_price + ($row['cart_pd_price']*$qty);
                 ?>
                 <div class="flex flex-col rounded-lg bg-white sm:flex-row">
                     <img class="m-2 h-24 w-28 rounded-md border object-cover object-center" src="<?php echo $row['pd_img']; ?>" alt="" />
