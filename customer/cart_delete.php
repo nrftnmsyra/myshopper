@@ -2,7 +2,7 @@
 // Assuming you have a database connection established
 include 'includes/db.php';
 // Check if the request method is POST
-if(isset($_GET['delete_id']) && isset($_GET['delete_email'])){
+if (isset($_GET['delete_id']) && isset($_GET['delete_email'])) {
     // Get the product ID and customer email from the request
     $productId = $_GET['delete_id'];
     $email = $_GET['delete_email'];
