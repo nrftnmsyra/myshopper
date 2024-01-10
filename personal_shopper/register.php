@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // Check if the email already exists in the 'customer' table
-    $check_sql = "SELECT ct_email FROM customer WHERE ct_email = ?";
+    $check_sql = "SELECT ps_email FROM personalshopper WHERE ps_email = ?";
     $check_stmt = $conn->prepare($check_sql);
     $check_stmt->bind_param("s", $email);
     $check_stmt->execute();
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // Perform the SQL queries to insert data into 'students' and 'user_accounts' tables
         $insert_account_sql = "INSERT INTO user (email, password, role) VALUES (?, ?, ?)";
-        $insert_customer_sql = "INSERT INTO customer (ct_email, ct_username, ct_first_name, ct_last_name, ct_phnum, ct_address, ct_img) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $insert_customer_sql = "INSERT INTO personalshopper (ps_email, ps_username, ps_first_name, ps_last_name, ps_phnum, ps_area, ps_img) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $insert_account_stmt = $conn->prepare($insert_account_sql);
         $insert_customer_stmt = $conn->prepare($insert_customer_sql);
 
@@ -160,7 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                         placeholder=" " required />
                     <label for="floating_repeat_password"
-                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Address</label>
+                        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Area</label>
                 </div>
                 <div class="grid md:grid-cols-2 md:gap-6">
                     <div class="relative z-0 w-full mb-6 group">

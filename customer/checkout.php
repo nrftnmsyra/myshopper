@@ -18,6 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['checkout_product']) && is_array($_POST['checkout_product'])) {
         $checkoutProducts = $_POST['checkout_product'];
         $_SESSION['checkoutIds'] = $checkoutProducts;
+
+        $checkout = $checkoutProducts;
+        $_SESSION['checkout'] = $checkout;
         //Group selected products by personal shopper
         $groupedProducts = array();
         foreach ($checkoutProducts as $productId) {
@@ -67,8 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmtInsert->bind_param("sssiisssd", $order_code, $email, $psEmail, $product['product_id'], $product['quantity'], $order_date, $order_time, $order_status, $product['total_price']);
                 if (!$stmtInsert->execute()) {
                     die('Error: ' . $stmtInsert->error);
-                }                
-                if ($result = $stmtInsert->get_result()) {
+                } else {
                     $clearCartQuery = "DELETE FROM cart WHERE cart_ct_email = ? AND cart_pd_id = ?";
                     $stmtClearCart = $conn->prepare($clearCartQuery);
                     $stmtClearCart->bind_param("si", $email, $product['product_id']);
@@ -77,25 +79,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
             $stmtInsert->close();
-    }
+        }
         // Close the database connection
         $conn->close();
 
         // Redirect to a thank you page or any other appropriate page
         // header("Location: thank_you.php");
         // exit();
-    
-    header("Location: payment.php");
-    exit();
-    } 
-    else {
+
+        header("Location: payment.php");
+        exit();
+    } else {
         // Handle the case where no products are selected for checkout
         echo '<script>alert("No products selected for checkout.")';
     }
-} 
-else {
+} else {
     // Handle the case where the request method is not POST
     echo '<script>alert("Invalid request method.")';
 }
 ?>
-

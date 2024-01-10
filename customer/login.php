@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    $stmt1 = $conn->prepare("SELECT ps_username FROM personalshopper WHERE ps_email = ?");
+    $stmt1 = $conn->prepare("SELECT ct_username FROM customer WHERE ct_email = ?");
     $stmt1->bind_param("s", $email);
     $stmt1->execute();
     $result1 = $stmt1->get_result();
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result1->num_rows == 1) {
         // Fetch the username
         $row1 = $result1->fetch_assoc();
-        $username = $row1['ps_username'];
+        $username = $row1['ct_username'];
         $_SESSION['username'] = $username;
         // Store email in the session
         // $_SESSION['username'] = $username;
@@ -41,8 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['role'] = $user_role;
 
         // Redirect based on user role
-        if ($user_role == 'shopper') {
-            header("Location: dashboard.php");
+        if ($user_role == 'customer') {
+            header("Location: index.php");
             exit();
         } else {
             // Handle other roles or scenarios
@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>myShopper</title>
-    <link rel="icon" type="image/x-icon" href="../assets/logo1.ico">
+    <link rel="icon" type="image/x-icon" href="assets/logo1.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <img src="../customer/assets/logo1.png" class="h-8" alt="Flowbite Logo" />
                     <span class="text-2xl font-bold dark:text-white">myShopper</span>
                 </div>
-                <span class="text-sm font-semibold dark:text-gray-300">(Personal Shopper Sign In)</span>
+                <span class="text-sm font-semibold dark:text-gray-300">(Customer Sign In)</span>
             </div>
 
 
