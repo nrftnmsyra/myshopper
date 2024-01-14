@@ -9,6 +9,7 @@
     <link rel="icon" type="image/x-icon" href="../assets/logo1.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
 </head>
 
@@ -21,44 +22,18 @@
             <h1 class="text-4xl font-bold mb-4 text-white">Orders</h1>
             <div
                 class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
-                <div>
-                    <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction"
-                        class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                        type="button">
-                        <span class="sr-only">Action button</span>
-                        Action
-                        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <!-- Dropdown menu -->
-                    <div id="dropdownAction"
-                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="dropdownActionButton">
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reward</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Promote</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Activate
-                                    account</a>
-                            </li>
-                        </ul>
-                        <div class="py-1">
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete
-                                User</a>
-                        </div>
-                    </div>
+                <div class="">
+                    <select id="orderStatusFilter"
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="all">All Orders</option>
+                        <option value="To Pay">To Pay</option>
+                        <option value="To Ship">To Ship</option>
+                        <option value="To Receive">To Receive</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
                 </div>
+
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -68,7 +43,7 @@
                                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
-                    <input type="text" id="table-search-users"
+                    <input type="text" id="orderSearch"
                         class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search for orders">
                 </div>
@@ -132,6 +107,7 @@
                             $order_ct_email = $row['order_ct_email'];
                             $order_status = $row['order_status'];
                             $order_date = $row['order_date'];
+                            $gantt_chart_task_id = $row['order_code'];
                             $order_tracking = $row['order_tracking_no'];
 
                             $selectP = "SELECT
@@ -204,7 +180,7 @@
                                 <?php
                                 if ($order_status == 'To Pay') {
                                     ?>
-                                    <td class="px-6 py-4">
+                                    <td class="status-cell px-6 py-4">
                                         <div class="flex items-center">
                                             <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div>
                                             <?php echo $order_status; ?>
@@ -221,7 +197,7 @@
                                     <?php
                                 } else if ($order_status == 'To Ship') {
                                     ?>
-                                        <td class="px-6 py-4">
+                                        <td class="status-cell px-6 py-4">
                                             <div class="flex items-center">
                                                 <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
                                             <?php echo $order_status; ?>
@@ -249,7 +225,7 @@
                                     <?php
                                 } else if ($order_status == 'To Receive') {
                                     ?>
-                                            <td class="px-6 py-4">
+                                            <td class="status-cell px-6 py-4">
                                                 <div class="flex items-center">
                                                     <div class="h-2.5 w-2.5 rounded-full bg-blue-500 me-2"></div>
                                             <?php echo $order_status; ?>
@@ -266,7 +242,7 @@
                                     <?php
                                 } else if ($order_status == 'Completed') {
                                     ?>
-                                                <td class="px-6 py-4">
+                                                <td class="status-cell px-6 py-4">
                                                     <div class="flex items-center">
                                                         <div class="h-2.5 w-2.5 rounded-full bg-gray-500 me-2"></div>
                                             <?php echo $order_status; ?>
@@ -283,7 +259,7 @@
                                     <?php
                                 } else if ($order_status == 'Cancelled') {
                                     ?>
-                                                    <td class="px-6 py-4">
+                                                    <td class="status-cell px-6 py-4">
                                                         <div class="flex items-center">
                                                             <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div>
                                             <?php echo $order_status; ?>
@@ -340,7 +316,7 @@
                                         </div>
                                         <!-- Modal body -->
                                         <div class="p-4 md:p-5">
-                                            <form class="">
+                                            <form class="" action="tracking_update.php" method="post">
                                                 <div class="grid gap-4 mb-4">
                                                     <div class="col-span-2">
                                                         <label for="name"
@@ -352,12 +328,13 @@
                                                             disabled>
                                                         <input type="hidden" name="order_code"
                                                             value="<?php echo $order_code; ?>">
+                                                        <input type="text" name="email" value="<?php echo $order_ct_email; ?>">
                                                     </div>
                                                     <div class="col-span-2">
                                                         <label for="name"
                                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tracking
                                                             Number</label>
-                                                        <input type="text" name="name" id="name"
+                                                        <input type="text" name="tracking_number" id="name"
                                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                             placeholder="Type product name" required="">
                                                     </div>
@@ -366,32 +343,12 @@
                                                     class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                     Done
                                                 </button>
+
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <script>
-                                // Get the button for the request modal
-                                const Button = document.querySelector('[data-modal-toggle="crud-modal_<?php echo $order_code; ?>"]');
-                                const Modal = document.getElementById('crud-modal_<?php echo $order_code; ?>');
-                                const CloseButton = Modal.querySelector('[data-modal-hide="crud-modal_<?php echo $order_code; ?>"]');
-
-                                const openModal = () => {
-                                    Modal.classList.remove('hidden');
-                                    Modal.setAttribute('aria-hidden', 'false');
-                                    // Additional actions for the request modal open state
-                                };
-
-                                const closeModal = () => {
-                                    Modal.classList.add('hidden');
-                                    Modal.setAttribute('aria-hidden', 'true');
-                                    // Additional actions for the request modal close state
-                                };
-
-                                Button.addEventListener('click', openModal);
-                                CloseButton.addEventListener('click', closeModal);
-                            </script>
                             <?php
                         }
                     }
@@ -400,6 +357,81 @@
             </table>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+        <script>
+            // Function to send email
+            function sendEmail(orderCode) {
+                // Make an AJAX request to send an email
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "email.php", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send("order_code=" + orderCode);
+            }
+        </script>
+        <script>
+            // Add this script after your existing script
+
+            const orderStatusFilter = document.getElementById('orderStatusFilter');
+            const tableRows = document.querySelectorAll('tbody tr');
+
+            orderStatusFilter.addEventListener('change', () => {
+                const selectedStatus = orderStatusFilter.value;
+
+                tableRows.forEach(row => {
+                    const statusCell = row.querySelector('.status-cell'); // Update this selector with the actual class or element that contains order_status
+
+                    if (selectedStatus === 'all' || statusCell.textContent.trim() === selectedStatus) {
+                        row.style.display = ''; // Show the row
+                    } else {
+                        row.style.display = 'none'; // Hide the row
+                    }
+                });
+            });
+        </script>
+        <!-- Add the following script to handle the search functionality -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Get the search input element
+                var searchInput = document.getElementById("orderSearch");
+
+                // Add an event listener for the input event
+                searchInput.addEventListener("input", function () {
+                    // Get the search input value
+                    var searchValue = searchInput.value.toLowerCase();
+
+                    // Get all the table rows
+                    var rows = document.querySelectorAll("tbody tr");
+
+                    // Iterate through the rows and hide those that don't match the search criteria
+                    rows.forEach(function (row) {
+                        var orderId = row.querySelector("td:nth-child(2)").innerText.toLowerCase();
+                        var date = row.querySelector("td:nth-child(3)").innerText.toLowerCase();
+                        var customerEmail = row.querySelector("td:nth-child(4)").innerText.toLowerCase();
+                        var productName = row.querySelector("th:nth-child(5)").innerText.toLowerCase();
+                        var status = row.querySelector("td:nth-child(6)").innerText.toLowerCase();
+
+                        // Check if any of the row content contains the search value
+                        if (
+                            orderId.includes(searchValue) ||
+                            date.includes(searchValue) ||
+                            customerEmail.includes(searchValue) ||
+                            productName.includes(searchValue) ||
+                            status.includes(searchValue)
+                        ) {
+                            // If there's a match, display the row
+                            row.style.display = "table-row";
+                        } else {
+                            // If there's no match, hide the row
+                            row.style.display = "none";
+                        }
+                    });
+                });
+            });
+        </script>
+
+
+
+
+
 </body>
 <!-- wajib letak -->
 </div>

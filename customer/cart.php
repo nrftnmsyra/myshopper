@@ -182,6 +182,31 @@
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            // Add an event listener to all checkboxes with name 'checkout_product[]'
+                            document.querySelectorAll('input[name="checkout_product[]"]').forEach(function (checkbox) {
+                                checkbox.addEventListener('change', function () {
+                                    updateTotalAmount();
+                                });
+                            });
+
+                            function updateTotalAmount() {
+                                // Initialize total amount
+                                var totalAmount = 0;
+
+                                // Iterate through all checked checkboxes
+                                document.querySelectorAll('input[name="checkout_product[]"]:checked').forEach(function (checkbox) {
+                                    // Extract the product price and add it to the total
+                                    var cartPdId = checkbox.value;
+                                    var productPrice = parseFloat(document.getElementById('result_' + cartPdId).innerText);
+                                    totalAmount += productPrice;
+                                });
+
+                                // Update the total element
+                                document.getElementById('total_<?php echo $ps_email; ?>').innerText = totalAmount.toFixed(2);
+                            }
+                        </script>
+
                         <?php
                     }
                 } else {

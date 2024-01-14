@@ -1,10 +1,34 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<style>
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+
+        /* Style the scrollbar only for the card with class 'card' */
+        #review::-webkit-scrollbar {
+            width: 12px;
+            /* width of the entire scrollbar */
+        }
+
+        #review::-webkit-scrollbar-track {
+            background: #1f2937;
+            /* color of the tracking area */
+        }
+
+        #review::-webkit-scrollbar-thumb {
+            background-color: white;
+            /* color of the scroll thumb */
+            border-radius: 20px;
+            /* roundness of the scroll thumb */
+            border: 3px solid #1f2937;
+            /* creates padding around scroll thumb */
+        }
+    }
+</style>
 <?php
 session_start();
 include 'includes/header.php';
 $email = $_SESSION['email'];
 $username = $_SESSION['username'];
-
+$review_count = 0;
 include 'includes/db.php';
 // Select data from the table
 if (isset($_GET['ps_email'])) {
@@ -134,7 +158,9 @@ if (isset($_GET['ps_email'])) {
                         <button
                             class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                             id="settings-tab" data-tabs-target="#settings" type="button" role="tab"
-                            aria-controls="settings" aria-selected="false">Review (5)</button>
+                            aria-controls="settings" aria-selected="false">Review (
+                            <?php echo $review_count ?>)
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -193,193 +219,325 @@ if (isset($_GET['ps_email'])) {
                 </div>
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel"
                     aria-labelledby="settings-tab">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong
-                            class="font-medium text-gray-800 dark:text-white">Settings tab's associated
-                            content</strong>. Clicking another tab will toggle the visibility of this one for the next.
-                        The tab JavaScript swaps classes to control the content visibility and styling.</p>
+                    <div id="review" class="overflow-auto max-h-96 flex flex-col gap-4 p-4">
+                        <?php
+                        $selectReview = "SELECT *, COUNT(*) OVER() AS row_count
+                        FROM review
+                        JOIN customer ON review.rv_ct_email = customer.ct_email
+                        WHERE rv_ps_email = '$ps_email'";
+                        $resultR = $conn->query($selectReview);
+                        // Check if there are rows in the result
+                        if ($resultR->num_rows > 0) {
+                            // Fetch data from each row
+                            while ($rowR = $resultR->fetch_assoc()) {
+                                // Process data or store it in an array for later use
+                                global $r;
+                                $ct_username = $rowR['ct_username'];
+                                $ct_img = $rowR['ct_img'];
+                                $rv_rating = $rowR['rv_rating'];
+                                $date = new DateTime($rowR['rv_date']);
+                                $rv_date = date_format($date, "M d, Y");
+                                $rv_desc = $rowR['rv_description'];
+                                $rv_id = $rowR['rv_id'];
+                                $review_count = $rowR['row_count'];
+                                ?>
+                                <!-- Profile and Rating -->
+                                <div class="flex justify justify-between mb-2.5">
+                                    <div class="flex items-center">
+                                        <img class="w-10 h-10 rounded-full" src="<?php echo $rowR['ct_img'] ?>"
+                                            alt="Jese image">
+                                        <div class="ps-3">
+                                            <div class="text-white text-base font-semibold">
+                                                <?php echo $rowR['ct_username']; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center mt-2.5 mb-2.5">
+                                        <?php
+                                        echo '<div class="flex items-center space-x-1 rtl:space-x-reverse">';
+                                        for ($i = 0; $i < $rv_rating; $i++) {
+                                            echo '<svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>';
+                                        }
+
+                                        if ($rv_rating < 5) {
+                                            for ($i = 0; $i < 5 - $rv_rating; $i++) {
+                                                echo '<svg class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                </svg>';
+                                            }
+                                            echo '</div>';
+                                        } else {
+                                            echo '</div>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+
+                                <div class="text-white text-base font-normal">
+                                    <?php echo $rv_desc; ?>
+                                </div>
+                                <div class="flex">
+                                    <?php
+                                    $selectImage = "SELECT * FROM image WHERE ref_id = '$rv_id'";
+                                    $resultI = $conn->query($selectImage);
+                                    // Check if there are rows in the result
+                                    if ($resultI->num_rows > 0) {
+                                        // Fetch data from each row
+                                        while ($rowI = $resultI->fetch_assoc()) {
+                                            // Process data or store it in an array for later use
+                                            $ref_id = $rowI['ref_id'];
+                                            $img_path = $rowI['img_path'];
+                                            ?>
+                                            <img src="<?php echo $img_path; ?>" class="w-24 h-24 rounded-lg mr-2.5"
+                                                alt="image description">
+                                        <?php }
+                                    } ?>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-white text-xs font-semibold">
+                                        <?php echo $rv_date; ?>
+                                    </span>
+                                </div>
+                            <?php }
+                        } ?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <section class="w-screen py-10">
+    <section class="w-full">
         <h1 class="mb-4 text-center font-sans text-4xl font-bold">Products</h1>
-        <div class="flex overflow-x-auto p-5">
-            <?php
-            $selectProduct = "SELECT * FROM product WHERE pd_ps_email = '$ps_email'";
-            $resultProduct = $conn->query($selectProduct);
+        <div class="productList w-full mx-auto flex overflow-x-hidden flex-col items-center">
+            <div class="flex" id="productCarousel">
+                <?php
+                $selectProduct = "SELECT * FROM product WHERE pd_ps_email = '$ps_email' AND pd_type='shopper'";
+                $resultProduct = $conn->query($selectProduct);
 
-            // Check if there are rows in the result
-            if ($resultProduct->num_rows > 0) {
-                // Fetch data from each row
-                while ($rowP = $resultProduct->fetch_assoc()) {
-                    // Process data or store it in an array for later use
-                    $pd_id = $rowP['pd_id'];
-                    $pd_name = $rowP['pd_name'];
-                    $pd_price = $rowP['pd_price'];
-                    $pd_quantity = $rowP['pd_quantity'];
-                    $pd_desc = $rowP['pd_description'];
-                    $pd_img = $rowP['pd_img'];
-                    $pd_availability = $rowP['pd_availability'];
+                // Check if there are rows in the result
+                if ($resultProduct->num_rows > 0) {
+                    // Fetch data from each row
+                    while ($rowP = $resultProduct->fetch_assoc()) {
+                        // Process data or store it in an array for later use
+                        $pd_id = $rowP['pd_id'];
+                        $pd_name = $rowP['pd_name'];
+                        $pd_price = $rowP['pd_price'];
+                        $pd_quantity = $rowP['pd_quantity'];
+                        $pd_desc = $rowP['pd_description'];
+                        $pd_img = $rowP['pd_img'];
+                        $pd_availability = $rowP['pd_availability'];
 
-                    if ($pd_availability == 1) {
-                        $status = "Available";
-                    } else {
-                        $status = "Out of stock";
-                    }
-                    ?>
-                    <div class="flex-shrink-0 w-1/4 p-2">
-                        <div
-                            class="group h-full overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 shadow-lg">
-                            <form action="cart_add.php" method="post">
-                                <!-- Adjusted the styles for the image to make it square -->
-                                <div class="w-full h-64">
-                                    <img class="w-full h-full object-cover object-center transition duration-500 ease-in-out group-hover:scale-105"
-                                        src="<?php echo $pd_img; ?>" alt="blog" />
-                                </div>
+                        if ($pd_availability == 1) {
+                            $status = "Available";
+                        } else {
+                            $status = "Out of stock";
+                        }
 
-                                <h2
-                                    class="title-font inline-block cursor-pointer px-6 pt-4 pb-1 text-xs font-semibold uppercase tracking-widest text-blue-500 hover:font-bold">
-                                    <?php echo $pd_status; ?>
-                                </h2>
-                                <div class="py-1 px-6">
-                                    <h1
-                                        class="title-font mb-3 inline-block cursor-pointer text-xl capitali font-extrabold tracking-wide text-gray-800">
-                                        <?php echo $pd_name; ?>
-                                    </h1>
-                                    <p class="line-clamp-6 mb-3 cursor-pointer overflow-hidden leading-relaxed text-gray-500">
-                                        <?php echo $pd_desc; ?>
-                                    </p>
-                                </div>
-                                <div class="flex flex-wrap items-center justify-between px-6 pt-1 pb-4">
-                                    <div class="flex flex-wrap text-gray-500">
-                                        <span class="mr-1 text-md">RM
-                                            <?php echo number_format($pd_price, 2); ?>
-                                        </span>
-                                    </div>
-                                    <div class="flex flex-wrap text-gray-500">
-                                        <span class="text-sm">
-                                            <?php echo $pd_quantity; ?> lefts
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="flex justify-center items-center w-full px-6 pb-4">
-                                    <div>
-                                        <label for="quantity" class="mb-2 text-md font-bold text-gray-800">Quantity :</label>
-                                        <div class="py-2 px-3 inline-block bg-white border border-gray-200 rounded-lg"
-                                            data-hs-input-number>
-                                            <div class="flex items-center gap-x-1.5">
-                                                <button type="button"
-                                                    class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
-                                                    data-hs-input-number-decrement onclick="decrementValue()">
-                                                    <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg"
-                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M5 12h14" />
-                                                    </svg>
-                                                </button>
-                                                <input
-                                                    class="p-0 w-6 bg-transparent border-0 text-gray-800 text-center focus:ring-0"
-                                                    type="text" name="pd_qty" value="1" data-hs-input-number-input
-                                                    id="quantity">
-                                                <button type="button"
-                                                    class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
-                                                    data-hs-input-number-increment onclick="incrementValue()">
-                                                    <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg"
-                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M5 12h14" />
-                                                        <path d="M12 5v14" />
-                                                    </svg>
-                                                </button>
+                        if ($resultProduct->num_rows > 4) {
+                            ?>
+                            <div class="flex-shrink-0 w-full md:w-1/2 lg:w-1/4 p-2 max-w-[300px]">
+                                <?php
+                        } else if ($resultProduct->num_rows <= 3) {
+                            ?>
+                                <div class="mx-auto w-full md:w-1/2 lg:w-1/4 p-2 min-w-[300px]">
+                                    <?php
+                        }
+                        ?>
+                                <div
+                                    class="group h-full overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 shadow-lg">
+                                    <form action="cart_add.php" method="post">
+                                        <!-- Adjusted the styles for the image to make it square -->
+                                        <div class="w-full h-64">
+                                            <img class="w-full h-full object-cover object-center transition duration-500 ease-in-out group-hover:scale-105"
+                                                src="<?php echo $pd_img; ?>" alt="blog" />
+                                        </div>
+
+                                        <h2
+                                            class="title-font inline-block cursor-pointer px-6 pt-4 pb-1 text-xs font-semibold uppercase tracking-widest text-blue-500 hover:font-bold">
+                                            <?php echo $pd_status; ?>
+                                        </h2>
+                                        <div class="py-1 px-6">
+                                            <h1
+                                                class="title-font mb-3 inline-block cursor-pointer text-xl capitali font-extrabold tracking-wide text-gray-800">
+                                                <?php echo $pd_name; ?>
+                                            </h1>
+                                            <p
+                                                class="line-clamp-6 mb-3 cursor-pointer overflow-hidden leading-relaxed text-gray-500">
+                                                <?php echo $pd_desc; ?>
+                                            </p>
+                                        </div>
+                                        <div class="flex flex-wrap items-center justify-between px-6 pt-1 pb-4">
+                                            <div class="flex flex-wrap text-gray-500">
+                                                <span class="mr-1 text-md">RM
+                                                    <?php echo number_format($pd_price, 2); ?>
+                                                </span>
+                                            </div>
+                                            <div class="flex flex-wrap text-gray-500">
+                                                <span class="text-sm">
+                                                    <?php echo $pd_quantity; ?> lefts
+                                                </span>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="flex justify-center items-center w-full px-6 pb-4">
+                                            <div>
+                                                <label for="quantity" class="mb-2 text-md font-bold text-gray-800">Quantity
+                                                    :</label>
+                                                <div class="py-2 px-3 inline-block bg-white border border-gray-200 rounded-lg"
+                                                    data-hs-input-number>
+                                                    <div class="flex items-center gap-x-1.5">
+                                                        <button type="button"
+                                                            class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
+                                                            data-hs-input-number-decrement onclick="decrementValue()">
+                                                            <svg class="flex-shrink-0 w-3.5 h-3.5"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="M5 12h14" />
+                                                            </svg>
+                                                        </button>
+                                                        <input
+                                                            class="p-0 w-6 bg-transparent border-0 text-gray-800 text-center focus:ring-0"
+                                                            type="text" name="pd_qty" value="1" data-hs-input-number-input
+                                                            id="quantity">
+                                                        <button type="button"
+                                                            class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+                                                            data-hs-input-number-increment onclick="incrementValue()">
+                                                            <svg class="flex-shrink-0 w-3.5 h-3.5"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="M5 12h14" />
+                                                                <path d="M12 5v14" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="px-6 pb-4">
+                                            <input type="hidden" name="pd_id" value="<?php echo $pd_id; ?>">
+                                            <input type="hidden" name="pd_ps_email" value="<?php echo $ps_email; ?>">
+                                            <input type="hidden" name="pd_ct_email" value="<?php echo $email; ?>">
+                                            <input type="hidden" name="pd_price" value="<?php echo $pd_price; ?>">
+                                            <button type="submit"
+                                                class="flex justify-center items-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                                </svg>
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </form>
+
                                 </div>
-                                <div class="px-6 pb-4">
-                                    <input type="hidden" name="pd_id" value="<?php echo $pd_id; ?>">
-                                    <input type="hidden" name="pd_ps_email" value="<?php echo $ps_email; ?>">
-                                    <input type="hidden" name="pd_ct_email" value="<?php echo $email; ?>">
-                                    <input type="hidden" name="pd_price" value="<?php echo $pd_price; ?>">
-                                    <button type="submit"
-                                        class="flex justify-center items-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                                        </svg>
-                                        Add to Cart
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <?php
+                            </div>
+
+                            <?php
+                    }
+                } else {
+                    ?>
+
+                        <h2 class="text-l text-semibold tracking-tight text-gray-800 border-gray-600 p-3">No products yet
+                        </h2>
+
+                        <br><br><br>
+                        <br><br><br>
+                        <?php
                 }
-            } else {
+                ?>
+                </div>
+            </div>
 
-            }
-            ?>
-        </div>
     </section>
-</div>
-<!-- benda bawah ni kena bubuh dalam semua page content -->
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Database connection and configuration
-    include 'includes/db.php';
+    <div class="flex justify-center items-center mb-10 max-content mx-auto">
+        <button type="button"
+            class="prebutton flex justify-center items-center h-full cursor-pointer group focus:outline-none mr-40"
+            onclick="changeProduct(-1)">
+            <span class="text-gray-400 hover:text-gray-900 group-focus:text-blue">
+                <svg class="rtl:rotate-180 w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 5H1m0 0 4 4M1 5l4-4" />
+                </svg>
+                <span class="sr-only">Previous</span>
+            </span>
+        </button>
+        <button type="button"
+            class="nexbutton flex justify-center items-center h-full cursor-pointer group focus:outline-none"
+            onclick="changeProduct(1)">
+            <span class="text-gray-400 hover:text-gray-900 group-focus:text-blue">
+                <svg class="rtl:rotate-180 w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 5h12m0 0L9 1m4 4L9 9" />
+                </svg>
+                <span class="sr-only">Next</span>
+            </span>
+        </button>
+    </div>
 
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+
+
+
+    <!-- benda bawah ni kena bubuh dalam semua page content -->
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Database connection and configuration
+        include 'includes/db.php';
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $response = array(
+            'status' => 'success',
+            'message' => 'Form submitted successfully!'
+        );
+        // Get form data
+        $ps_email = $_POST['ps_email'];
+        $email = $_POST['email'];
+        $pd_name = $_POST['pd_name'];
+        $desc = $_POST['desc'];
+
+        $uploadDirectory = '../img/';
+
+        foreach ($_FILES["files"]["tmp_name"] as $key => $tmp_name) {
+            $file_name = $_FILES["files"]["name"][$key];
+            $file_type = $_FILES["files"]["type"][$key];
+            $file_size = $_FILES["files"]["size"][$key];
+
+            // Generate a unique identifier and append it to the original file name
+            $new_file_name = $email . '_' . $file_name;
+
+            $file_path = $uploadDirectory . $new_file_name;
+
+            move_uploaded_file($tmp_name, $file_path);
+        }
+
+
+        // Insert data into the "request" table
+        $insert_sql = "INSERT INTO request (rq_pd_name, rq_desc, rq_img, rq_ct_email, rq_ps_email) VALUES (?, ?, ?, ?, ?)";
+        $insert_stmt = $conn->prepare($insert_sql);
+        $insert_stmt->bind_param("sssss", $pd_name, $desc, $file_path, $email, $ps_email);
+
+        if ($insert_stmt->execute()) {
+            // Registration successful
+            echo json_encode($response);
+            echo '<script>alert("Request successfully added.")</script>';
+        } else {
+            // Registration failed
+            echo '<script>alert("Operation failed. Please try again.")</script>';
+        }
+
+        // Close the prepared statements
+        $insert__stmt->close();
     }
-    $response = array(
-        'status' => 'success',
-        'message' => 'Form submitted successfully!'
-    );
-    // Get form data
-    $ps_email = $_POST['ps_email'];
-    $email = $_POST['email'];
-    $pd_name = $_POST['pd_name'];
-    $desc = $_POST['desc'];
-
-    $uploadDirectory = '../img/';
-
-    foreach ($_FILES["files"]["tmp_name"] as $key => $tmp_name) {
-        $file_name = $_FILES["files"]["name"][$key];
-        $file_type = $_FILES["files"]["type"][$key];
-        $file_size = $_FILES["files"]["size"][$key];
-
-        // Generate a unique identifier and append it to the original file name
-        $new_file_name = $email . '_' . $file_name;
-
-        $file_path = $uploadDirectory . $new_file_name;
-
-        move_uploaded_file($tmp_name, $file_path);
-    }
-
-
-    // Insert data into the "request" table
-    $insert_sql = "INSERT INTO request (rq_pd_name, rq_desc, rq_img, rq_ct_email, rq_ps_email) VALUES (?, ?, ?, ?, ?)";
-    $insert_stmt = $conn->prepare($insert_sql);
-    $insert_stmt->bind_param("sssss", $pd_name, $desc, $file_path, $email, $ps_email);
-
-    if ($insert_stmt->execute()) {
-        // Registration successful
-        echo json_encode($response);
-        echo '<script>alert("Request successfully added.")</script>';
-    } else {
-        // Registration failed
-        echo '<script>alert("Operation failed. Please try again.")</script>';
-    }
-
-    // Close the prepared statements
-    $insert__stmt->close();
-}
-// Close the database connection
-$conn->close();
-?>
+    // Close the database connection
+    $conn->close();
+    ?>
 </div>
 <?php
 include 'includes/footer.php';
@@ -401,6 +559,37 @@ include 'includes/footer.php';
         }
     }
 </script>
+<script>
+    document.getElementById('settings-tab').innerText = "Review (<?php echo $review_count; ?>)";
+</script>
+<!-- Add these scripts at the end of your HTML body -->
+<!-- Add these scripts at the end of your HTML body -->
+<!-- Add these scripts at the end of your HTML body -->
+<script>
+    const productList = document.querySelector('.productList');
+    const productWidth = document.querySelector('.flex-shrink-0').offsetWidth;
+
+    function changeProduct(direction) {
+        const scrollAmount = direction * productWidth;
+        productList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+
+        // Check if scrolled to the end, and adjust scroll position accordingly
+        if (direction === 1 && productList.scrollLeft + productList.clientWidth >= productList.scrollWidth) {
+            productList.scrollTo({ left: 0, behavior: 'smooth' });
+        } else if (direction === -1 && productList.scrollLeft === 0) {
+            productList.scrollTo({ left: productList.scrollWidth, behavior: 'smooth' });
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>
