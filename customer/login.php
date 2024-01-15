@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    $stmt1 = $conn->prepare("SELECT ct_username FROM customer WHERE ct_email = ?");
+    $stmt1 = $conn->prepare("SELECT ct_img, ct_username FROM customer WHERE ct_email = ?");
     $stmt1->bind_param("s", $email);
     $stmt1->execute();
     $result1 = $stmt1->get_result();
@@ -22,8 +22,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result1->num_rows == 1) {
         // Fetch the username
         $row1 = $result1->fetch_assoc();
+        $img = $row1['ct_img'];
         $username = $row1['ct_username'];
         $_SESSION['username'] = $username;
+        $_SESSION['ct_img'] = $img;
         // Store email in the session
         // $_SESSION['username'] = $username;
     }

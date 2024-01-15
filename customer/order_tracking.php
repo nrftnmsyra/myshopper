@@ -225,7 +225,7 @@ if ($order_status == 'To Pay') {
                     </div>
                     <div>
                         <!-- <p class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Kindly wait for delivery</p> -->
-                        <button
+                        <button onclick="window.location.href ='order_receive.php?order_code=<?php echo $order_code ?>'"
                             class="mt-2.5 dark:border-white dark:hover:bg-gray-900 dark:bg-transparent dark:text-white py-1 px-4 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-800 border border-gray-800 text-sm text-gray-800">Order
                             Received</button>
                     </div>
@@ -358,5 +358,10 @@ if ($order_status == 'To Pay') {
                     </li>
                 </ol>
     <?php
-}
-?>
+} else if ($order_status == 'Cancelled') {
+    ?>
+                    <ol class="items-center sm:flex">
+                        <h3 class="text-l font-semibold text-gray-900 dark:text-white">This order have been cancelled. Your payment will be refund to your account in 3-7 working days.</h3>
+                    </ol>
+
+<?php } ?>

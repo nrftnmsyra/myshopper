@@ -2,6 +2,11 @@
 error_reporting(0);
 session_start();
 
+// Check if the user is logged in; if not, redirect to the login page
+if (!isset($_SESSION['email'])) {
+    header("Location: logout.php");
+    exit();
+}
 // Get user input
 $email = $_SESSION['email'];
 $password = $_POST["password"];
@@ -103,9 +108,43 @@ if ($resultC->num_rows > 0) {
                                     <?php echo $cart_count; ?>
                                 </div>
                             </button>
-
                         </a>
+                    </div>
+                    <div class="ml-10 flex items-center space-x-6 rtl:space-x-reverse">
+                        <?php
+                        $stmtImg = $conn->prepare("SELECT ct_img, ct_username FROM customer WHERE ct_email = ?");
+                        $stmtImg->bind_param("s", $email);
+                        $stmtImg->execute();
+                        $resultImage = $stmtImg->get_result();
 
+                        if ($resultImage->num_rows == 1) {
+                            // Fetch the username
+                            $rowImage = $resultImage->fetch_assoc();
+                            $img = $rowImage['ct_img'];
+                        }
+                        ?>
+                        <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown"
+                            data-dropdown-placement="bottom-start" class="w-12 h-12 rounded-full cursor-pointer"
+                            src="<?php echo $img; ?>" alt="User dropdown">
+                        <!-- Dropdown menu -->
+                        <div id="userDropdown"
+                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                            <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                                <div class="font-medium truncate">
+                                    <?php echo $email; ?>
+                                </div>
+                            </div>
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
+                                <li>
+                                    <a href="dashboard.php"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+                                </li>
+                                <li>
+                                    <a href="logout.php"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign
+                                        Out</a>
+                                </li>
+                        </div>
                     </div>
                 </div>
             </nav>

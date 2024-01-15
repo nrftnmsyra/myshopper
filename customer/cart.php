@@ -55,10 +55,10 @@
                 
                         ?>
                         <div
-                            class="mb-5 w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-900 px-6 py-4">
+                            class="mb-5 w-full border rounded-lg shadow bg-gray-800 border-gray-900 px-6 py-4">
                             <div>
                                 <h2
-                                    class="text-2xl tracking-tight text-gray-900 dark:text-white font-bold border-b border-gray-600 p-3">
+                                    class="text-2xl tracking-tight text-white font-bold border-b border-gray-600 p-3">
                                     <?php echo $ps_username; ?>
                                 </h2>
                             </div>
@@ -75,7 +75,7 @@
                                 $totalPrice += $cart_pd_price * $cart_qty; // Calculate total price for the current product
                                 ?>
                                 <!-- Display product details for the current personal shopper -->
-                                <div class="flex items-center bg-white rounded-lg dark:bg-gray-800 dark:border-gray-700">
+                                <div class="flex items-center rounded-lg bg-gray-800 border-gray-700">
                                     <!-- Delete button for the current product -->
                                     <div>
                                         <!-- Delete button for the current product -->
@@ -97,21 +97,21 @@
                                         <!-- <a href="order_details.php"> -->
                                         <div class="mb-2">
                                             <h5
-                                                class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white transition duration-300 hover:text-gray-300">
+                                                class="text-2xl font-bold tracking-tight text-white transition duration-300 hover:text-gray-300">
                                                 <?php echo $pd_name; ?>
                                             </h5>
                                         </div>
                                         </a>
                                         <!-- Quantity input for the current product -->
                                         <div>
-                                            <label for="quantity" class="mb-2 font-normal text-gray-700 dark:text-gray-400">Quantity
+                                            <label for="quantity" class="mb-2 font-normal text-gray-400">Quantity
                                                 :</label>
                                             <!-- input number -->
-                                            <div class="py-2 px-3 inline-block bg-white border border-gray-200 rounded-lg dark:bg-slate-900 dark:border-gray-700"
+                                            <div class="py-2 px-3 inline-block border rounded-lg bg-slate-900 border-gray-700"
                                                 data-hs-input-number>
                                                 <div class="flex items-center gap-x-1.5">
                                                     <button type="button"
-                                                        class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                                        class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border shadow-sm disabled:opacity-50 disabled:pointer-events-none bg-slate-900 border-gray-700 text-white hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-600"
                                                         data-hs-input-number-decrement
                                                         onclick="decrementValue('<?php echo $cart_pd_id; ?>')">
                                                         <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg"
@@ -122,13 +122,13 @@
                                                         </svg>
                                                     </button>
                                                     <input
-                                                        class="p-0 w-6 bg-transparent border-0 text-gray-800 text-center focus:ring-0 dark:text-white"
+                                                        class="p-0 w-6 bg-transparent border-0 text-center focus:ring-0 text-white"
                                                         type="text" name="order_qty"
                                                         oninput="updateTotal('<?php echo $cart_pd_price; ?>','<?php echo $cart_pd_id; ?>','<?php echo $ps_email; ?>')"
                                                         value="<?php echo $cart_qty; ?>" data-hs-input-number-input
                                                         id="quantityInput_<?php echo $cart_pd_id; ?>">
                                                     <button type="button"
-                                                        class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                                        class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border shadow-sm disabled:opacity-50 disabled:pointer-events-none bg-slate-900 border-gray-700 text-white hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-600"
                                                         data-hs-input-number-increment
                                                         onclick="incrementValue('<?php echo $cart_pd_id; ?>')">
                                                         <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg"
@@ -146,9 +146,9 @@
 
                                     <div class="flex items-center justify-center">
                                         <h1 id="totalText"
-                                            class="text-xl font-semibold text-gray-900 dark:text-white whitespace-nowrap">Total : RM
+                                            class="text-xl font-semibold text-white whitespace-nowrap">Total : RM
                                         </h1>
-                                        <p class="text-xl font-semibold text-gray-900 dark:text-white whitespace-nowrap"
+                                        <p class="text-xl font-semibold text-white whitespace-nowrap"
                                             id="result_<?php echo $cart_pd_id; ?>">
                                             <?= number_format($cart_pd_price * $cart_qty, 2) ?>
                                         </p>
@@ -156,7 +156,7 @@
                                     <div>
                                         <!-- Checkbox for the current product -->
                                         <input type="checkbox" name="checkout_product[]" value="<?php echo $cart_pd_id; ?>"
-                                            class="w-6 h-6 ml-5 shrink-0 mt-0.5 border-gray-200 rounded-md text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                                            class="w-6 h-6 ml-5 shrink-0 mt-0.5 rounded-md text-blue-600 disabled:opacity-50 disabled:pointer-events-none bg-gray-800 border-gray-700 checked:bg-blue-500 checked:border-blue-500 focus:ring-offset-gray-800"
                                             id="hs-default-checkbox">
                                     </div>
                                 </div>
@@ -167,16 +167,16 @@
                             <!-- Display total price and checkout button in a single div, sticking to the right -->
                             <div class="border-t border-gray-600 flex justify-between p-3">
                                 <h1 id="totalPrice"
-                                    class="text-xl font-semibold text-gray-900 dark:text-white whitespace-nowrap">Total : RM
+                                    class="text-xl font-semibold text-white whitespace-nowrap">Total : RM
                                 </h1>
-                                <p class="text-xl font-semibold text-gray-900 dark:text-white whitespace-nowrap"
+                                <p class="text-xl font-semibold text-white whitespace-nowrap"
                                     id="total_<?php echo $ps_email; ?>">
                                     <?= number_format($totalPrice, 2) ?>
                                 </p>
                                 <div class="flex items-center ml-auto">
                                     <!-- Checkout button on the right side -->
                                     <button type="submit"
-                                        class="p-3 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        class="p-3 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
                                         Checkout
                                     </button>
                                 </div>
@@ -212,9 +212,9 @@
                 } else {
                     ?>
                     <div
-                        class="w-full h-max border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-900 px-6 py-4">
+                        class="w-full h-max rounded-lg shadow bg-gray-800 border-gray-900 px-6 py-4">
                         <div>
-                            <h2 class="text-xl tracking-tight text-gray-900 dark:text-white border-gray-600 p-3">No item in
+                            <h2 class="text-xl tracking-tight text-white border-gray-600 p-3">No item in
                                 the cart.</h2>
                         </div>
                     </div>

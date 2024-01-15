@@ -34,8 +34,11 @@ include 'includes/db.php';
 if (isset($_GET['ps_email'])) {
     // Get the product ID and customer email from the request
     $ps_email = $_GET['ps_email'];
-    $selectQuery = "SELECT * FROM personalshopper WHERE ps_email = '$ps_email'";
+    $selectQuery = "SELECT ps.*, AVG(rv.rv_rating) AS avg_rating
+    FROM personalshopper ps
+    LEFT JOIN review rv ON ps.ps_email = rv.rv_ps_email WHERE ps.ps_email = '$ps_email'";
     $result = $conn->query($selectQuery);
+    $ps_rating = 0;
     ?>
     <!-- <div><?php echo $email; ?></div> -->
     <div class="max-w-screen-xl pt-5 px-4 py-3 mx-auto flex flex-wrap gap-4 justify-start" id="filteredContent">
@@ -50,13 +53,13 @@ if (isset($_GET['ps_email'])) {
             $ps_last_name = $row['ps_last_name'];
             $ps_phnum = $row['ps_phnum'];
             $ps_expertise = $row['ps_expertise'];
-            $ps_rating = $row['ps_rating'];
             $ps_area = $row['ps_area'];
             $ps_order_count = $row['ps_order_count'];
             $ps_fee = $row['ps_fee'];
             $ps_availability = $row['ps_availability'];
             $ps_img = $row['ps_img'];
             $ps_desc = $row['ps_desc'];
+            $ps_rating = $row['avg_rating'];
 
             ?>
             <div class="container mx-auto p-4">
@@ -124,7 +127,7 @@ if (isset($_GET['ps_email'])) {
                             ?>
                             <span
                                 class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
-                                <?php echo $ps_rating; ?>
+                                <?php echo number_format($ps_rating,1); ?>
                             </span>
                         </div>
                         <div class="flex items-center justify-between">

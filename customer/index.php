@@ -19,8 +19,8 @@ if (!empty($searchQuery)) {
 // Select data from the table with the search condition
 $selectQuery = "SELECT ps.*, AVG(rv.rv_rating) AS avg_rating
 FROM personalshopper ps
-LEFT JOIN review rv ON ps.ps_email = rv.rv_ps_email
-GROUP BY ps.ps_email, ps.ps_username, ps.ps_first_name, ps.ps_last_name $searchCondition";
+LEFT JOIN review rv ON ps.ps_email = rv.rv_ps_email $searchCondition
+GROUP BY ps.ps_email, ps.ps_username, ps.ps_first_name, ps.ps_last_name";
 $result = $conn->query($selectQuery);
 $ps_rating = 0;
 ?>

@@ -33,7 +33,6 @@
                         <option value="Cancelled">Cancelled</option>
                     </select>
                 </div>
-
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -48,6 +47,17 @@
                         placeholder="Search for orders">
                 </div>
             </div>
+            <span
+                class="flex-end mb-2.5 bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center p-2.5 py-0.5 rounded me-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500 ml-auto">
+                <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path
+                        d="M15.133 10.632v-1.8a5.407 5.407 0 0 0-4.154-5.262.955.955 0 0 0 .021-.106V1.1a1 1 0 0 0-2 0v2.364a.944.944 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C4.867 13.018 3 13.614 3 14.807 3 15.4 3 16 3.538 16h12.924C17 16 17 15.4 17 14.807c0-1.193-1.867-1.789-1.867-4.175Zm-13.267-.8a1 1 0 0 1-1-1 9.424 9.424 0 0 1 2.517-6.39A1.001 1.001 0 1 1 4.854 3.8a7.431 7.431 0 0 0-1.988 5.037 1 1 0 0 1-1 .995Zm16.268 0a1 1 0 0 1-1-1A7.431 7.431 0 0 0 15.146 3.8a1 1 0 0 1 1.471-1.354 9.425 9.425 0 0 1 2.517 6.391 1 1 0 0 1-1 .995ZM6.823 17a3.453 3.453 0 0 0 6.354 0H6.823Z" />
+                </svg>
+                Click this icon to notify customer
+            </span>
+
+
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -107,8 +117,8 @@
                             $order_ct_email = $row['order_ct_email'];
                             $order_status = $row['order_status'];
                             $order_date = $row['order_date'];
-                            $gantt_chart_task_id = $row['order_code'];
                             $order_tracking = $row['order_tracking_no'];
+                            $order_notify = $row['order_notify'];
 
                             $selectP = "SELECT
         orders.order_code
@@ -128,8 +138,7 @@
                             $stmtP->execute();
                             $resultP = $stmtP->get_result();
                             ?>
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <tr class="bg-white border-b bg-gray-800 border-gray-700">
                                 <td class="w-4 p-4">
                                     <div class="flex items-center">
                                         <input id="checkbox-table-search-1" type="checkbox"
@@ -233,7 +242,23 @@
                                             </td>
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center">
-                                            <?php echo $order_tracking; ?>
+                                            <?php if ($order_notify == 0) { ?>
+                                                        <button id="redirectButton"
+                                                            onclick="window.location.href ='form.php?order_code=<?php echo $order_code ?>'"
+                                                            class="flex items-center">
+                                                            <svg class="mr-2 mt-0.5 w-4 h-4 text-gray-400 hover:text-blue-600"
+                                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                                viewBox="0 0 20 20">
+                                                                <path
+                                                                    d="M15.133 10.632v-1.8a5.407 5.407 0 0 0-4.154-5.262.955.955 0 0 0 .021-.106V1.1a1 1 0 0 0-2 0v2.364a.944.944 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C4.867 13.018 3 13.614 3 14.807 3 15.4 3 16 3.538 16h12.924C17 16 17 15.4 17 14.807c0-1.193-1.867-1.789-1.867-4.175Zm-13.267-.8a1 1 0 0 1-1-1 9.424 9.424 0 0 1 2.517-6.39A1.001 1.001 0 1 1 4.854 3.8a7.431 7.431 0 0 0-1.988 5.037 1 1 0 0 1-1 .995Zm16.268 0a1 1 0 0 1-1-1A7.431 7.431 0 0 0 15.146 3.8a1 1 0 0 1 1.471-1.354 9.425 9.425 0 0 1 2.517 6.391 1 1 0 0 1-1 .995ZM6.823 17a3.453 3.453 0 0 0 6.354 0H6.823Z" />
+                                                            </svg>
+                                                    <?php echo $order_tracking; ?>
+                                                        </button>
+                                            <?php } else if ($order_notify == 1) {
+
+                                                echo $order_tracking;
+
+                                            } ?>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
@@ -339,11 +364,10 @@
                                                             placeholder="Type product name" required="">
                                                     </div>
                                                 </div>
-                                                <button type="submit"
+                                                <button type="submit" id="sendEmail"
                                                     class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                     Done
                                                 </button>
-
                                             </form>
                                         </div>
                                     </div>
@@ -427,7 +451,6 @@
                 });
             });
         </script>
-
 
 
 

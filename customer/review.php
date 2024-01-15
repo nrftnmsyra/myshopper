@@ -208,7 +208,7 @@
                                                 </path>
                                             </svg>
                                             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                                <span class="font-semibold">Click to upload</span> or drag and drop
+                                                <span class="font-semibold">Click to upload</span>
                                             </p>
                                             <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX.
                                                 800x400px)</p>

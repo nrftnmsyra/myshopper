@@ -15,9 +15,9 @@
     <div class="flex items-center justify-center mb-12">
       <img src="assets/logo1.png" class="h-12 me-3" alt="FlowBite Logo" />
       <div class="flex flex-col">
-        <span class="font-bold sm:text-2xl whitespace-nowrap dark:text-white">
+        <span class="font-bold sm:text-2xl whitespace-nowrap text-white">
           <span class="text-4xl">myShopper</span>
-          <span class="text-sm font-semibold dark:text-gray-300">(Customer and Personal Shopper <a
+          <span class="text-sm font-semibold text-gray-300">(Customer and Personal Shopper <a
               href="admin/login.php">Management</a>)</span>
         </span>
       </div>

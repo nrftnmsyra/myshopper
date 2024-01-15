@@ -20,18 +20,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $uploadDirectory = '../img/';
 
-    foreach ($_FILES["files"]["tmp_name"] as $key => $tmp_name) {
-        $file_name = $_FILES["files"]["name"][$key];
-        $file_type = $_FILES["files"]["type"][$key];
-        $file_size = $_FILES["files"]["size"][$key];
+    if (!empty($_FILES['files']['name'][0])) {
+        // Process the uploaded file and update the profile photo path
+        foreach ($_FILES["files"]["tmp_name"] as $key => $tmp_name) {
+            $file_name = $_FILES["files"]["name"][$key];
+            $file_type = $_FILES["files"]["type"][$key];
+            $file_size = $_FILES["files"]["size"][$key];
 
-        // Generate a unique identifier and append it to the original file name
-        $new_file_name = $email . '_' . $file_name;
+            // Generate a unique identifier and append it to the original file name
+            $new_file_name = $email . '_' . $file_name;
 
-        $file_path = $uploadDirectory . $new_file_name;
+            $file_path = $uploadDirectory . $new_file_name;
 
-        move_uploaded_file($tmp_name, $file_path);
+            move_uploaded_file($tmp_name, $file_path);
+        }
+    } else {
+        // If no new file is selected, use the current user profile photo path
+        $file_path = '../assets/default_pfp.png';
     }
+
 
 
     // Check if the email already exists in the 'customer' table
@@ -155,7 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </span>
                         <input type="text" name="phnum" id="floating-phone-number"
                             class="block py-2.5 ps-6 pe-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder=" " />
+                            placeholder=" " />
                         <label for="floating-phone-number"
                             class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Phone
                             number</label>
