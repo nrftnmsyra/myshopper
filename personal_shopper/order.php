@@ -61,13 +61,6 @@
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="p-4">
-                            <div class="flex items-center">
-                                <input id="checkbox-all-search" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                            </div>
-                        </th>
                         <th scope="col" class="px-6 py-3">
                             Order ID
                         </th>
@@ -85,9 +78,6 @@
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Tracking Number
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Action
                         </th>
                     </tr>
                 </thead>
@@ -139,13 +129,6 @@
                             $resultP = $stmtP->get_result();
                             ?>
                             <tr class="bg-white border-b bg-gray-800 border-gray-700">
-                                <td class="w-4 p-4">
-                                    <div class="flex items-center">
-                                        <input id="checkbox-table-search-1" type="checkbox"
-                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                    </div>
-                                </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center">
                                         <?php echo $order_id; ?>
@@ -163,13 +146,13 @@
                                 </td>
                                 <th scope="row"
                                     class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    <a href="#" id="openModal_<?php echo $rq_id; ?>">
+                                    <a href="#" id="openModal_<?php echo $pd_id; ?>">
                                         <img class="w-10 h-10 rounded-full" src="<?php echo $pd_img; ?>" alt="Jese image">
                                     </a>
                                     <div class="ps-3">
-                                        <div class="text-base font-semibold">
+                                        <p class="text-base font-semibold">
                                             <?php echo $pd_name; ?>
-                                        </div>
+                                        </p>
                                         <div class="font-normal text-gray-500 mb-1">Quantity:
                                             <?php echo $order_pd_qty; ?>
                                         </div>
@@ -200,9 +183,6 @@
                                             Not assigned yet
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Action</a>
-                                    </td>
                                     <?php
                                 } else if ($order_status == 'To Ship') {
                                     ?>
@@ -228,9 +208,6 @@
                                                 </button>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Action</a>
-                                        </td>
                                     <?php
                                 } else if ($order_status == 'To Receive') {
                                     ?>
@@ -246,7 +223,7 @@
                                                         <button id="redirectButton"
                                                             onclick="window.location.href ='form.php?order_code=<?php echo $order_code ?>'"
                                                             class="flex items-center">
-                                                            <svg class="mr-2 mt-0.5 w-4 h-4 text-gray-400 hover:text-blue-600"
+                                                            <svg class="mr-3 mt-0.5 w-4 h-4 text-gray-400 hover:text-blue-600"
                                                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                                                 viewBox="0 0 20 20">
                                                                 <path
@@ -260,9 +237,6 @@
 
                                             } ?>
                                                 </div>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Action</a>
                                             </td>
                                     <?php
                                 } else if ($order_status == 'Completed') {
@@ -278,9 +252,6 @@
                                             <?php echo $order_tracking; ?>
                                                     </div>
                                                 </td>
-                                                <td class="px-6 py-4">
-                                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Action</a>
-                                                </td>
                                     <?php
                                 } else if ($order_status == 'Cancelled') {
                                     ?>
@@ -294,9 +265,6 @@
                                                         <div class="flex items-center">
                                                             No Tracking Number
                                                         </div>
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Action</a>
                                                     </td>
                                     <?php
                                 }
@@ -413,44 +381,36 @@
         </script>
         <!-- Add the following script to handle the search functionality -->
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Get the search input element
-                var searchInput = document.getElementById("orderSearch");
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchInput = document.getElementById('orderSearch');
+                const tableRows = document.querySelectorAll('tbody tr');
 
-                // Add an event listener for the input event
-                searchInput.addEventListener("input", function () {
-                    // Get the search input value
-                    var searchValue = searchInput.value.toLowerCase();
+                searchInput.addEventListener('input', function () {
+                    const searchTerm = searchInput.value.toLowerCase();
 
-                    // Get all the table rows
-                    var rows = document.querySelectorAll("tbody tr");
+                    tableRows.forEach(function (row) {
+                        const orderId = row.querySelector('td:first-child').textContent.toLowerCase();
+                        const date = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                        const customerEmail = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                        const productName = row.querySelector('th div p').textContent.toLowerCase();
+                        const status = row.querySelector('.status-cell').textContent.toLowerCase();
+                        const trackingNumber = row.querySelector('td:last-child').textContent.toLowerCase();
 
-                    // Iterate through the rows and hide those that don't match the search criteria
-                    rows.forEach(function (row) {
-                        var orderId = row.querySelector("td:nth-child(2)").innerText.toLowerCase();
-                        var date = row.querySelector("td:nth-child(3)").innerText.toLowerCase();
-                        var customerEmail = row.querySelector("td:nth-child(4)").innerText.toLowerCase();
-                        var productName = row.querySelector("th:nth-child(5)").innerText.toLowerCase();
-                        var status = row.querySelector("td:nth-child(6)").innerText.toLowerCase();
+                        const isMatched = orderId.includes(searchTerm) || date.includes(searchTerm) ||
+                            customerEmail.includes(searchTerm) || productName.includes(searchTerm) ||
+                            status.includes(searchTerm) || trackingNumber.includes(searchTerm);
 
-                        // Check if any of the row content contains the search value
-                        if (
-                            orderId.includes(searchValue) ||
-                            date.includes(searchValue) ||
-                            customerEmail.includes(searchValue) ||
-                            productName.includes(searchValue) ||
-                            status.includes(searchValue)
-                        ) {
-                            // If there's a match, display the row
-                            row.style.display = "table-row";
+                        if (isMatched) {
+                            row.style.display = '';
                         } else {
-                            // If there's no match, hide the row
-                            row.style.display = "none";
+                            row.style.display = 'none';
                         }
                     });
                 });
             });
         </script>
+
+
 
 
 

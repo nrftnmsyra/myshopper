@@ -49,14 +49,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             // Handle other roles or scenarios
             // You can redirect to a default page or display an error message
-            $_SESSION['message'] = "Invalid user role.";
-            header("Location: login.php");
+            echo '<script>alert("Invalid User"); window.location = "../index.php";</script>';
             exit();
         }
     } else {
         // Authentication failed; display an error message
-        $_SESSION['message'] = "Invalid username or password.";
-        header("Location: login.php");
+        echo '<script>alert("Invalid username or password"); window.location = "login.php";</script>';
         exit();
     }
 

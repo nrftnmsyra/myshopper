@@ -226,7 +226,7 @@ if ($order_status == 'To Pay') {
                     <div>
                         <!-- <p class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Kindly wait for delivery</p> -->
                         <button onclick="window.location.href ='order_receive.php?order_code=<?php echo $order_code ?>'"
-                            class="mt-2.5 dark:border-white dark:hover:bg-gray-900 dark:bg-transparent dark:text-white py-1 px-4 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-800 border border-gray-800 text-sm text-gray-800">Order
+                            class="mt-1 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-4 py-1 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Order
                             Received</button>
                     </div>
                 </li>

@@ -84,7 +84,7 @@ if (isset($_GET['ps_email'])) {
                                         d="m1 9 4-4-4-4" />
                                 </svg>
                                 <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Personal Shopper
-                                    Detail</span>
+                                    Details</span>
                             </div>
                         </li>
                     </ol>
@@ -127,7 +127,7 @@ if (isset($_GET['ps_email'])) {
                             ?>
                             <span
                                 class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
-                                <?php echo number_format($ps_rating,1); ?>
+                                <?php echo number_format($ps_rating, 1); ?>
                             </span>
                         </div>
                         <div class="flex items-center justify-between">
@@ -311,8 +311,38 @@ if (isset($_GET['ps_email'])) {
         </div>
     </div>
     <section class="w-full">
-        <h1 class="mb-4 text-center font-sans text-4xl font-bold">Products</h1>
-        <div class="productList w-full mx-auto flex overflow-x-hidden flex-col items-center">
+        <div class="flex justify-center items-center mb-10 max-content mx-auto">
+            <button type="button"
+                class="prebutton flex justify-center items-center h-full cursor-pointer group focus:outline-none"
+                onclick="changeProduct(-1)">
+                <span class="text-gray-400 hover:text-gray-900 group-focus:text-blue">
+                    <svg class="rtl:rotate-180 w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 5H1m0 0 4 4M1 5l4-4" />
+                    </svg>
+                    <span class="sr-only">Previous</span>
+                </span>
+            </button>
+
+            <h1 class="mx-auto font-sans item-center text-4xl font-bold">Products</h1>
+
+            <button type="button"
+                class="nexbutton flex justify-center items-center h-full cursor-pointer group focus:outline-none"
+                onclick="changeProduct(1)">
+                <span class="text-gray-400 hover:text-gray-900 group-focus:text-blue">
+                    <svg class="rtl:rotate-180 w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 5h12m0 0L9 1m4 4L9 9" />
+                    </svg>
+                    <span class="sr-only">Next</span>
+                </span>
+            </button>
+        </div>
+
+
+        <div class="productList w-full mx-auto flex overflow-x-hidden flex-col items-center mb-24">
             <div class="flex" id="productCarousel">
                 <?php
                 $selectProduct = "SELECT * FROM product WHERE pd_ps_email = '$ps_email' AND pd_type='shopper'";
@@ -343,7 +373,7 @@ if (isset($_GET['ps_email'])) {
                                 <?php
                         } else if ($resultProduct->num_rows <= 3) {
                             ?>
-                                <div class="mx-auto w-full md:w-1/2 lg:w-1/4 p-2 min-w-[300px]">
+                                    <div class="mx-auto w-full md:w-1/2 lg:w-1/4 p-2 min-w-[300px]">
                                     <?php
                         }
                         ?>
@@ -391,7 +421,8 @@ if (isset($_GET['ps_email'])) {
                                                     <div class="flex items-center gap-x-1.5">
                                                         <button type="button"
                                                             class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
-                                                            data-hs-input-number-decrement onclick="decrementValue()">
+                                                            data-hs-input-number-decrement
+                                                            onclick="decrementValue_<?php echo $pd_id; ?>()">
                                                             <svg class="flex-shrink-0 w-3.5 h-3.5"
                                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -402,10 +433,12 @@ if (isset($_GET['ps_email'])) {
                                                         <input
                                                             class="p-0 w-6 bg-transparent border-0 text-gray-800 text-center focus:ring-0"
                                                             type="text" name="pd_qty" value="1" data-hs-input-number-input
-                                                            id="quantity">
+                                                            max="<?php echo $pd_quantity; ?>"
+                                                            id="quantity_<?php echo $pd_id; ?>" onkeydown="return false">
                                                         <button type="button"
                                                             class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
-                                                            data-hs-input-number-increment onclick="incrementValue()">
+                                                            data-hs-input-number-increment
+                                                            onclick="incrementValue_<?php echo $pd_id; ?>()">
                                                             <svg class="flex-shrink-0 w-3.5 h-3.5"
                                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -437,17 +470,36 @@ if (isset($_GET['ps_email'])) {
 
                                 </div>
                             </div>
+                            <script>
+                                function incrementValue_<?php echo $pd_id; ?>() {
+                                    var inputElement = document.getElementById('quantity_<?php echo $pd_id; ?>');
+                                    var currentValue = parseInt(inputElement.value, 10);
+                                    var maxValue = parseInt(inputElement.max, 10);
 
+                                    // Check if the current value is less than the maximum allowed value
+                                    if (currentValue < maxValue) {
+                                        inputElement.value = currentValue + 1;
+                                    }
+                                }
+
+                                function decrementValue_<?php echo $pd_id; ?>() {
+                                    var inputElement = document.getElementById('quantity_<?php echo $pd_id; ?>');
+                                    var currentValue = parseInt(inputElement.value, 10);
+
+                                    // Ensure the value doesn't go below the minimum allowed value (1)
+                                    if (currentValue > 1) {
+                                        inputElement.value = currentValue - 1;
+                                    }
+                                }
+                            </script>
                             <?php
                     }
                 } else {
                     ?>
 
-                        <h2 class="text-l text-semibold tracking-tight text-gray-800 border-gray-600 p-3">No products yet
-                        </h2>
-
-                        <br><br><br>
-                        <br><br><br>
+                        <div class="w-full h-max rounded-lg shadow bg-white border-2 border-gray-200 px-56 py-10">
+                                <p class="pt-1 text-normal tracking-tight text-center text-gray-900 border-gray-600">No product yet</p>
+                        </div>
                         <?php
                 }
                 ?>
@@ -455,34 +507,6 @@ if (isset($_GET['ps_email'])) {
             </div>
 
     </section>
-    <div class="flex justify-center items-center mb-10 max-content mx-auto">
-        <button type="button"
-            class="prebutton flex justify-center items-center h-full cursor-pointer group focus:outline-none mr-40"
-            onclick="changeProduct(-1)">
-            <span class="text-gray-400 hover:text-gray-900 group-focus:text-blue">
-                <svg class="rtl:rotate-180 w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 5H1m0 0 4 4M1 5l4-4" />
-                </svg>
-                <span class="sr-only">Previous</span>
-            </span>
-        </button>
-        <button type="button"
-            class="nexbutton flex justify-center items-center h-full cursor-pointer group focus:outline-none"
-            onclick="changeProduct(1)">
-            <span class="text-gray-400 hover:text-gray-900 group-focus:text-blue">
-                <svg class="rtl:rotate-180 w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M1 5h12m0 0L9 1m4 4L9 9" />
-                </svg>
-                <span class="sr-only">Next</span>
-            </span>
-        </button>
-    </div>
-
-
 
 
     <!-- benda bawah ni kena bubuh dalam semua page content -->
@@ -495,10 +519,7 @@ if (isset($_GET['ps_email'])) {
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        $response = array(
-            'status' => 'success',
-            'message' => 'Form submitted successfully!'
-        );
+
         // Get form data
         $ps_email = $_POST['ps_email'];
         $email = $_POST['email'];
@@ -528,7 +549,6 @@ if (isset($_GET['ps_email'])) {
 
         if ($insert_stmt->execute()) {
             // Registration successful
-            echo json_encode($response);
             echo '<script>alert("Request successfully added.")</script>';
         } else {
             // Registration failed
@@ -536,32 +556,15 @@ if (isset($_GET['ps_email'])) {
         }
 
         // Close the prepared statements
-        $insert__stmt->close();
+        // Close the prepared statement
+        $insert_stmt->close();
+
     }
     // Close the database connection
     $conn->close();
     ?>
 </div>
-<?php
-include 'includes/footer.php';
-?>
-<script>
-    function incrementValue() {
-        var inputElement = document.getElementById('quantity');
-        var currentValue = parseInt(inputElement.value, 10);
-        inputElement.value = currentValue + 1;
-    }
 
-    function decrementValue() {
-        var inputElement = document.getElementById('quantity');
-        var currentValue = parseInt(inputElement.value, 10);
-
-        // Ensure the value doesn't go below 1
-        if (currentValue > 1) {
-            inputElement.value = currentValue - 1;
-        }
-    }
-</script>
 <script>
     document.getElementById('settings-tab').innerText = "Review (<?php echo $review_count; ?>)";
 </script>
@@ -596,3 +599,6 @@ include 'includes/footer.php';
 </body>
 
 </html>
+<?php
+include 'includes/footer.php';
+?>

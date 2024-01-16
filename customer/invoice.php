@@ -129,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="contentToPrint" class="">
                 <script src="https://cdn.tailwindcss.com"></script>
                 <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-                <div class="bg-white rounded-lg shadow-lg px-8 py-10 max-w-xl mx-auto">
+                <div class="mb-10 bg-white rounded-lg shadow-lg px-8 py-10 max-w-xl mx-auto">
                     <div class="flex items-center justify-between mb-8">
                         <div class="flex items-center">
                             <img class="h-8 w-8 mr-2" src="../assets/logo1.png" alt="Logo" />
@@ -248,7 +248,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="text-gray-700 mb-2">The order will be proceed after the invoice is generated.</div>
                     </div>
                 </div>
+                <script>
+                    function downloadPDF(divId) {
+                        var element = document.getElementById(divId);
 
+                        html2pdf(element, {
+                            margin: 10,
+                            filename: 'INV_<?php echo $rowQ['iv_id']; ?>.pdf',
+                            image: { type: 'jpeg', quality: 0.98 },
+                            html2canvas: { scale: 2 },
+                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                        });
+                    }
+                </script>
                 <?php
     }
 }
@@ -263,16 +275,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </body>
 
     </html>
-    <script>
-        function downloadPDF(divId) {
-            var element = document.getElementById(divId);
-
-            html2pdf(element, {
-                margin: 10,
-                filename: 'document.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            });
-        }
-    </script>

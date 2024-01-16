@@ -112,7 +112,7 @@ if ($resultC->num_rows > 0) {
                     </div>
                     <div class="ml-10 flex items-center space-x-6 rtl:space-x-reverse">
                         <?php
-                        $stmtImg = $conn->prepare("SELECT ct_img, ct_username FROM customer WHERE ct_email = ?");
+                        $stmtImg = $conn->prepare("SELECT * FROM customer WHERE ct_email = ?");
                         $stmtImg->bind_param("s", $email);
                         $stmtImg->execute();
                         $resultImage = $stmtImg->get_result();
@@ -121,6 +121,9 @@ if ($resultC->num_rows > 0) {
                             // Fetch the username
                             $rowImage = $resultImage->fetch_assoc();
                             $img = $rowImage['ct_img'];
+                            $ct_first_name = $rowImage['ct_first_name'];
+                            $ct_last_name = $rowImage['ct_last_name'];
+
                         }
                         ?>
                         <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown"
@@ -130,7 +133,11 @@ if ($resultC->num_rows > 0) {
                         <div id="userDropdown"
                             class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                             <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                                <div>
+                                    <?php echo $ct_first_name . ' ' . $ct_last_name; ?>
+                                </div>
                                 <div class="font-medium truncate">
+
                                     <?php echo $email; ?>
                                 </div>
                             </div>

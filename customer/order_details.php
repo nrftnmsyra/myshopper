@@ -65,14 +65,13 @@
                                         d="m1 9 4-4-4-4" />
                                 </svg>
                                 <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Order
-                                    Detail</span>
+                                    Details</span>
                             </div>
                         </li>
                     </ol>
                 </nav>
                 <div class="mt-1 mb-2.5 flex justify-start item-start space-y-2 flex-col">
-                    <h1 class="text-xl dark:text-black lg:text-4xl font-bold leading-7 lg:leading-9 text-gray-800">Order #
-                        <?php echo $rowQ['iv_id']; ?>
+                    <h1 class="text-xl dark:text-black lg:text-4xl font-bold leading-7 lg:leading-9 text-gray-800">Order #<?php echo $rowQ['iv_id']; ?>
                     </h1>
                     <p class="text-base dark:text-gray-800 font-medium leading-6 text-gray-600">
                         <?php echo date_format($date, "jS F Y") ?> at
@@ -123,7 +122,7 @@
                                     ?>
                                     <div
                                         class="mt-4 md:mt-6 flex flex-col md:flex-row justify-between items-start md:items-center md:space-x-6 xl:space-x-8 w-full">
-                                        <div class="flex items-center"> <!-- Updated this div -->
+                                        <div class="flex items-center w-4/6"> <!-- Updated this div -->
                                             <img class="m-2 h-28 w-28 rounded-md border object-cover object-center"
                                                 src="<?php echo $row2['pd_img']; ?>" alt="" />
                                             <div class="flex flex-col px-4 py-4">
@@ -236,9 +235,9 @@
                 </div>
                 <?php
                 if (($order_status == 'To Ship') || ($order_status == 'To Pay')) { ?>
-                    <div class="mt-5 flex w-full justify-center items-center md:justify-start md:items-start">
+                    <div class="mb-10 mt-5 flex w-full justify-center items-center md:justify-start md:items-start">
                         <button onclick="window.location.href ='order_cancel.php?order_code=<?php echo $order_code ?>'"
-                            class="mt-6 md:mt-0 dark:border-black dark:hover:bg-gray-900 dark:bg-transparent dark:text-black py-5 hover:bg-gray-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base font-medium leading-4 text-gray-800">Cancel
+                            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Cancel
                             Order</button>
                     </div>
                 <?php

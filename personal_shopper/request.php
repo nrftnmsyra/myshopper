@@ -276,7 +276,8 @@
                                                     </button>
                                                 </div>
                                                 <!-- Modal body -->
-                                                <form class="p-8 md:p-5" action="request_product.php" method="POST">
+                                                <div class="p-4 md:p-5">
+                                                <form action="request_product.php" method="POST">
                                                     <div class="grid gap-4 mb-4 grid-cols-2">
                                                         <div class="col-span-2">
                                                             <label for="name"
@@ -322,6 +323,7 @@
                                                         Add new product
                                                     </button>
                                                 </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

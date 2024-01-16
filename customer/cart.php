@@ -54,11 +54,9 @@
                         $totalPrice = 0; // Initialize total price for the current personal shopper
                 
                         ?>
-                        <div
-                            class="mb-5 w-full border rounded-lg shadow bg-gray-800 border-gray-900 px-6 py-4">
+                        <div class="mb-5 w-full border rounded-lg shadow bg-gray-800 border-gray-900 px-6 py-4">
                             <div>
-                                <h2
-                                    class="text-2xl tracking-tight text-white font-bold border-b border-gray-600 p-3">
+                                <h2 class="text-2xl tracking-tight text-white font-bold border-b border-gray-600 p-3">
                                     <?php echo $ps_username; ?>
                                 </h2>
                             </div>
@@ -145,8 +143,7 @@
                                     </div>
 
                                     <div class="flex items-center justify-center">
-                                        <h1 id="totalText"
-                                            class="text-xl font-semibold text-white whitespace-nowrap">Total : RM
+                                        <h1 id="totalText" class="text-xl font-semibold text-white whitespace-nowrap">Total : RM
                                         </h1>
                                         <p class="text-xl font-semibold text-white whitespace-nowrap"
                                             id="result_<?php echo $cart_pd_id; ?>">
@@ -166,12 +163,11 @@
                             <!-- Display total price and checkout button in a single div -->
                             <!-- Display total price and checkout button in a single div, sticking to the right -->
                             <div class="border-t border-gray-600 flex justify-between p-3">
-                                <h1 id="totalPrice"
-                                    class="text-xl font-semibold text-white whitespace-nowrap">Total : RM
+                                <h1 id="totalPrice" class="text-xl font-semibold text-white whitespace-nowrap">Total : RM
                                 </h1>
                                 <p class="text-xl font-semibold text-white whitespace-nowrap"
                                     id="total_<?php echo $ps_email; ?>">
-                                    <?= number_format($totalPrice, 2) ?>
+                                    <?= number_format(0.00, 2) ?>
                                 </p>
                                 <div class="flex items-center ml-auto">
                                     <!-- Checkout button on the right side -->
@@ -211,15 +207,18 @@
                     }
                 } else {
                     ?>
-                    <div
-                        class="w-full h-max rounded-lg shadow bg-gray-800 border-gray-900 px-6 py-4">
-                        <div>
-                            <h2 class="text-xl tracking-tight text-white border-gray-600 p-3">No item in
-                                the cart.</h2>
-                        </div>
+                    <!-- card if kosong -->
+                    <div class="w-full h-max rounded-lg shadow bg-gray-800 border-gray-900 px-6 py-10">
+                        <h2 class="text-2xl text-center text-bold text-white mb-2.5">Oops, Your Cart is Empty <p
+                                class="pt-1 text-xs tracking-tight text-center text-white border-gray-600">Browse our
+                                helpful shoppers now!</p>
+                        </h2>
+                        <button
+                            class="block mx-auto item-center text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+                            type="button" onClick="parent.location='index.php'">
+                            Go Shopping Now
+                        </button>
                     </div>
-                    <br><br><br>
-                    <br><br><br>
                     <?php
                 }
                 ?>
@@ -265,6 +264,7 @@
     function updateQuantity(operation, cartPdId, psEmail) {
         var input = document.getElementById('quantityInput_' + cartPdId);
         var newQuantity = parseInt(input.value);
+
 
         // Update the input field with the new quantity
         input.value = newQuantity;

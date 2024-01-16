@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
 </head>
 
 <?php include 'includes/navigation.php'; ?>
@@ -22,35 +22,20 @@
             <h1 class="text-4xl font-bold mb-4 text-white">Invoice</h1>
             <div
                 class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
-
-                <div date-rangepicker class="flex items-center">
+                <div class="flex items-center">
                     <div class="relative">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                            </svg>
-                        </div>
-                        <input name="start" type="text" id="start-date"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        <input id="start-date" type="date"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5"
                             placeholder="Select date start">
                     </div>
-                    <span class="mx-4 text-gray-500">to</span>
+                    <span class="mx-4 text-white">to</span>
                     <div class="relative">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                            </svg>
-                        </div>
-                        <input name="end" type="text" id="end-date"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        <input name="end" id="end-date" type="date"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-32 p-2.5"
                             placeholder="Select date end">
+
                     </div>
                 </div>
-
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -68,13 +53,6 @@
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="p-4">
-                            <div class="flex items-center">
-                                <input id="checkbox-all-search" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                            </div>
-                        </th>
                         <th scope="col" class="px-6 py-3">
                             Invoice ID
                         </th>
@@ -89,7 +67,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="invoice-table-body">
                     <?php
                     session_start();
                     $email = $_SESSION['email'];
@@ -111,13 +89,6 @@
                             $order_code = $row['iv_order_code'];
                             ?>
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <td class="w-4 p-4">
-                                    <div class="flex items-center">
-                                        <input id="checkbox-table-search-1" type="checkbox"
-                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                    </div>
-                                </td>
                                 <td class="px-6 py-4">
                                     <?php echo $iv_id; ?>
                                 </td>
@@ -135,38 +106,59 @@
                 </div>
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
-                        var startDatePicker = new Picker(document.getElementById('start-date'), {
-                            format: 'YYYY-MM-DD'
+                        var startDateInput = document.getElementById('start-date');
+                        var endDateInput = document.getElementById('end-date');
+
+                        startDateInput.addEventListener('change', function () {
+                            console.log('Start Date Changed:', startDateInput.value);
+                            updateTable();
                         });
 
-                        var endDatePicker = new Picker(document.getElementById('end-date'), {
-                            format: 'YYYY-MM-DD'
+                        endDateInput.addEventListener('change', function () {
+                            console.log('End Date Changed:', endDateInput.value);
+                            updateTable();
                         });
-
-                        // Add event listeners for date change
-                        startDatePicker.on('change', updateTable);
-                        endDatePicker.on('change', updateTable);
                     });
 
                     function updateTable() {
-                        // Perform the table filtering based on the selected date range
-                        // Get the start and end dates from the date pickers
                         var startDate = document.getElementById("start-date").value;
                         var endDate = document.getElementById("end-date").value;
 
-                        // Filter the table rows based on the date range
-                        var tableRows = document.querySelectorAll("tbody tr");
+                        console.log('Start Date:', startDate);
+                        console.log('End Date:', endDate);
 
-                        tableRows.forEach(function (row) {
-                            var rowDate = row.querySelector("td:nth-child(3)").innerText; // Assuming the date is in the third column
+                        // Check if both dates are present
+                        if (startDate !== "" && endDate !== "") {
+                            // Convert the input dates to a format compatible with your table (YYYY/MM/DD)
+                            var formattedStartDate = formatDate(startDate);
+                            var formattedEndDate = formatDate(endDate);
 
-                            if (rowDate >= startDate && rowDate <= endDate) {
-                                row.style.display = "";
-                            } else {
-                                row.style.display = "none";
-                            }
-                        });
+                            // Filter the table rows based on the date range
+                            var tableRows = document.querySelectorAll("table tbody tr");
+
+                            tableRows.forEach(function (row) {
+                                var rowDate = row.querySelector("td:nth-child(2)").innerText; // Assuming the date is in the second column
+                                var formattedRowDate = formatDate(rowDate);
+
+                                if (formattedRowDate >= formattedStartDate && formattedRowDate <= formattedEndDate) {
+                                    row.style.display = "";
+                                } else {
+                                    row.style.display = "none";
+                                }
+                            });
+                        }
                     }
+
+                    // Function to format the date to YYYY/MM/DD
+                    function formatDate(inputDate) {
+                        var date = new Date(inputDate);
+                        var year = date.getFullYear();
+                        var month = ('0' + (date.getMonth() + 1)).slice(-2);
+                        var day = ('0' + date.getDate()).slice(-2);
+                        return year + '/' + month + '/' + day;
+                    }
+
+
                 </script>
                 <?php
                         }
@@ -175,9 +167,30 @@
         </tbody>
         </table>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+
 </body>
 <!-- wajib letak -->
 </div>
 
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchInput = document.getElementById('table-search-users');
+
+        searchInput.addEventListener('input', function () {
+            var searchTerm = searchInput.value.toLowerCase();
+            var tableRows = document.querySelectorAll("#invoice-table-body tr");
+
+            tableRows.forEach(function (row) {
+                // Modify the condition based on the specific columns you want to search
+                var rowData = row.innerText.toLowerCase();
+
+                if (rowData.includes(searchTerm)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    });
+</script>

@@ -6,7 +6,7 @@
                 <ul class=" font-medium">
                     <li>
                         <a href="dashboard.php" class="flex border-b items-center p-3  hover:bg-gray-200">
-                            <span class="ml-3">Dashboard</span>
+                            <span class="ml-3">Profile</span>
                         </a>
                     </li>
                     <li>
@@ -17,11 +17,6 @@
                     <li>
                         <a href="order.php" class="flex border-b items-center p-3  hover:bg-gray-200 group">
                             <span class="ml-3">Orders</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="logout.php" class="flex border-b items-center p-3  hover:bg-gray-200 group">
-                            <span class="ml-3">Logout</span>
                         </a>
                     </li>
                 </ul>

@@ -25,7 +25,7 @@ $result = $conn->query($selectQuery);
 $ps_rating = 0;
 ?>
 
-<div class="mt-32 h-auto mb-5 items-center" id="filteredContent">
+<div class="mt-36 h-auto mb-24 items-center" id="filteredContent">
     <?php
     // Check if there are rows in the result
     if ($result->num_rows > 0) {

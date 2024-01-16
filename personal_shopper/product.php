@@ -8,7 +8,6 @@
     <title>myShopper</title>
     <link rel="icon" type="image/x-icon" href="../assets/logo1.ico">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
 </head>
 
@@ -22,42 +21,11 @@
             <div
                 class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
                 <div>
-                    <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction"
+                    <button id="dropdownActionButton" data-modal-target="new-modal" data-modal-toggle="new-modal"
                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                         type="button">
-                        <span class="sr-only">Action button</span>
-                        Action
-                        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
+                        + New Product
                     </button>
-                    <!-- Dropdown menu -->
-                    <div id="dropdownAction"
-                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="dropdownActionButton">
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reward</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Promote</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Activate
-                                    account</a>
-                            </li>
-                        </ul>
-                        <div class="py-1">
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete
-                                User</a>
-                        </div>
-                    </div>
                 </div>
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
@@ -73,15 +41,11 @@
                         placeholder="Search for products">
                 </div>
             </div>
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table id="product-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="p-4">
-                            <div class="flex items-center">
-                                <input id="checkbox-all-search" type="checkbox"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                            </div>
+                            <!-- delete -->
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Product Details
@@ -120,17 +84,27 @@
                             $pd_name = $row['pd_name'];
                             $pd_description = $row['pd_description'];
                             $pd_img = $row['pd_img'];
-                            $pd_availability = $row['pd_availability'];
+                            $status = $row['pd_availability'];
                             $pd_price = $row['pd_price'];
                             $pd_quantity = $row['pd_quantity'];
+
+                            if ($status == 1) {
+                                $pd_availability = "Available";
+                            } else {
+                                $pd_availability = "Out of Stock";
+                            }
                             ?>
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <td class="w-4 p-4">
-                                    <div class="flex items-center">
-                                        <input id="checkbox-table-search-1" type="checkbox"
-                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                    </div>
+                                    <!-- delete button -->
+                                    <button type="button" class="ml-2 text-gray-500 hover:text-red-500 focus:outline-none"
+                                        onclick="deletePd('<?php echo $pd_id; ?>','<?php echo $email; ?>')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                        </svg>
+                                    </button>
                                 </td>
                                 <th scope="row"
                                     class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
@@ -150,43 +124,18 @@
                                     <?php echo number_format($pd_price, 2); ?>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <input type="number" id="number-input" value="<?php echo $pd_quantity; ?>"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <?php echo $pd_quantity; ?>
                                 </td>
-                                <?php
-                                if ($pd_availability == 1) {
-                                    ?>
-                                    <td class="px-6 py-4">
-                                        <select id="underline_select"
-                                            class="block py-2.5 px-0 max-w-6/12 text-sm text-gray-500 bg-transparent border-0 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                                            <option value="1" selected>
-                                                <div class="h-2.5 w-2.5 rounded-full bg-yellow-500 me-2"></div> Available
-                                            </option>
-                                            <option value="0">
-                                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Out of Stock
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <?php
-                                } else if ($pd_availability == 0) {
-                                    ?>
-                                        <td class="px-6 py-4">
-                                            <select id="underline_select"
-                                                class="block py-2.5 px-0 max-w-6/12 text-sm text-gray-500 bg-transparent border-0 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                                                <option value="0" selected>
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"> Out of Stock
-                                                </option>
-                                                <option value="1">
-                                                    <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> Available
-                                                </option>
-                                            </select>
-                                        </td>
-
-                                    <?php
-                                }
-                                ?>
                                 <td class="px-6 py-4">
-                                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Action</a>
+                                    <?php echo $pd_availability; ?>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <button data-modal-target="crud-modal_<?php echo $pd_id; ?>"
+                                        data-modal-toggle="crud-modal_<?php echo $pd_id; ?>"
+                                        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                        type="button">
+                                        Edit
+                                    </button>
                                 </td>
                             </tr>
                             <!-- Modal container -->
@@ -201,6 +150,230 @@
                                     <!-- Image container -->
                                     <div id="modalContent_<?php echo $pd_id; ?>"><img class="pb-5 rounded-t-lg"
                                             src="<?php echo $pd_img; ?>" alt="product image" /></div>
+                                </div>
+                            </div>
+                            <!-- edit modal -->
+                            <div id="crud-modal_<?php echo $pd_id; ?>" tabindex="-1" aria-hidden="true"
+                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative p-4 w-full max-w-md max-h-full">
+                                    <!-- Modal content -->
+                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                        <!-- Modal header -->
+                                        <div
+                                            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                                Product Details
+                                            </h3>
+                                            <button type="button"
+                                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                data-modal-toggle="crud-modal_<?php echo $pd_id; ?>">
+                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                </svg>
+                                                <span class="sr-only">Close modal</span>
+                                            </button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="p-4 md:p-5">
+                                            <form action="product_update.php" method="POST" enctype="multipart/form-data">
+                                                <div class="mb-6 flex flex-col items-center">
+                                                    <label for="profile_picture"
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                        Product Image
+                                                    </label>
+                                                    <!-- Image Preview -->
+                                                    <div class="mb-2">
+                                                        <img id="image_preview2" src="<?php echo $pd_img; ?>"
+                                                            alt="Profile Preview" class="rounded-lg max-w-20 h-20">
+                                                    </div>
+                                                    <input type="hidden" name="current_image" value="<?php echo $pd_img; ?>">
+                                                    <!-- Upload Button -->
+                                                    <input
+                                                        class="mt-2.5 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                        aria-describedby="file_input_help" id="file_input2" type="file"
+                                                        name="files[]" accept="image/*" onchange="previewImage()">
+                                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+                                                        id="file_input_help">
+                                                        SVG, PNG or
+                                                        JPG (MAX.
+                                                        800x400px).</p>
+                                                </div>
+                                                <div class="grid gap-4 mb-4 grid-cols-2">
+                                                    <div class="col-span-2">
+                                                        <label for="name"
+                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                                        <input type="text" name="pd_name" id="name"
+                                                            value="<?php echo $pd_name; ?>"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            placeholder="Type product name" required="">
+                                                    </div>
+                                                    <div class="col-span-2 sm:col-span-1">
+                                                        <label for="price"
+                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                                                        <input type="text" name="pd_price" id="price"
+                                                            value="<?php echo $pd_price; ?>"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            placeholder="$2999" required="">
+                                                    </div>
+                                                    <div class="col-span-2 sm:col-span-1">
+                                                        <label for="price"
+                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
+                                                        <input type="number" name="pd_quantity" id="price"
+                                                            value="<?php echo $pd_quantity; ?>"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            placeholder="$2999" required="">
+                                                    </div>
+                                                    <div class="col-span-2">
+                                                        <label for="description"
+                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
+                                                            Description</label>
+                                                        <textarea id="description" name="pd_description" rows="4"
+                                                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                            placeholder="Write product description here"><?php echo $pd_description; ?></textarea>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="pd_id" value="<?php echo $pd_id; ?>">
+                                                <button type="hidden"
+                                                    class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    Submit
+                                                </button>
+                                            </form>
+                                            <script>
+                                                function previewImage() {
+                                                    var preview = document.getElementById('image_preview2');
+                                                    var fileInput = document.getElementById('file_input2');
+                                                    console.log('File input:', fileInput);
+                                                    var file = fileInput.files[0];
+
+                                                    if (file) {
+                                                        var reader = new FileReader();
+                                                        reader.onload = function (e) {
+                                                            console.log('Image source:', e.target.result);
+                                                            preview.src = e.target.result;
+                                                        }
+                                                        reader.readAsDataURL(file);
+                                                    } else {
+                                                        // If no file is selected, display the current user profile photo
+                                                        console.log('Using current image:', "<?php echo $pd_img; ?>");
+                                                        preview.src = "<?php echo $pd_img; ?>";
+                                                    }
+                                                }
+
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- create modal -->
+                            <div id="new-modal" tabindex="-1" aria-hidden="true"
+                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative p-4 w-full max-w-md max-h-full">
+                                    <!-- Modal content -->
+                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                        <!-- Modal header -->
+                                        <div
+                                            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                                New Product
+                                            </h3>
+                                            <button type="button"
+                                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                data-modal-toggle="new-modal">
+                                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                </svg>
+                                                <span class="sr-only">Close modal</span>
+                                            </button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="p-4 md:p-5">
+                                            <form action="product_add.php" method="POST" enctype="multipart/form-data">
+                                                <div class="mb-6 flex flex-col items-center">
+                                                    <label for="profile_picture"
+                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                        Product Image
+                                                    </label>
+                                                    <input type="hidden" name="current_image" value="../assets/default_pd.jpeg">
+                                                    <!-- Image Preview -->
+                                                    <div class="mb-2">
+                                                        <img id="image_preview" src="../assets/default_pd.jpeg"
+                                                            alt="Profile Preview" class="rounded-lg max-w-20 h-20">
+                                                    </div>
+                                                    <!-- Upload Button -->
+                                                    <input
+                                                        class="mt-2.5 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                        aria-describedby="file_input_help" id="file_input" type="file"
+                                                        name="files[]" accept="image/*" onchange="previewImage()">
+                                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+                                                        id="file_input_help">
+                                                        SVG, PNG or
+                                                        JPG (MAX.
+                                                        800x400px).</p>
+                                                </div>
+                                                <div class="grid gap-4 mb-4 grid-cols-2">
+                                                    <div class="col-span-2">
+                                                        <label for="name"
+                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                                        <input type="text" name="pd_name" id="name"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            placeholder="Type product name" required="">
+                                                    </div>
+                                                    <div class="col-span-2 sm:col-span-1">
+                                                        <label for="price"
+                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                                                        <input type="text" name="pd_price" id="price"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            placeholder="$2999" required="">
+                                                    </div>
+                                                    <div class="col-span-2 sm:col-span-1">
+                                                        <label for="price"
+                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity</label>
+                                                        <input type="number" name="pd_quantity" id="price"
+                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            placeholder="$2999" required="">
+                                                    </div>
+                                                    <div class="col-span-2">
+                                                        <label for="description"
+                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
+                                                            Description</label>
+                                                        <textarea id="description" name="pd_description" rows="4"
+                                                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                            placeholder="Write product description here"></textarea>
+                                                    </div>
+                                                </div>
+                                                <button type="hidden"
+                                                    class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    Submit
+                                                </button>
+                                            </form>
+                                            <script>
+                                                function previewImage() {
+                                                    var preview = document.getElementById('image_preview');
+                                                    var fileInput = document.getElementById('file_input');
+                                                    console.log('File input:', fileInput);
+                                                    var file = fileInput.files[0];
+
+                                                    if (file) {
+                                                        var reader = new FileReader();
+                                                        reader.onload = function (e) {
+                                                            console.log('Image source:', e.target.result);
+                                                            preview.src = e.target.result;
+                                                        }
+                                                        reader.readAsDataURL(file);
+                                                    } else {
+                                                        // If no file is selected, display the current user profile photo
+                                                        preview.src = "../assets/default_pd.jpg";
+                                                    }
+                                                }
+
+                                            </script>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <script>
@@ -220,8 +393,42 @@
                 </tbody>
             </table>
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 </body>
 <!-- wajib letak -->
 </div>
 
 </html>
+<script>
+    function deletePd(pd_id, email) {
+        // Redirect to Page 2 with the ID as a URL parameter
+        window.location.href = 'product_delete.php?delete_id=' + pd_id + '&delete_email=' + email;
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the search input and table
+        var searchInput = document.getElementById('table-search-users');
+        var table = document.getElementById('product-table');
+
+        // Add an input event listener to the search input
+        searchInput.addEventListener('input', function () {
+            var filter = searchInput.value.toLowerCase();
+
+            // Get all rows in the table body
+            var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+            // Iterate through each row and hide/show based on the search input
+            for (var i = 0; i < rows.length; i++) {
+                var nameColumn = rows[i].getElementsByTagName('th')[0];
+                var name = nameColumn.textContent || nameColumn.innerText;
+
+                if (name.toLowerCase().indexOf(filter) > -1) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        });
+    });
+</script>

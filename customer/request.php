@@ -323,9 +323,20 @@
 
                 <?php
             }
-        }
-        ?>
+        } else {
+            ?>
+            <div class="w-full h-max rounded-lg shadow bg-gray-800 border-gray-900 px-6 py-10">
+                <h2 class="text-2xl text-center text-bold text-white mb-2.5">Oops, You doesn't Request Anything <p
+                        class="pt-1 text-xs tracking-tight text-center text-white border-gray-600">Send a Request to our shoppers now!</p>
+                </h2>
+                <button
+                    class="block mx-auto item-center text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+                    type="button" data-modal-target="request_modal" data-modal-toggle="request_modal">
+                    + Request
+                </button>
+            </div>
 
+        <?php } ?>
     </div>
 </main>
 

@@ -113,8 +113,7 @@ if (isset($_GET['order_code'])) {
                             <div class="text-sm">Date:
                                 <?php echo $rowQ['iv_date']; ?>
                             </div>
-                            <div class="text-sm">Invoice #: INV
-                                <?php echo $rowQ['iv_id']; ?>
+                            <div class="text-sm">Invoice #: INV<?php echo $rowQ['iv_id']; ?>
                             </div>
                         </div>
                     </div>

@@ -230,17 +230,18 @@
 
         } else {
             ?>
-        <div class="w-full h-max border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-900 px-6 py-4">
-            <div>
-                <h2 class="text-xl tracking-tight text-gray-900 dark:text-white border-gray-600 p-3">There's nothing here...
-                </h2>
-            </div>
+        <div class="w-full h-max rounded-lg shadow bg-gray-800 border-gray-900 px-6 py-10">
+            <h2 class="text-2xl text-center text-bold text-white mb-2.5">No Orders Yet<p
+                    class="pt-1 text-xs tracking-tight text-center text-white border-gray-600">Checkout your Item now!</p>
+            </h2>
+            <button
+                class="block mx-auto item-center text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+                type="button" onClick="parent.location='cart.php'">
+                Go to Your Cart
+            </button>
         </div>
-        <br><br><br>
-        <br><br><br>
-        <?php
-        }
-        ?>
+
+    <?php } ?>
     </div>
 </main>
 
