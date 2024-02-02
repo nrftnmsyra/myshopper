@@ -40,7 +40,6 @@ if (isset($_GET['ps_email'])) {
     $result = $conn->query($selectQuery);
     $ps_rating = 0;
     ?>
-    <!-- <div><?php echo $email; ?></div> -->
     <div class="max-w-screen-xl pt-5 px-4 py-3 mx-auto flex flex-wrap gap-4 justify-start" id="filteredContent">
         <?php
         // Check if there are rows in the result
@@ -67,7 +66,7 @@ if (isset($_GET['ps_email'])) {
                     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <li class="inline-flex items-center">
                             <a href="index.php"
-                                class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue">
+                                class="inline-flex items-center text-sm font-medium text-gray-400 hover:text-blue">
                                 <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="currentColor" viewBox="0 0 20 20">
                                     <path
@@ -83,14 +82,13 @@ if (isset($_GET['ps_email'])) {
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="m1 9 4-4-4-4" />
                                 </svg>
-                                <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Personal Shopper
+                                <span class="ms-1 text-sm font-medium md:ms-2 text-gray-400">Personal Shopper
                                     Details</span>
                             </div>
                         </li>
                     </ol>
                 </nav>
-                <div
-                    class="flex max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="flex max-w-full border rounded-lg shadow bg-gray-800 border-gray-700">
                     <div class="flex w-48 h-full p-3">
                         <a href="#">
                             <img class="rounded" src="<?php echo $ps_img; ?>" alt="product image" />
@@ -98,7 +96,7 @@ if (isset($_GET['ps_email'])) {
                     </div>
                     <div class="flex-grow px-5 py-5">
                         <a href="#" disabled>
-                            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            <h5 class="text-xl font-semibold tracking-tight text-white">
                                 <?php echo $ps_username; ?>
                             </h5>
                         </a>
@@ -116,7 +114,7 @@ if (isset($_GET['ps_email'])) {
 
                             if ($ps_rating < 5) {
                                 for ($i = 0; $i < 5 - $ps_rating; $i++) {
-                                    echo '<svg class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                    echo '<svg class="w-4 h-4 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
                                     <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                                 </svg>';
                                 }
@@ -125,13 +123,12 @@ if (isset($_GET['ps_email'])) {
                                 echo '</div>';
                             }
                             ?>
-                            <span
-                                class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded bg-blue-200 text-blue-800 ms-3">
                                 <?php echo number_format($ps_rating, 1); ?>
                             </span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-3xl font-bold text-gray-900 dark:text-white">RM
+                            <span class="text-3xl font-bold text-white">RM
                                 <?php echo number_format($ps_fee, 2); ?><span class="text-sm text-gray-500"> (service
                                     fee)</span>
                             </span>
@@ -168,47 +165,46 @@ if (isset($_GET['ps_email'])) {
                 </ul>
             </div>
             <div id="default-tab-content">
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel"
+                <div class="hidden p-4 rounded-lg bg-gray-800" id="profile" role="tabpanel"
                     aria-labelledby="profile-tab">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-sm text-gray-400">
                         <?php echo $ps_desc; ?>
                     </p>
                 </div>
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel"
+                <div class="hidden p-4 rounded-lg bg-gray-800" id="dashboard" role="tabpanel"
                     aria-labelledby="dashboard-tab">
                     <div class="p-4 md:p-5">
                         <form class="space-y-2" id="request-form" action="" method="post" enctype="multipart/form-data">
                             <input type="hidden" value="<?php echo $email; ?>" name="email">
                             <input type="hidden" value="<?php echo $ps_email; ?>" name="ps_email">
                             <div>
-                                <label for="email"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">What would you
+                                <label for="email" class="block mb-2 text-sm font-medium text-white">What would you
                                     like to buy</label>
                                 <input type="text" name="pd_name"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                    class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
                                     placeholder="Pants, Blouse, etc" required>
                             </div>
                             <div>
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                <label class="block mb-2 text-sm font-medium text-white"
                                     for="file_input">Attachment</label>
                                 <input
-                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                    aria-describedby="file_input_help" name="files[]" multiple
+                                    class="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                                    aria-describedby="file_input_help" name="files[]"
                                     onchange="displaySelectedFiles(this.files)" id="file_input"
                                     accept=".pdf, .jpg, .jpeg, .png" type="file">
-                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG,
-                                    JPG or GIF (MAX. 800x400px).</p>
+                                <p class="mt-1 text-sm text-gray-300" id="file_input_help">PNG or
+                                    JPG (MAX.
+                                    1080x1080px).</p>
                             </div>
                             <div class="col-span-2">
-                                <label for="description"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
+                                <label for="description" class="block mb-2 text-sm font-medium text-white">Product
                                     Description</label>
                                 <textarea id="description" name="desc" rows="4"
-                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    class="block p-2.5 w-full text-sm rounded-lg border bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Write product description here"></textarea>
                             </div>
                             <button type="submit"
-                                class="text-white inline-flex items-center bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
+                                class="text-white inline-flex items-center focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-500 hover:bg-blue-600 focus:ring-blue-700">
                                 <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -220,7 +216,7 @@ if (isset($_GET['ps_email'])) {
                         </form>
                     </div>
                 </div>
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel"
+                <div class="hidden p-4 rounded-lg bg-gray-800" id="settings" role="tabpanel"
                     aria-labelledby="settings-tab">
                     <div id="review" class="overflow-auto max-h-96 flex flex-col gap-4 p-4">
                         <?php
@@ -266,7 +262,7 @@ if (isset($_GET['ps_email'])) {
 
                                         if ($rv_rating < 5) {
                                             for ($i = 0; $i < 5 - $rv_rating; $i++) {
-                                                echo '<svg class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                                echo '<svg class="w-4 h-4 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
                                     <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                                 </svg>';
                                             }
@@ -294,8 +290,32 @@ if (isset($_GET['ps_email'])) {
                                             $img_path = $rowI['img_path'];
                                             ?>
                                             <img src="<?php echo $img_path; ?>" class="w-24 h-24 rounded-lg mr-2.5"
-                                                alt="image description">
+                                                id="openModal_<?php echo $ref_id; ?>" alt="image description">
+                                            <div id="imageModal_<?php echo $ref_id; ?>"
+                                                class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+                                                <!-- Modal content -->
+                                                <div class="bg-white p-4 rounded-md shadow-md max-w-md w-full mx-auto relative">
+                                                    <!-- Close button (x icon) -->
+                                                    <span
+                                                        class="cursor-pointer absolute top-0.5 right-2 text-gray-800 hover:text-red-500 text-4xl"
+                                                        id="closeModal_<?php echo $ref_id; ?>">&times;</span>
+                                                    <!-- Image container -->
+                                                    <div id="modalContent_<?php echo $ref_id; ?>"><img class="pb-5 rounded-t-lg"
+                                                            src="<?php echo $img_path; ?>" alt="product image" /></div>
+                                                </div>
+                                            </div>
+                                            <script>
+                                                // JavaScript to handle modal functionality for each row
+                                                document.getElementById('openModal_<?php echo $ref_id; ?>').addEventListener('click', function () {
+                                                    document.getElementById('imageModal_<?php echo $ref_id; ?>').classList.remove('hidden');
+                                                });
+
+                                                document.getElementById('closeModal_<?php echo $ref_id; ?>').addEventListener('click', function () {
+                                                    document.getElementById('imageModal_<?php echo $ref_id; ?>').classList.add('hidden');
+                                                });
+                                            </script>
                                         <?php }
+                                    } else {
                                     } ?>
                                 </div>
                                 <div class="flex justify-between">
@@ -304,7 +324,12 @@ if (isset($_GET['ps_email'])) {
                                     </span>
                                 </div>
                             <?php }
-                        } ?>
+                        } else { ?>
+                            <div class="w-full h-max rounded-lg bg-gray-800 px-56 py-10">
+                                <p class="pt-1 text-normal tracking-tight text-center text-gray-200">No
+                                    Review Yet</p>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -312,44 +337,19 @@ if (isset($_GET['ps_email'])) {
     </div>
     <section class="w-full">
         <div class="flex justify-center items-center mb-10 max-content mx-auto">
-            <button type="button"
-                class="prebutton flex justify-center items-center h-full cursor-pointer group focus:outline-none"
-                onclick="changeProduct(-1)">
-                <span class="text-gray-400 hover:text-gray-900 group-focus:text-blue">
-                    <svg class="rtl:rotate-180 w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 5H1m0 0 4 4M1 5l4-4" />
-                    </svg>
-                    <span class="sr-only">Previous</span>
-                </span>
-            </button>
-
             <h1 class="mx-auto font-sans item-center text-4xl font-bold">Products</h1>
-
-            <button type="button"
-                class="nexbutton flex justify-center items-center h-full cursor-pointer group focus:outline-none"
-                onclick="changeProduct(1)">
-                <span class="text-gray-400 hover:text-gray-900 group-focus:text-blue">
-                    <svg class="rtl:rotate-180 w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                    <span class="sr-only">Next</span>
-                </span>
-            </button>
         </div>
+        <?php
+        $selectProduct = "SELECT * FROM product WHERE pd_ps_email = '$ps_email' AND pd_type='shopper' AND pd_availability = 1 AND pd_quantity >= 1";
+        $resultProduct = $conn->query($selectProduct);
 
+        // Check if there are rows in the result
+        if ($resultProduct->num_rows > 0) {
 
-        <div class="productList w-full mx-auto flex overflow-x-hidden flex-col items-center mb-24">
-            <div class="flex" id="productCarousel">
-                <?php
-                $selectProduct = "SELECT * FROM product WHERE pd_ps_email = '$ps_email' AND pd_type='shopper'";
-                $resultProduct = $conn->query($selectProduct);
-
-                // Check if there are rows in the result
-                if ($resultProduct->num_rows > 0) {
+            ?>
+            <div class="productList w-full mx-auto flex overflow-x-hidden items-center pb-24 px-2">
+                <div class="grid grid-cols-4 gap-4" id="productCarousel">
+                    <?php
                     // Fetch data from each row
                     while ($rowP = $resultProduct->fetch_assoc()) {
                         // Process data or store it in an array for later use
@@ -366,145 +366,162 @@ if (isset($_GET['ps_email'])) {
                         } else {
                             $status = "Out of stock";
                         }
-
-                        if ($resultProduct->num_rows > 4) {
-                            ?>
-                            <div class="flex-shrink-0 w-full md:w-1/2 lg:w-1/4 p-2 max-w-[300px]">
-                                <?php
-                        } else if ($resultProduct->num_rows <= 3) {
-                            ?>
-                                    <div class="mx-auto w-full md:w-1/2 lg:w-1/4 p-2 min-w-[300px]">
-                                    <?php
-                        }
                         ?>
-                                <div
-                                    class="group h-full overflow-hidden rounded-lg border-2 border-gray-200 border-opacity-60 shadow-lg">
-                                    <form action="cart_add.php" method="post">
-                                        <!-- Adjusted the styles for the image to make it square -->
-                                        <div class="w-full h-64">
-                                            <img class="w-full h-full object-cover object-center transition duration-500 ease-in-out group-hover:scale-105"
-                                                src="<?php echo $pd_img; ?>" alt="blog" />
-                                        </div>
+                        <div class="w-[300px]">
 
-                                        <h2
-                                            class="title-font inline-block cursor-pointer px-6 pt-4 pb-1 text-xs font-semibold uppercase tracking-widest text-blue-500 hover:font-bold">
-                                            <?php echo $pd_status; ?>
-                                        </h2>
-                                        <div class="py-1 px-6">
-                                            <h1
-                                                class="title-font mb-3 inline-block cursor-pointer text-xl capitali font-extrabold tracking-wide text-gray-800">
-                                                <?php echo $pd_name; ?>
-                                            </h1>
-                                            <p
-                                                class="line-clamp-6 mb-3 cursor-pointer overflow-hidden leading-relaxed text-gray-500">
-                                                <?php echo $pd_desc; ?>
-                                            </p>
+                            <div class="group h-full overflow-hidden rounded-lg border-gray-200 shadow-lg mb-1">
+                                <form action="cart_add.php" method="post">
+                                    <!-- Adjusted the styles for the image to make it square -->
+                                    <div class="w-full h-64">
+                                        <a href="#" id="openModal_<?php echo $pd_id; ?>"><img
+                                                class="w-full h-full object-cover object-center" src="<?php echo $pd_img; ?>"
+                                                alt="blog" /></a>
+                                    </div>
+                                    <div id="imageModal_<?php echo $pd_id; ?>"
+                                        class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+                                        <!-- Modal content -->
+                                        <div class="bg-white p-4 rounded-md shadow-md max-w-md w-full mx-auto relative">
+                                            <!-- Close button (x icon) -->
+                                            <span
+                                                class="cursor-pointer absolute top-0.5 right-2 text-gray-800 hover:text-red-500 text-4xl"
+                                                id="closeModal_<?php echo $pd_id; ?>">&times;</span>
+                                            <!-- Image container -->
+                                            <div id="modalContent_<?php echo $pd_id; ?>"><img class="pb-5 rounded-t-lg"
+                                                    src="<?php echo $pd_img; ?>" alt="product image" /></div>
                                         </div>
-                                        <div class="flex flex-wrap items-center justify-between px-6 pt-1 pb-4">
-                                            <div class="flex flex-wrap text-gray-500">
-                                                <span class="mr-1 text-md">RM
-                                                    <?php echo number_format($pd_price, 2); ?>
-                                                </span>
-                                            </div>
-                                            <div class="flex flex-wrap text-gray-500">
-                                                <span class="text-sm">
-                                                    <?php echo $pd_quantity; ?> lefts
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-center items-center w-full px-6 pb-4">
-                                            <div>
-                                                <label for="quantity" class="mb-2 text-md font-bold text-gray-800">Quantity
-                                                    :</label>
-                                                <div class="py-2 px-3 inline-block bg-white border border-gray-200 rounded-lg"
-                                                    data-hs-input-number>
-                                                    <div class="flex items-center gap-x-1.5">
-                                                        <button type="button"
-                                                            class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
-                                                            data-hs-input-number-decrement
-                                                            onclick="decrementValue_<?php echo $pd_id; ?>()">
-                                                            <svg class="flex-shrink-0 w-3.5 h-3.5"
-                                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path d="M5 12h14" />
-                                                            </svg>
-                                                        </button>
-                                                        <input
-                                                            class="p-0 w-6 bg-transparent border-0 text-gray-800 text-center focus:ring-0"
-                                                            type="text" name="pd_qty" value="1" data-hs-input-number-input
-                                                            max="<?php echo $pd_quantity; ?>"
-                                                            id="quantity_<?php echo $pd_id; ?>" onkeydown="return false">
-                                                        <button type="button"
-                                                            class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
-                                                            data-hs-input-number-increment
-                                                            onclick="incrementValue_<?php echo $pd_id; ?>()">
-                                                            <svg class="flex-shrink-0 w-3.5 h-3.5"
-                                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path d="M5 12h14" />
-                                                                <path d="M12 5v14" />
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="px-6 pb-4">
-                                            <input type="hidden" name="pd_id" value="<?php echo $pd_id; ?>">
-                                            <input type="hidden" name="pd_ps_email" value="<?php echo $ps_email; ?>">
-                                            <input type="hidden" name="pd_ct_email" value="<?php echo $email; ?>">
-                                            <input type="hidden" name="pd_price" value="<?php echo $pd_price; ?>">
-                                            <button type="submit"
-                                                class="flex justify-center items-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                                                </svg>
-                                                Add to Cart
-                                            </button>
-                                        </div>
-                                    </form>
+                                    </div>
+                                    <script>
+                                        // JavaScript to handle modal functionality for each row
+                                        document.getElementById('openModal_<?php echo $pd_id; ?>').addEventListener('click', function () {
+                                            document.getElementById('imageModal_<?php echo $pd_id; ?>').classList.remove('hidden');
+                                        });
 
-                                </div>
+                                        document.getElementById('closeModal_<?php echo $pd_id; ?>').addEventListener('click', function () {
+                                            document.getElementById('imageModal_<?php echo $pd_id; ?>').classList.add('hidden');
+                                        });
+                                    </script>
+                                    <h2
+                                        class="title-font inline-block cursor-pointer px-6 pt-4 pb-1 text-xs font-semibold uppercase tracking-widest text-blue-500 hover:font-bold">
+                                        <?php echo $pd_status; ?>
+                                    </h2>
+                                    <div class="h-56 py-1 px-6">
+                                        <h1
+                                            class="mb-3 inline-block cursor-pointer text-xl capitali font-bold tracking-wide text-gray-800">
+                                            <?php echo $pd_name; ?>
+                                        </h1>
+                                        <p
+                                            class="line-clamp-6 mb-3 text-sm cursor-pointer overflow-hidden leading-relaxed text-gray-500">
+                                            <?php echo nl2br($pd_desc); ?>
+                                        </p>
+                                    </div>
+                                    <div class="flex flex-wrap items-center justify-between px-6 pt-1">
+                                        <div class="flex flex-wrap text-gray-500">
+                                            <span class="mr-1 text-md">RM
+                                                <?php echo number_format($pd_price, 2); ?>
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-wrap text-gray-500">
+                                            <span class="text-sm">
+                                                <?php echo $pd_quantity; ?> lefts
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="px-6 pt-1 mb-4 mr-1 text-gray-500 text-xs">
+                                        (service fee included)
+                                    </div>
+
+                                    <div class="flex justify-center items-center w-full px-6 pb-4">
+                                        <label for="quantity"
+                                            class="mb-2 text-md font-semibold text-gray-800 mr-2.5">Quantity</label>
+                                        <div class="py-2 px-3 inline-block bg-white border border-gray-200 rounded-lg"
+                                            data-hs-input-number>
+                                            <div class="flex items-center gap-x-1.5">
+                                                <button type="button"
+                                                    class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
+                                                    data-hs-input-number-decrement
+                                                    onclick="decrementValue_<?php echo $pd_id; ?>()">
+                                                    <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M5 12h14" />
+                                                    </svg>
+                                                </button>
+                                                <input
+                                                    class="p-0 w-6 bg-transparent border-0 text-gray-800 text-center focus:ring-0"
+                                                    type="text" name="pd_qty" value="1" data-hs-input-number-input
+                                                    max="<?php echo $pd_quantity; ?>" id="quantity_<?php echo $pd_id; ?>"
+                                                    onkeydown="return false">
+                                                <button type="button"
+                                                    class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+                                                    data-hs-input-number-increment
+                                                    onclick="incrementValue_<?php echo $pd_id; ?>()">
+                                                    <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M5 12h14" />
+                                                        <path d="M12 5v14" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="pd_id" value="<?php echo $pd_id; ?>">
+                                        <input type="hidden" name="pd_ps_email" value="<?php echo $ps_email; ?>">
+                                        <input type="hidden" name="pd_ct_email" value="<?php echo $email; ?>">
+                                        <input type="hidden" name="pd_price" value="<?php echo $pd_price; ?>">
+                                        <button type="submit"
+                                            class="flex justify-center items-center w-12 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg ml-2.5">
+                                            <svg class="w-6 h-6 text-white" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M8 5h4m-2 2V3M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.938-11H17l-2 7H5m0 0L3 4m0 0h2M3 4l-.792-3H1" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </form>
+
+
+
                             </div>
-                            <script>
-                                function incrementValue_<?php echo $pd_id; ?>() {
-                                    var inputElement = document.getElementById('quantity_<?php echo $pd_id; ?>');
-                                    var currentValue = parseInt(inputElement.value, 10);
-                                    var maxValue = parseInt(inputElement.max, 10);
-
-                                    // Check if the current value is less than the maximum allowed value
-                                    if (currentValue < maxValue) {
-                                        inputElement.value = currentValue + 1;
-                                    }
-                                }
-
-                                function decrementValue_<?php echo $pd_id; ?>() {
-                                    var inputElement = document.getElementById('quantity_<?php echo $pd_id; ?>');
-                                    var currentValue = parseInt(inputElement.value, 10);
-
-                                    // Ensure the value doesn't go below the minimum allowed value (1)
-                                    if (currentValue > 1) {
-                                        inputElement.value = currentValue - 1;
-                                    }
-                                }
-                            </script>
-                            <?php
-                    }
-                } else {
-                    ?>
-
-                        <div class="w-full h-max rounded-lg shadow bg-white border-2 border-gray-200 px-56 py-10">
-                                <p class="pt-1 text-normal tracking-tight text-center text-gray-900 border-gray-600">No product yet</p>
                         </div>
+                        <script>
+                            function incrementValue_<?php echo $pd_id; ?>() {
+                                var inputElement = document.getElementById('quantity_<?php echo $pd_id; ?>');
+                                var currentValue = parseInt(inputElement.value, 10);
+                                var maxValue = parseInt(inputElement.max, 10);
+
+                                // Check if the current value is less than the maximum allowed value
+                                if (currentValue < maxValue) {
+                                    inputElement.value = currentValue + 1;
+                                }
+                            }
+
+                            function decrementValue_<?php echo $pd_id; ?>() {
+                                var inputElement = document.getElementById('quantity_<?php echo $pd_id; ?>');
+                                var currentValue = parseInt(inputElement.value, 10);
+
+                                // Ensure the value doesn't go below the minimum allowed value (1)
+                                if (currentValue > 1) {
+                                    inputElement.value = currentValue - 1;
+                                }
+                            }
+                        </script>
                         <?php
-                }
-                ?>
+                    }
+                    ?>
                 </div>
             </div>
+            <?php
+        } else {
+            ?>
+            <div class="w-fit mb-72 mx-auto">
+                No Product Yet
+            </div>
+            <?php
+        }
+        ?>
 
     </section>
 
@@ -549,7 +566,7 @@ if (isset($_GET['ps_email'])) {
 
         if ($insert_stmt->execute()) {
             // Registration successful
-            echo '<script>alert("Request successfully added.")</script>';
+            echo '<script>alert("Request send successfully")</script>';
         } else {
             // Registration failed
             echo '<script>alert("Operation failed. Please try again.")</script>';

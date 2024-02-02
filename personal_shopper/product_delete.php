@@ -11,8 +11,7 @@ if (isset($_GET['delete_id']) && isset($_GET['delete_email'])) {
 
     if ($stmt->execute()) {
         // Registration successful
-        echo '<script>alert("Deleted successfully.")</script>';
-        header("Location: product.php");
+        echo '<script>alert("Product deleted successfully"); window.location = "product.php";</script>';
         exit();
     } else {
         // Registration failed

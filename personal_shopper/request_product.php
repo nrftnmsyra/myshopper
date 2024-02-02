@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         VALUES ('$pd_ps_email', '$pd_name', $pd_price, $pd_quantity, '$pd_description', '$pd_img', $pd_availability, '$pd_type', $rqId)";
 
     if ($conn->query($sql) === TRUE) {
-        header("Location: request.php");
+        echo '<script>alert("Requested Product added successfully"); window.location = "request.php";</script>';
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }

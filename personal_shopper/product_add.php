@@ -14,20 +14,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pd_price = $_POST['pd_price'];
     $pd_quantity = $_POST['pd_quantity'];
     $pd_description = $_POST['pd_description'];
-    $pd_img = $_POST['pd_img'];
+    // $pd_img = $_POST['pd_img'];
     $pd_availability = 1; // Assuming availability is 1 for available
     $pd_type = "shopper"; // Assuming product type is 'shopper'
 
-    if (!empty($_FILES['files']['name'][0])) {
-        // Process the uploaded file and update the profile photo path
-        $uploadDir = '../img/';
-        $uploadFile = $uploadDir . basename($_FILES['files']['name'][0]);
+    if (isset($_POST['image'])) {
+        $data = $_POST['image'];
 
-        if (move_uploaded_file($_FILES['files']['tmp_name'][0], $uploadFile)) {
-            $PdPhotoPath = $uploadFile;
-            // Update the user's profile photo path in the database or wherever you store it
-        }
-    } else {
+        $image_array_1 = explode(";", $data);
+
+
+        $image_array_2 = explode(",", $image_array_1[1]);
+
+        $data = base64_decode($image_array_2[1]);
+
+        $PdPhotoPath = '../img/' . time() . '.png';
+
+        file_put_contents($PdPhotoPath, $data);
+    }
+    else {
         // If no new file is selected, use the current user profile photo path
         $PdPhotoPath = $current_image;
     }
@@ -37,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         VALUES ('$email', '$pd_name', $pd_price, $pd_quantity, '$pd_description', '$PdPhotoPath ', $pd_availability, '$pd_type')";
 
     if ($conn->query($sql) === TRUE) {
-        header("Location: product.php");
+        echo '<script>alert("New Product added successfully"); window.location = "product.php";</script>';
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }

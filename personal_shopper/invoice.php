@@ -21,7 +21,7 @@
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-20">
             <h1 class="text-4xl font-bold mb-4 text-white">Invoice</h1>
             <div
-                class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
+                class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-gray-900">
                 <div class="flex items-center">
                     <div class="relative">
                         <input id="start-date" type="date"
@@ -39,19 +39,19 @@
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                        <svg class="w-4 h-4 text-gray-400" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
                     <input type="text" id="table-search-users"
-                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="block p-2 ps-10 text-sm border rounded-lg w-80 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search for invoices">
                 </div>
             </div>
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-400">
+                <thead class="text-xs uppercase bg-gray-700 text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             Invoice ID
@@ -88,7 +88,7 @@
                             $ct_name = $row['ct_first_name'] . ' ' . $row['ct_last_name'];
                             $order_code = $row['iv_order_code'];
                             ?>
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <tr class="border-b bg-gray-800 border-gray-700">
                                 <td class="px-6 py-4">
                                     <?php echo $iv_id; ?>
                                 </td>
@@ -100,7 +100,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <a href="view_invoice.php?order_code=<?php echo $order_code; ?>"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View Invoice</a>
+                                        class="font-medium text-blue-500 hover:underline">View Invoice</a>
                                 </td>
                             </tr>
                 </div>
@@ -162,6 +162,12 @@
                 </script>
                 <?php
                         }
+                    } else {
+                        echo "<tbody>";
+                        echo "<tr class='border-b bg-gray-800 border-gray-700 hover:bg-gray-900'>";
+                        echo "<td colspan='5' class='px-6 py-4 text-center'>No Invoice Found</td>";
+                        echo "</tr>";
+                        echo "</tbody>";
                     }
                     ?>
         </tbody>

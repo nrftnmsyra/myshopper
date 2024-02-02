@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['rq_id'])) {
 
     // Execute the query
     if ($conn->query($sql) === TRUE) {
-        header("Location: request.php");
+        echo '<script>alert("Product deleted successfully"); window.location = "../customer/request.php";</script>';
     } else {
         echo "Error deleting record: " . $conn->error;
     }

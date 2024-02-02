@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $conn->query($selectCart);
     // Check if there are rows in the result
     if ($result->num_rows > 0) {
-        echo '<script>alert("Product already added in the cart."); window.location = "../customer/ps_details.php?ps_email='.$ps_email.'";</script>';
+        echo '<script>alert("Product already added in the cart"); window.location = "../customer/ps_details.php?ps_email='.$ps_email.'";</script>';
     } else {
 
     // Insert data into the "request" table
@@ -24,14 +24,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($insert_stmt->execute()) {
             // Registration successful
-            echo '<script>alert("Product successfully added."); window.location = "../customer/ps_details.php?ps_email='.$ps_email.'";</script>';
+            echo '<script>alert("Product added successfully"); window.location = "../customer/ps_details.php?ps_email='.$ps_email.'";</script>';
         } else {
             // Registration failed
             echo '<script>alert("Operation failed. Please try again.")</script>';
         }
 
         // Close the prepared statements
-        $insert__stmt->close();
+        $insert_stmt->close();
     }
 }
     // Close the database connection

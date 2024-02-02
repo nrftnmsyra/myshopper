@@ -2,18 +2,22 @@
 error_reporting(0);
 session_start();
 // Get user input
+if (!isset($_SESSION['email'])) {
+    header("Location: logout.php");
+    exit();
+}
 $email = $_SESSION["email"];
 
 include 'includes/db.php';
 
 ?>
-<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+<nav class="fixed top-0 z-50 w-full border-b bg-gray-800 border-gray-700">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-start rtl:justify-end">
                 <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
                     type="button"
-                    class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                    class="inline-flex items-center p-2 text-sm rounded-lg sm:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600">
                     <span class="sr-only">Open sidebar</span>
                     <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
@@ -22,17 +26,17 @@ include 'includes/db.php';
                         </path>
                     </svg>
                 </button>
-                <a href="https://flowbite.com" class="flex ms-2 md:me-24">
+                <a href="dashboard.php" class="flex ms-2 md:me-24">
                     <img src="../assets/logo1.png" class="h-8 me-3" alt="FlowBite Logo" />
                     <span
-                        class="self-center text-xl font-bold sm:text-2xl whitespace-nowrap dark:text-white mr-2">myShopper</span>
-                    <span class="text-sm font-semibold dark:text-gray-300">(Administrator)</span>
+                        class="self-center text-xl font-bold sm:text-2xl whitespace-nowrap text-white mr-2">myShopper</span>
+                    <span class="text-sm font-semibold text-gray-300">(Administrator)</span>
                 </a>
             </div>
             <div class="relative">
                 <div class="flex items-center">
                     <p
-                        class="px-1 py-3 text-md text-gray-900 font-semibold dark:text-white text-transform uppercase mr-2.5">
+                        class="px-1 py-3 text-md font-semibold text-white text-transform uppercase mr-2.5">
                         <?php echo $email; ?>
                     </p>
                     <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown"
@@ -41,20 +45,16 @@ include 'includes/db.php';
                 </div>
                 <!-- Dropdown menu -->
                 <div id="userDropdown"
-                    class="absolute right-0 mt-2 z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                    <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                    class="absolute right-0 mt-2 z-10 hidden divide-y rounded-lg shadow w-44 bg-gray-700 divide-gray-600">
+                    <div class="px-4 py-3 text-sm text-white">
                         <div class="font-medium truncate">
                             <?php echo $email; ?>
                         </div>
                     </div>
-                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
+                    <ul class="py-2 text-sm text-gray-200" aria-labelledby="avatarButton">
                         <li>
                             <a href="logout.php"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
-                        </li>
-                        <li>
-                            <a href="logout.php"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign
+                                class="block px-4 py-2 hover:bg-gray-600 hover:text-white">Sign
                                 Out</a>
                         </li>
                     </ul>
@@ -65,14 +65,14 @@ include 'includes/db.php';
 </nav>
 
 <aside id="logo-sidebar"
-    class="fixed top-0 left-0 z-40 w-52 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+    class="fixed top-0 left-0 z-40 w-52 h-screen pt-20 transition-transform -translate-x-full border-r sm:translate-x-0 bg-gray-800 border-gray-700"
     aria-label="Sidebar">
-    <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+    <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-800">
         <ul class="space-y-2 font-medium">
             <li>
                 <a href="dashboard.php"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                    class="flex items-center p-2 rounded-lg text-white hover:bg-gray-700 group">
+                    <svg class="w-5 h-5 transition duration-75 text-gray-400 group-hover:text-white"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                         <path
                             d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
@@ -84,8 +84,8 @@ include 'includes/db.php';
             </li>
             <li>
                 <a href="customer.php"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                    class="flex items-center p-2 rounded-lg text-white  hover:bg-gray-700 group">
+                    <svg class="w-5 h-5 transition duration-75 text-gray-400 group-hover:text-white"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 18">
                         <path
                             d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
@@ -95,8 +95,8 @@ include 'includes/db.php';
             </li>
             <li>
                 <a href="personal_shopper.php"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                    class="flex items-center p-2 rounded-lg text-white hover:bg-gray-700 group">
+                    <svg class="w-5 h-5 transition duration-75 text-gray-400 group-hover:text-white"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path
                             d="M7.824 5.937a1 1 0 0 0 .726-.312 2.042 2.042 0 0 1 2.835-.065 1 1 0 0 0 1.388-1.441 3.994 3.994 0 0 0-5.674.13 1 1 0 0 0 .725 1.688Z" />

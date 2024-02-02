@@ -2,7 +2,7 @@
 $servername = "localhost";
 $dbusername = "root";
 $dbpassword = "";
-$dbname = "myshopper";
+$dbname = "mycoding_myshopper";
 
 // Create a database connection
 $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);

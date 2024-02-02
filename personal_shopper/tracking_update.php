@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $last = $rowEmail['ct_last_name'];
             $name = $first . ' ' . $last;
 
-            header("Location: order.php");
+            echo '<script>alert("Tracking number added successfully"); window.location = "order.php";</script>';
         }
     }
     $stmtEmail->close();

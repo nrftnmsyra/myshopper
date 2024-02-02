@@ -9,7 +9,7 @@ if (!isset($_SESSION['email'])) {
 }
 // Get user input
 $email = $_SESSION['email'];
-$password = $_POST["password"];
+// $password = $_POST["password"];
 
 include 'db.php';
 
@@ -44,16 +44,16 @@ if ($resultC->num_rows > 0) {
         <body class="bg-gray-100">
 
 
-            <nav class="fixed top-0 z-50 w-full bg-gray-50 dark:bg-gray-700">
+            <nav class="fixed top-0 z-50 w-full bg-gray-700">
                 <div class="max-w-screen-xl px-4 py-3 mx-auto">
                     <div class="flex items-center">
                         <ul class="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
                             <li>
-                                <a href="dashboard.php" class="text-gray-900 dark:text-white hover:underline"
+                                <a href="dashboard.php" class="text-white hover:underline"
                                     aria-current="page">My Account</a>
                             </li>
                             <li>
-                                <a class="text-gray-900 dark:text-white">WELCOME &nbsp;
+                                <a class="text-white">WELCOME &nbsp;
                                     <?php echo $username = $_SESSION['username']; ?>
                                 </a>
                             </li>
@@ -62,39 +62,39 @@ if ($resultC->num_rows > 0) {
                 </div>
             </nav>
 
-            <nav class="fixed top-10 z-80 w-full bg-white border-gray-200 dark:bg-gray-900">
+            <nav class="fixed top-10 z-80 w-full border-gray-200 bg-gray-900">
                 <div class="flex justify-between items-center mx-auto max-w-screen-xl px-4 py-2">
                     <a href="index.php" class="flex items-center space-x-3 rtl:space-x-reverse">
                         <img src="../customer/assets/logo1.png" class="h-8" alt="Flowbite Logo" />
-                        <span class="self-center text-2xl font-bold dark:text-white">myShopper</span>
+                        <span class="self-center text-2xl font-bold text-white">myShopper</span>
                     </a>
                     <div class="flex-1 py-2 pl-16">
                         <form action="index.php" method="get" class="m-0" id="search">
                             <label for="default-search"
-                                class="text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                                class="text-sm font-medium text-gray-900 sr-only text-white">Search</label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    <svg class="w-4 h-4 text-gray-400" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                             stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                     </svg>
                                 </div>
                                 <input type="search" id="searchInput" name="search" onkeyup="myFunction()"
-                                    class="block w-full h-10 p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Search things that you wanna lookup..." required>
+                                    class="block w-full h-10 p-3 ps-10 text-sm border rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="Search things that you wanna buy..." required>
                             </div>
                         </form>
                     </div>
                     <div class="pl-2 pr-16">
                         <button data-modal-target="request_modal" data-modal-toggle="request_modal"
-                            class="block text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+                            class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-500 hover:bg-blue-600 focus:ring-blue-700"
                             type="button">
                             Request +
                         </button>
                     </div>
                     <div class="flex items-center space-x-6 rtl:space-x-reverse">
-                        <a href="cart.php" class="text-sm text-blue-500 dark:text-blue-500 hover:underline">
+                        <a href="cart.php" class="text-sm text-blue-500 hover:underline">
                             <button type="button"
                                 class="relative inline-flex items-center p-3 text-sm font-medium text-center text-blue-500 bg-gray-900 rounded-lg">
                                 <svg class="w-6 h-6 hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +104,7 @@ if ($resultC->num_rows > 0) {
                                 </svg>
                                 <span class="sr-only">Notifications</span>
                                 <div
-                                    class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -end-2 dark:border-gray-900">
+                                    class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 rounded-full -top-1 -end-2 border-gray-900">
                                     <?php echo $cart_count; ?>
                                 </div>
                             </button>
@@ -131,8 +131,8 @@ if ($resultC->num_rows > 0) {
                             src="<?php echo $img; ?>" alt="User dropdown">
                         <!-- Dropdown menu -->
                         <div id="userDropdown"
-                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                            <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                            class="z-50 hidden divide-y rounded-lg shadow w-44 bg-gray-700 divide-gray-600">
+                            <div class="px-4 py-3 text-sm text-white">
                                 <div>
                                     <?php echo $ct_first_name . ' ' . $ct_last_name; ?>
                                 </div>
@@ -141,14 +141,14 @@ if ($resultC->num_rows > 0) {
                                     <?php echo $email; ?>
                                 </div>
                             </div>
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
+                            <ul class="py-2 text-sm text-gray-200" aria-labelledby="avatarButton">
                                 <li>
                                     <a href="dashboard.php"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+                                        class="block px-4 py-2 hover:bg-gray-600 hover:text-white">Profile</a>
                                 </li>
                                 <li>
                                     <a href="logout.php"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign
+                                        class="block px-4 py-2 hover:bg-gray-600 hover:text-white">Sign
                                         Out</a>
                                 </li>
                         </div>
@@ -160,14 +160,14 @@ if ($resultC->num_rows > 0) {
                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                 <div class="relative p-4 w-full max-w-md max-h-full">
                     <!-- Modal content -->
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <div class="relative rounded-lg shadow bg-gray-700">
                         <!-- Modal header -->
-                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600">
+                            <h3 class="text-xl font-semibold text-white">
                                 Shopping Request
                             </h3>
                             <button type="button"
-                                class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                class="end-2.5 text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white"
                                 data-modal-hide="request_modal">
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 14 14">
@@ -178,36 +178,37 @@ if ($resultC->num_rows > 0) {
                             </button>
                         </div>
                         <!-- Modal body -->
-                        <div class="p-4 md:p-5">
+                        <div class="px-4 pt-4 pb-1">
                             <form class="space-y-2" action="request_add.php" method="post" enctype="multipart/form-data">
                                 <input type="hidden" value="<?php echo $email = $_SESSION['email']; ?>" name="email">
                                 <div>
-                                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">What
+                                    <label for="email" class="block mb-2 text-sm font-medium text-white">What
                                         would you like to buy</label>
                                     <input type="text" name="pd_name"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                        class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white"
                                         placeholder="Pants, Blouse, etc" required>
                                 </div>
                                 <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    <label class="block mb-2 text-sm font-medium text-white"
                                         for="file_input">Attachment</label>
                                     <input
-                                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                        aria-describedby="file_input_help" name="files[]" multiple
+                                        class="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                                        aria-describedby="file_input_help" name="files[]"
                                         onchange="displaySelectedFiles(this.files)" id="file_input" type="file">
-                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG
-                                        or GIF (MAX. 800x400px).</p>
+                                    <p class="mt-1 text-sm text-gray-300" id="file_input_help">PNG or
+                                    JPG (MAX.
+                                    1080x1080px).</p>
                                 </div>
                                 <div class="col-span-2">
                                     <label for="description"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
+                                        class="block mb-2 text-sm font-medium text-white">Product
                                         Description</label>
                                     <textarea id="description" name="desc" rows="4"
-                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        class="block p-2.5 w-full text-sm rounded-lg border bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Write product description here"></textarea>
                                 </div>
                                 <button type="submit"
-                                    class="text-white inline-flex items-center bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
+                                    class="text-white inline-flex items-center focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-500 hover:bg-blue-600 focus:ring-blue-700">
                                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd"

@@ -3,13 +3,13 @@
 <!-- NAVIGATION PAGE -->
 <?php include 'includes/navigation.php'; ?>
 
-<main class="flex-grow p-4">
+<main class="flex-grow p-4 mb-12">
     <div id="ordersContent" class="rounded-lg p-4">
         <h1 class="text-4xl font-bold mb-4">Requests</h1>
         <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4">
             <div class="">
                 <select id="requestStatusFilter"
-                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="block w-full p-2 text-sm border rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     onchange="filterCards()">
                     <option value="all" selected>All Requests</option>
                     <option value="pending">Pending</option>
@@ -18,16 +18,17 @@
                 </select>
             </div>
             <label for="table-search" class="sr-only">Search</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+            <div class="static">
+                <div class="relative left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="mt-10 w-5 h-5 text-gray-400 absolute" aria-hidden="true" fill="currentColor"
+                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                            clip-rule="evenodd"></path>
                     </svg>
                 </div>
                 <input type="text" id="table-search-users"
-                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="block p-2 ps-10 text-sm border rounded-lg w-80 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search for requests">
             </div>
         </div>
@@ -69,7 +70,7 @@
                 if ($rq_status == 'accepted' && $pd_id != NULL) {
                     ?>
                     <div data-status="<?php echo $rq_status; ?>"
-                        class="flex max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-2">
+                        class="flex max-w-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 mb-2">
                         <!-- Delete Trash Icon -->
                         <button class="ml-2 mr-6 text-gray-500 hover:text-red-500 focus:outline-none"
                             onclick="redirectToRequestDelete('<?php echo $rq_id; ?>')">
@@ -81,7 +82,7 @@
                         </button>
                         <div class="flex-1">
                             <span
-                                class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 dark:bg-green-800 dark:text-green-400 border border-green-500 ">
+                                class="text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 bg-green-800 text-green-400 border border-green-500 ">
                                 <svg class="w-2.5 h-2.5 me-1.5 mt-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="currentColor" viewBox="0 0 18 21">
                                     <path
@@ -89,23 +90,25 @@
                                 </svg>
                                 Request Accepted. Add to Cart now!
                             </span>
-                            <h5 class="mb-2 mt-2.5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            <h5 class="mb-2 mt-2.5 text-2xl font-bold tracking-tight text-white">
                                 <?php echo $rq_pd_name; ?>
                             </h5>
-                            <p class="font-normal text-gray-700 dark:text-gray-400">
+                            <p class="font-normal text-gray-400">
                                 <?php echo $rq_desc; ?>
                             </p>
-                            <a href="#" class="" id="openModal_<?php echo $rq_id; ?>">
-                                <div class="inline-block border border-gray-500 rounded p-2 mt-3">
-                                    <p class="text-xs text-gray-500 focus:outline-none flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                            stroke="currentColor" class="w-4 h-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
-                                        </svg>&nbsp; Attachment
-                                    </p>
-                                </div>
-                            </a>
+                            <?php if ($rq_img != null) { ?>
+                                <a href="#" class="" id="openModal_<?php echo $rq_id; ?>">
+                                    <div class="inline-block border border-gray-500 rounded p-2 mt-3">
+                                        <p class="text-xs text-gray-500 focus:outline-none flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor" class="w-4 h-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+                                            </svg>&nbsp; Attachment
+                                        </p>
+                                    </div>
+                                </a>
+                            <?php } ?>
                             <p class="mt-2.5 text-xs text-gray-500 focus:outline-none flex items-center">
                                 <?php echo $rq_date; ?>
                             </p>
@@ -118,9 +121,9 @@
                             <input type="hidden" name="pd_price_<?php echo $rq_id; ?>" value="<?php echo $pd_price; ?>">
                             <input type="hidden" name="pd_ct_email_<?php echo $rq_id; ?>" value="<?php echo $email; ?>">
                             <button type="submit"
-                                class="my-auto h-10 text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="w-5 h-5 mr-2 text-gray-800 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 21">
+                                class="my-auto h-10 text-white inline-flex items-center focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+                                <svg class="w-5 h-5 mr-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 20 21">
                                     <path
                                         d="M15 14H7.78l-.5-2H16a1 1 0 0 0 .962-.726l.473-1.655A2.968 2.968 0 0 1 16 10a3 3 0 0 1-3-3 3 3 0 0 1-3-3 2.97 2.97 0 0 1 .184-1H4.77L4.175.745A1 1 0 0 0 3.208 0H1a1 1 0 0 0 0 2h1.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 10 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3Zm-8 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm8 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
                                     <path d="M19 3h-2V1a1 1 0 0 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 0 0 2 0V5h2a1 1 0 1 0 0-2Z" />
@@ -133,7 +136,7 @@
                 } else if ($rq_status == 'pending') {
                     ?>
                         <div data-status="<?php echo $rq_status; ?>"
-                            class="flex max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-2">
+                            class="flex max-w-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 mb-2">
                             <!-- Delete Trash Icon -->
                             <button class="ml-2 mr-6 text-gray-500 hover:text-red-500 focus:outline-none"
                                 onclick="redirectToRequestDelete('<?php echo $rq_id; ?>')">
@@ -145,7 +148,7 @@
                             </button>
                             <div class="flex-1">
                                 <span
-                                    class="bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500 ">
+                                    class="text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 bg-gray-700 text-gray-400 border border-gray-500">
                                     <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor" viewBox="0 0 20 20">
                                         <path
@@ -153,58 +156,13 @@
                                     </svg>
                                     Request Pending
                                 </span>
-                                <h5 class="mb-2 mt-2.5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                <h5 class="mb-2 mt-2.5 text-2xl font-bold tracking-tight text-white">
                                 <?php echo $rq_pd_name; ?>
                                 </h5>
-                                <p class="font-normal text-gray-700 dark:text-gray-400">
+                                <p class="font-normal text-gray-400">
                                 <?php echo $rq_desc; ?>
                                 </p>
-                                <a href="#" class="" id="openModal_<?php echo $rq_id; ?>">
-                                    <div class="inline-block border border-gray-500 rounded p-2 mt-3">
-                                        <p class="text-xs text-gray-500 focus:outline-none flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                stroke="currentColor" class="w-4 h-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
-                                            </svg>&nbsp; Attachment
-                                        </p>
-                                    </div>
-                                </a>
-                                <p class="mt-2.5 text-xs text-gray-500 focus:outline-none flex items-center">
-                                <?php echo $rq_date; ?>
-                                </p>
-                            </div>
-                        </div>
-                    <?php
-                } else if ($rq_status == 'rejected') {
-                    ?>
-                            <div data-status="<?php echo $rq_status; ?>"
-                                class="flex max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-2">
-                                <!-- Delete Trash Icon -->
-                                <button class="ml-2 mr-6 text-gray-500 hover:text-red-500 focus:outline-none"
-                                    onclick="redirectToRequestDelete('<?php echo $rq_id; ?>')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                        stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                    </svg>
-                                </button>
-                                <div class="flex-1">
-                                    <span
-                                        class="bg-red-100 text-red-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 dark:bg-red-900 dark:text-red-300 border border-red-500 ">
-                                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z" />
-                                        </svg>
-                                        Request Rejected
-                                    </span>
-                                    <h5 class="mb-2 mt-2.5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                <?php echo $rq_pd_name; ?>
-                                    </h5>
-                                    <p class="font-normal text-gray-700 dark:text-gray-400">
-                                <?php echo $rq_desc; ?>
-                                    </p>
+                            <?php if ($rq_img != null) { ?>
                                     <a href="#" class="" id="openModal_<?php echo $rq_id; ?>">
                                         <div class="inline-block border border-gray-500 rounded p-2 mt-3">
                                             <p class="text-xs text-gray-500 focus:outline-none flex items-center">
@@ -216,6 +174,55 @@
                                             </p>
                                         </div>
                                     </a>
+                            <?php } ?>
+                                <p class="mt-2.5 text-xs text-gray-500 focus:outline-none flex items-center">
+                                <?php echo $rq_date; ?>
+                                </p>
+                            </div>
+                        </div>
+                    <?php
+                } else if ($rq_status == 'rejected') {
+                    ?>
+                            <div data-status="<?php echo $rq_status; ?>"
+                                class="flex max-w-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 mb-2">
+                                <!-- Delete Trash Icon -->
+                                <button class="ml-2 mr-6 text-gray-500 hover:text-red-500 focus:outline-none"
+                                    onclick="redirectToRequestDelete('<?php echo $rq_id; ?>')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                </button>
+                                <div class="flex-1">
+                                    <span
+                                        class="text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded me-2 bg-red-900 text-red-300 border border-red-500 ">
+                                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z" />
+                                        </svg>
+                                        Request Rejected
+                                    </span>
+                                    <h5 class="mb-2 mt-2.5 text-2xl font-bold tracking-tight text-white">
+                                <?php echo $rq_pd_name; ?>
+                                    </h5>
+                                    <p class="font-normal text-gray-400">
+                                <?php echo $rq_desc; ?>
+                                    </p>
+                            <?php if ($rq_img != null) { ?>
+                                        <a href="#" class="" id="openModal_<?php echo $rq_id; ?>">
+                                            <div class="inline-block border border-gray-500 rounded p-2 mt-3">
+                                                <p class="text-xs text-gray-500 focus:outline-none flex items-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                        stroke="currentColor" class="w-4 h-4">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+                                                    </svg>&nbsp; Attachment
+                                                </p>
+                                            </div>
+                                        </a>
+                            <?php } ?>
                                     <p class="mt-2.5 text-xs text-gray-500 focus:outline-none flex items-center">
                                 <?php echo $rq_date; ?>
                                     </p>
@@ -278,6 +285,9 @@
                         const requestStatusFilter = document.getElementById("requestStatusFilter");
                         const tableSearchUsers = document.getElementById("table-search-users");
                         const requestCards = document.querySelectorAll('.flex[data-status]');
+                        var norequest = document.getElementById("noRequest");
+
+                        var found = false;
 
                         // Function to handle filtering based on request status
                         function filterByStatus(selectedStatus) {
@@ -286,10 +296,17 @@
 
                                 if (selectedStatus === "all" || cardStatus === selectedStatus) {
                                     card.style.display = "flex";
+                                    found = true;
                                 } else {
                                     card.style.display = "none";
                                 }
                             });
+                        }
+
+                        if (found) {
+                            norequest.style.display = "none";
+                        } else {
+                            norequest.style.display = "";
                         }
 
                         // Function to handle filtering based on search input
@@ -325,12 +342,13 @@
             }
         } else {
             ?>
-            <div class="w-full h-max rounded-lg shadow bg-gray-800 border-gray-900 px-6 py-10">
+            <div id='noRequest' class="w-full h-max rounded-lg shadow bg-gray-800 border-gray-900 px-6 py-10">
                 <h2 class="text-2xl text-center text-bold text-white mb-2.5">Oops, You doesn't Request Anything <p
-                        class="pt-1 text-xs tracking-tight text-center text-white border-gray-600">Send a Request to our shoppers now!</p>
+                        class="pt-1 text-xs tracking-tight text-center text-white border-gray-600">Send a Request to our
+                        shoppers now!</p>
                 </h2>
                 <button
-                    class="block mx-auto item-center text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+                    class="block mx-auto item-center text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-500 hover:bg-blue-600 focus:ring-blue-700"
                     type="button" data-modal-target="request_modal" data-modal-toggle="request_modal">
                     + Request
                 </button>

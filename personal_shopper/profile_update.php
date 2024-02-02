@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $resultUser = $statementUser->execute();
 
         if ($resultUser) {
-            header("Location: profile.php"); // Redirect to the dashboard or any other page after successful update
+            echo '<script>alert("Profile updated successfully"); window.location = "profile.php";</script>';// Redirect to the dashboard or any other page after successful update
             exit();
         } else {
             echo "User table update failed. Please try again.";

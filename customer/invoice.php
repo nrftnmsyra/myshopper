@@ -29,6 +29,7 @@ session_start();
 include 'includes/db.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Process form data and insert into the payment table
+
     $pt_date = $_POST['pt_date'];
     $pt_time = $_POST['pt_time'];
     $pt_method = $_POST['pt_method'];
@@ -48,44 +49,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sqlpayment = "INSERT INTO payment (pt_date, pt_time, pt_method, pt_status, pt_total_price, pt_ct_email)
     VALUES ('$pt_date', '$pt_time', '$pt_method', '$pt_status', '$pt_total_price', '$pt_ct_email')";
     $conn->query($sqlpayment);
+    $last_inserted_pt_id = $conn->insert_id;
 
     $sqlInsert = "INSERT INTO invoice (iv_ct_email, iv_date, iv_order_code) VALUES (?, ?, ?)";
     $stmtInsert = $conn->prepare($sqlInsert);
     $stmtInsert->bind_param("sss", $pt_ct_email, $pt_date, $order_code);
     $stmtInsert->execute();
+    $last_inserted_id = $conn->insert_id;
 
     foreach ($ProductIds as $productId1) {
 
-        $sqlSelectPID = "SELECT pt_id FROM payment WHERE pt_date=? AND pt_time=? AND pt_method=? AND pt_status=? AND pt_total_price=? AND pt_ct_email=?";
-        $stmtselectpid = $conn->prepare($sqlSelectPID);
-        $stmtselectpid->bind_param("ssssds", $pt_date, $pt_time, $pt_method, $pt_status, $pt_total_price, $pt_ct_email);
-        $stmtselectpid->execute();
-        $resultSelect = $stmtselectpid->get_result();
+        $clearCartQuery = "DELETE FROM cart WHERE cart_ct_email = ? AND cart_pd_id = ?";
+        $stmtClearCart = $conn->prepare($clearCartQuery);
+        $stmtClearCart->bind_param("si", $email, $productId1);
+        $stmtClearCart->execute();
 
-        if ($resultSelect->num_rows > 0) {
-            $row1 = $resultSelect->fetch_assoc();
-            $pt_id = $row1['pt_id'];
 
-            $sqlstatus = "UPDATE orders SET order_status='$orderstatus', order_payment_id = '$pt_id'
+        $sqlstatus = "UPDATE orders SET order_status='$orderstatus', order_payment_id = '$last_inserted_pt_id'
         WHERE order_ct_email ='$pt_ct_email' AND order_pd_id = '$productId1' AND order_code = '$order_code'";
-            $conn->query($sqlstatus);
+        $conn->query($sqlstatus);
 
-            $sqlSelectIID = "SELECT iv_id FROM invoice WHERE iv_ct_email=? AND iv_order_code =?";
-            $stmtselectiid = $conn->prepare($sqlSelectIID);
-            $stmtselectiid->bind_param("ss", $pt_ct_email, $order_code);
-            $stmtselectiid->execute();
-            $resultSelectiid = $stmtselectiid->get_result();
+        $sqlSelectIID = "SELECT iv_id FROM invoice WHERE iv_ct_email=? AND iv_order_code =?";
+        $stmtselectiid = $conn->prepare($sqlSelectIID);
+        $stmtselectiid->bind_param("ss", $pt_ct_email, $order_code);
+        $stmtselectiid->execute();
+        $resultSelectiid = $stmtselectiid->get_result();
 
-            if ($resultSelectiid->num_rows > 0) {
-                $row2 = $resultSelectiid->fetch_assoc();
-                $iv_id = $row2['iv_id'];
-                $GLOBALS['invoice_id'] = $iv_id;
+        if ($resultSelectiid->num_rows > 0) {
+            $row2 = $resultSelectiid->fetch_assoc();
+            $iv_id = $row2['iv_id'];
 
-                $sqlinvoice = "UPDATE invoice SET iv_payment_id='$pt_id' WHERE iv_id = '$iv_id'";
-                $conn->query($sqlinvoice);
-            }
+            $sqlinvoice = "UPDATE invoice SET iv_payment_id='$last_inserted_pt_id' WHERE iv_id = '$iv_id'";
+            $conn->query($sqlinvoice);
         }
-        $sqlupdate = "UPDATE orders SET order_invoice_id = '$iv_id'
+        $sqlupdate = "UPDATE orders SET order_invoice_id = '$last_inserted_id'
     WHERE order_ct_email ='$pt_ct_email' AND order_pd_id = '$productId1' AND order_code = '$order_code'";
         $conn->query($sqlupdate);
     }
@@ -165,10 +162,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <table class="w-full text-left mb-8">
                         <thead>
                             <tr>
-                                <th class="text-gray-700 font-bold uppercase py-2">Description</th>
-                                <th class="text-gray-700 font-bold uppercase py-2">Quantity</th>
-                                <th class="text-gray-700 font-bold uppercase py-2">Price</th>
-                                <th class="text-gray-700 font-bold uppercase py-2">Total</th>
+                                <th class="text-gray-700 font-bold uppercase py-2 w-40">Description</th>
+                                <th class="text-gray-700 font-bold uppercase py-2 text-center">Quantity</th>
+                                <th class="text-gray-700 font-bold uppercase py-2 text-center">Price</th>
+                                <th class="text-gray-700 font-bold uppercase py-2 text-center">Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -204,18 +201,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 if ($resultP) {
                                     // Loop through the fetched data and display it in the order summary div
                                     while ($rowP = mysqli_fetch_assoc($resultP)) {
+                                        $pdqty = $rowP['pd_quantity'];
+                                        $odqty = $rowP['order_pd_qty'];
+                                        $newpdqty = $pdqty - $odqty;
+                                        if ($newpdqty != 0) {
+                                            $updateQ = "UPDATE product SET pd_quantity = $newpdqty WHERE pd_id = $productId3";
+                                            $stmtupQ = $conn->prepare($updateQ);
+                                            $stmtupQ->execute();
+                                        } else if ($newpdqty == 0) {
+                                            $updateQ = "UPDATE product SET pd_quantity = $newpdqty, pd_availability = 0 WHERE pd_id = $productId3";
+                                            $stmtupQ = $conn->prepare($updateQ);
+                                            $stmtupQ->execute();
+                                        }
                                         ?>
                                         <tr>
-                                            <td class="py-4 text-gray-700">
+                                            <td class="py-4 text-gray-700 w-40">
                                                 <?php echo $rowP['pd_name']; ?>
                                             </td>
-                                            <td class="py-4 text-gray-700">
+                                            <td class="py-4 text-gray-700 text-center">
                                                 <?php echo $rowP['order_pd_qty']; ?>
                                             </td>
-                                            <td class="py-4 text-gray-700">RM
+                                            <td class="py-4 text-gray-700 text-center">RM
                                                 <?php echo number_format($rowP['order_total_price'], 2); ?>
                                             </td>
-                                            <td class="py-4 text-gray-700">RM
+                                            <td class="py-4 text-gray-700 text-center">RM
                                                 <?php echo number_format($total = $rowP['order_total_price'] * $rowP['order_pd_qty'], 2); ?>
                                             </td>
                                         </tr>
@@ -227,19 +236,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             ?>
                         </tbody>
                     </table>
-                    <div class="flex justify-end mb-8">
+                    <div class="flex justify-end mb-1">
                         <div class="text-gray-700 mr-2">Subtotal:</div>
                         <div class="text-gray-700">RM
                             <?php echo number_format($subtotal, 2); ?>
                         </div>
                     </div>
-                    <div class="flex justify-end mb-8">
+                    <div class="flex justify-end mb-1">
                         <div class="text-gray-700 mr-2">Shipping:</div>
                         <div class="text-gray-700">RM8.00</div>
 
                     </div>
-                    <div class="flex justify-end mb-8">
-                        <div class="text-gray-700 mr-2">Total:</div>
+                    <div class="border-t-2 border-gray-300 flex justify-end mb-1">
+                        <div class="text-gray-700 mt-1 mr-2">Total:</div>
                         <div class="text-gray-700 font-bold text-xl">RM
                             <?php echo number_format($rowQ['pt_total_price'], 2); ?>
                         </div>

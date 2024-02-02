@@ -22,23 +22,28 @@
 <body class="bg-gray-100">
     <div class="p-4 sm:ml-52 h-100">
         <!-- wajib letak -->
-        <div class="relative overflow-x-auto shadow-md  mt-20">
-            <h1 class="text-4xl font-bold mb-4">Customer</h1>
-
+        <h1 class="text-4xl font-bold mb-4 mt-20">Customer</h1>
+        <div class="relative overflow-x-auto shadow-md">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <div class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 p-4 bg-gray-900">
+                <div
+                    class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 p-4 bg-gray-900">
                     <label for="table-search" class="sr-only">Search</label>
                     <div class="relative">
-                        <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        <div
+                            class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users">
+                        <input type="text" id="table-search-users" oninput="filterTable()"
+                            class="block p-2 ps-10 text-sm border rounded-lg w-80 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Search for users">
                     </div>
                 </div>
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <table id="user-table" class="w-full text-sm text-left rtl:text-right text-gray-400">
+                    <thead class="text-xs uppercase bg-gray-700 text-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
                                 Name
@@ -55,30 +60,106 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                <img class="w-10 h-10 rounded-full" src="../assets/default_pfp.png" alt="Jese image">
-                                <div class="ps-3">
-                                    <div class="text-base font-semibold">Neil Sims</div>
-                                    <div class="font-normal text-gray-500">neil.sims@flowbite.com</div>
-                                </div>
-                            </th>
-                            <td class="px-6 py-4">
-                                React Developer
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center">
-                                    <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <a href="customer_details.php" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
-                            </td>
-                        </tr>
+                        <?php
+                        session_start();
 
+                        include 'includes/db.php';
+
+                        // Select data from the table with the search condition
+                        $selectQuery = "SELECT * FROM customer";
+                        $result = $conn->query($selectQuery);
+
+                        // Check if there are rows in the result
+                        if ($result->num_rows > 0) {
+                            // Fetch data from each row
+                            while ($row = $result->fetch_assoc()) {
+                                // Process data or store it in an array for later use
+                                $ct_email = $row['ct_email'];
+                                $ct_username = $row['ct_username'];
+                                $ct_first_name = $row['ct_first_name'];
+                                $ct_last_name = $row['ct_last_name'];
+                                $ct_phnum = $row['ct_phnum'];
+                                $ct_address = $row['ct_address'];
+                                $ct_img = $row['ct_img'];
+                                ?>
+                                <tr
+                                    class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
+                                    <th scope="row"
+                                        class="flex items-center px-6 py-4 whitespace-nowrap text-white">
+                                        <img class="w-10 h-10 rounded-full" src="<?php echo $ct_img; ?>" alt="image">
+                                        <div class="ps-3">
+                                            <div class="text-base font-semibold">
+                                                <?php echo $ct_first_name . ' ' . $ct_last_name; ?>
+                                            </div>
+                                            <div class="font-normal text-gray-500">
+                                                <?php echo $ct_email; ?>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <td class="px-6 py-4">
+                                        <?php echo $ct_username; ?>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <?php echo $ct_phnum; ?>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <a href="customer_details.php?ct_email=<?php echo $ct_email; ?>"
+                                            class="font-medium text-blue-500 hover:underline">View</a>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                        } else {
+                            echo "<tbody>";
+                            echo "<tr class='border-b bg-gray-800 border-gray-700 hover:bg-gray-900'>";
+                            echo "<td colspan='4' class='px-6 py-4 text-center'>No Order Found</td>";
+                            echo "</tr>";
+                            echo "</tbody>";
+                        }
+                        ?>
                     </tbody>
+                    <tr id='noReviewRow' class='border-b bg-gray-800 border-gray-700 hover:bg-gray-900'
+                        style='display: none;'>
+                        <td colspan='4' class='px-6 py-4 text-center'>No Request Found</td>
+                    </tr>
                 </table>
             </div>
+
+            <script>
+                function filterTable() {
+                    var input, filter, table, tr, td, i, txtValue, noReviewRow;
+                    input = document.getElementById("table-search-users");
+                    filter = input.value.toUpperCase();
+                    table = document.getElementById("user-table");
+                    tr = table.getElementsByTagName("tr");
+                    noReviewRow = document.getElementById("noReviewRow");
+
+                    var found = false;
+
+                    for (i = 0; i < tr.length; i++) {
+                        td = tr[i].getElementsByTagName("td")[0]; // Adjust the index based on the column you want to filter
+
+                        if (td) {
+                            txtValue = td.textContent || td.innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                tr[i].style.display = "";
+                                found = true;
+                            } else {
+                                tr[i].style.display = "none";
+                            }
+                        }
+                    }
+
+                    // Show/hide the 'No Request Found' row
+                    if (found) {
+                        noReviewRow.style.display = "none";
+                    } else {
+                        noReviewRow.style.display = "";
+                    }
+                }
+            </script>
 
 
         </div>

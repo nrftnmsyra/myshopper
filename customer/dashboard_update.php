@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $resultUser = $conn->query($updateUserQuery);
 
     if ($resultCustomer && $resultUser) {
-        header("Location: dashboard.php");
+        echo '<script>alert("Profile Updated Successfully"); window.location = "dashboard.php";</script>';
     } else {
         echo "Error updating data: " . $conn->error;
     }

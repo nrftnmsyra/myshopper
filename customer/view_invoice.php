@@ -18,7 +18,7 @@ if (isset($_GET['order_code'])) {
             <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                 <li class="inline-flex items-center">
                     <a href="order.php"
-                        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue">
+                        class="inline-flex items-center text-sm font-medium text-gray-400 hover:text-blue">
                         <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor" viewBox="0 0 20 20">
                             <path
@@ -35,7 +35,7 @@ if (isset($_GET['order_code'])) {
                                 d="m1 9 4-4-4-4" />
                         </svg>
                         <a href="order_details.php?order_code=<?php echo $order_code; ?>"
-                            class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue">
+                            class="inline-flex items-center text-sm font-medium text-gray-700 text-gray-400 hover:text-blue">
                             Order Details
                         </a>
                     </div>
@@ -47,7 +47,7 @@ if (isset($_GET['order_code'])) {
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m1 9 4-4-4-4" />
                         </svg>
-                        <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Invoice</span>
+                        <span class="ms-1 text-sm font-medium md:ms-2 text-gray-400">Invoice</span>
                     </div>
                 </li>
             </ol>
@@ -113,7 +113,8 @@ if (isset($_GET['order_code'])) {
                             <div class="text-sm">Date:
                                 <?php echo $rowQ['iv_date']; ?>
                             </div>
-                            <div class="text-sm">Invoice #: INV<?php echo $rowQ['iv_id']; ?>
+                            <div class="text-sm">Invoice #: INV
+                                <?php echo $rowQ['iv_id']; ?>
                             </div>
                         </div>
                     </div>
@@ -137,10 +138,10 @@ if (isset($_GET['order_code'])) {
                     <table class="w-full text-left mb-8">
                         <thead>
                             <tr>
-                                <th class="text-gray-700 font-bold uppercase py-2">Description</th>
-                                <th class="text-gray-700 font-bold uppercase py-2">Quantity</th>
-                                <th class="text-gray-700 font-bold uppercase py-2">Price</th>
-                                <th class="text-gray-700 font-bold uppercase py-2">Total</th>
+                                <th class="text-gray-700 font-bold uppercase py-2 w-40">Description</th>
+                                <th class="text-gray-700 font-bold uppercase py-2 text-center">Quantity</th>
+                                <th class="text-gray-700 font-bold uppercase py-2 text-center">Price</th>
+                                <th class="text-gray-700 font-bold uppercase py-2 text-center">Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -174,16 +175,16 @@ if (isset($_GET['order_code'])) {
                                 while ($row2 = mysqli_fetch_assoc($result2)) {
                                     ?>
                                     <tr>
-                                        <td class="py-4 text-gray-700">
+                                        <td class="py-4 text-gray-700 w-40">
                                             <?php echo $row2['pd_name']; ?>
                                         </td>
-                                        <td class="py-4 text-gray-700">
+                                        <td class="py-4 text-gray-700 text-center">
                                             <?php echo $row2['order_pd_qty']; ?>
                                         </td>
-                                        <td class="py-4 text-gray-700">RM
+                                        <td class="py-4 text-gray-700 text-center">RM
                                             <?php echo number_format($row2['order_total_price'], 2); ?>
                                         </td>
-                                        <td class="py-4 text-gray-700">RM
+                                        <td class="py-4 text-gray-700 text-center">RM
                                             <?php echo number_format($total = $row2['order_total_price'] * $row2['order_pd_qty'], 2); ?>
                                         </td>
                                     </tr>
@@ -194,18 +195,19 @@ if (isset($_GET['order_code'])) {
                             ?>
                         </tbody>
                     </table>
-                    <div class="flex justify-end mb-8">
+                    <div class="flex justify-end mb-1">
                         <div class="text-gray-700 mr-2">Subtotal:</div>
                         <div class="text-gray-700">RM
                             <?php echo number_format($subtotal, 2); ?>
                         </div>
                     </div>
-                    <div class="flex justify-end mb-8">
+                    <div class="flex justify-end mb-1">
                         <div class="text-gray-700 mr-2">Shipping:</div>
                         <div class="text-gray-700">RM8.00</div>
+
                     </div>
-                    <div class="flex justify-end mb-8">
-                        <div class="text-gray-700 mr-2">Total:</div>
+                    <div class="border-t-2 border-gray-300 flex justify-end mb-1">
+                        <div class="text-gray-700 mt-1 mr-2">Total:</div>
                         <div class="text-gray-700 font-bold text-xl">RM
                             <?php echo number_format($rowQ['pt_total_price'], 2); ?>
                         </div>
@@ -239,7 +241,7 @@ include 'includes/footer.php'; ?>
 
         html2pdf(element, {
             margin: 10,
-            filename: 'document.pdf',
+            filename: 'INV_<?php echo $rowQ['iv_id']; ?>.pdf',
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }

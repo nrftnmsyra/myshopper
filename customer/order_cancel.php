@@ -13,9 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $stmt->bind_param("ss", $order_status, $orderCode);
 
     if ($stmt->execute()) {
-
-
-        header("Location: order_details.php?order_code=$orderCode");
+        echo '<script>alert("This order have been cancelled"); window.location = "order_details.php?order_code='.$orderCode.'";</script>';
     }
     $stmt->close();
     $conn->close();

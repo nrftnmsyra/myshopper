@@ -1,8 +1,8 @@
 <?php
 $servername = "localhost";
-$dbusername = "root";
-$dbpassword = "";
-$dbname = "myshopper";
+$dbusername = "mycoding_ashraf";
+$dbpassword = "b2~_2{?E,LWK";
+$dbname = "mycoding_myshopper";
 
 // Create a database connection
 $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);

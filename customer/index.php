@@ -47,7 +47,7 @@ $ps_rating = 0;
             ?>
             <div class="flex justify-center">
                 <div
-                    class="w-1/2 mt-1 mb-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    class="w-1/2 mt-1 mb-1 border rounded-lg shadow bg-gray-800 border-gray-700">
                     <div class="flex">
                         <div class="flex w-48 p-3">
                             <a href="ps_details.php?ps_email=<?php echo $ps_email; ?>">
@@ -56,7 +56,7 @@ $ps_rating = 0;
                         </div>
                         <div class="flex-grow px-5 py-5">
                             <a href="ps_details.php?ps_email=<?php echo $ps_email; ?>">
-                                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                                <h5 class="text-xl font-semibold tracking-tight text-white">
                                     <?php echo $ps_username; ?>
                                 </h5>
                             </a>
@@ -74,7 +74,7 @@ $ps_rating = 0;
 
                                 if ($ps_rating < 5) {
                                     for ($i = 0; $i < 5 - $ps_rating; $i++) {
-                                        echo '<svg class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        echo '<svg class="w-4 h-4 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
                                 <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                             </svg>';
                                     }
@@ -84,17 +84,17 @@ $ps_rating = 0;
                                 }
                                 ?>
                                 <span
-                                    class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
+                                    class="text-xs font-semibold px-2.5 py-0.5 rounded bg-blue-200 text-blue-800 ms-3">
                                     <?php echo number_format($ps_rating,1); ?>
                                 </span>
                             </div>
                             <div class="flex items-center justify-between">
-                                <span class="text-3xl font-bold text-gray-900 dark:text-white">RM
+                                <span class="text-3xl font-bold text-white">RM
                                     <?php echo number_format($ps_fee, 2); ?><span class="text-sm text-gray-500"> (service
                                         fee)</span>
                                 </span>
                                 <button
-                                    class="block text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+                                    class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-500 hover:bg-blue-600 focus:ring-blue-700"
                                     type="button" onClick="parent.location='ps_details.php?ps_email=<?php echo $ps_email; ?>'">
                                     View
                                 </button>

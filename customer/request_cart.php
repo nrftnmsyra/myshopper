@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($insert_stmt->execute()) {
             // Registration successful
-            echo '<script>alert("Product successfully added."); window.location = "../customer/request.php";</script>';
+            echo '<script>alert("Product added successfully"); window.location = "../customer/request.php";</script>';
         } else {
             // Registration failed
             echo '<script>alert("Operation failed. Please try again.")</script>';

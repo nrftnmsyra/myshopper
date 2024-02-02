@@ -21,10 +21,10 @@
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-20">
             <h1 class="text-4xl font-bold mb-4 text-white">Orders</h1>
             <div
-                class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
+                class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-gray-900">
                 <div class="">
                     <select id="orderStatusFilter"
-                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        class="block w-full p-2 text-sm border rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
                         <option value="all">All Orders</option>
                         <option value="To Pay">To Pay</option>
                         <option value="To Ship">To Ship</option>
@@ -36,19 +36,19 @@
                 <label for="table-search" class="sr-only">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
                     <input type="text" id="orderSearch"
-                        class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="block p-2 ps-10 text-sm border rounded-lg w-80 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search for orders">
                 </div>
             </div>
             <span
-                class="flex-end mb-2.5 bg-gray-100 text-gray-800 text-xs font-medium inline-flex items-center p-2.5 py-0.5 rounded me-2 dark:bg-gray-700 dark:text-gray-400 border border-gray-500 ml-auto">
+                class="flex-end mb-2.5 text-xs font-medium inline-flex items-center p-2.5 py-0.5 rounded me-2 bg-gray-700 text-gray-400 border border-gray-500 ml-auto">
                 <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                     viewBox="0 0 20 20">
                     <path
@@ -58,8 +58,8 @@
             </span>
 
 
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-400">
+                <thead class="text-xs uppercase bg-gray-700 text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             Order ID
@@ -128,7 +128,7 @@
                             $stmtP->execute();
                             $resultP = $stmtP->get_result();
                             ?>
-                            <tr class="bg-white border-b bg-gray-800 border-gray-700">
+                            <tr class="border-b bg-gray-800 border-gray-700">
                                 <td class="px-6 py-4">
                                     <div class="flex items-center">
                                         <?php echo $order_id; ?>
@@ -144,15 +144,19 @@
                                         <?php echo $order_ct_email; ?>
                                     </div>
                                 </td>
-                                <th scope="row"
-                                    class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    <a href="#" id="openModal_<?php echo $pd_id; ?>">
-                                        <img class="w-10 h-10 rounded-full" src="<?php echo $pd_img; ?>" alt="Jese image">
+                                <th scope="row" class="flex items-center px-6 py-4 whitespace-nowrap text-white">
+                                    <a href="#" id="openModal_<?php echo $order_code; ?>">
+                                        <div class="w-10 h-10">
+                                            <!-- A rectangular picture -->
+                                            <img class="h-full w-full object-cover rounded-full" src="<?php echo $pd_img; ?>"
+                                                alt="" />
+                                        </div>
                                     </a>
                                     <div class="ps-3">
                                         <p class="text-base font-semibold">
-                                            <?php echo $pd_name; ?>
+                                            <?php echo strlen($pd_name) > 40 ? substr($pd_name, 0, 40) . '...' : $pd_name; ?>
                                         </p>
+
                                         <div class="font-normal text-gray-500 mb-1">Quantity:
                                             <?php echo $order_pd_qty; ?>
                                         </div>
@@ -196,7 +200,7 @@
                                             <div class="flex items-center">
                                                 <button data-modal-target="crud-modal_<?php echo $order_code; ?>"
                                                     data-modal-toggle="crud-modal_<?php echo $order_code; ?>"
-                                                    class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                    class="text-white inline-flex items-center focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
                                                     type="button">
                                                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -223,14 +227,18 @@
                                                         <button id="redirectButton"
                                                             onclick="window.location.href ='form.php?order_code=<?php echo $order_code ?>'"
                                                             class="flex items-center">
-                                                            <svg class="mr-3 mt-0.5 w-4 h-4 text-gray-400 hover:text-blue-600"
-                                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                                viewBox="0 0 20 20">
+                                                            <svg class="mr-1.5 mt-0.5 w-4 h-4 text-gray-400 hover:text-blue-600"
+                                                                data-tooltip-target="tooltip-no-arrow" aria-hidden="true"
+                                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                                                 <path
                                                                     d="M15.133 10.632v-1.8a5.407 5.407 0 0 0-4.154-5.262.955.955 0 0 0 .021-.106V1.1a1 1 0 0 0-2 0v2.364a.944.944 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C4.867 13.018 3 13.614 3 14.807 3 15.4 3 16 3.538 16h12.924C17 16 17 15.4 17 14.807c0-1.193-1.867-1.789-1.867-4.175Zm-13.267-.8a1 1 0 0 1-1-1 9.424 9.424 0 0 1 2.517-6.39A1.001 1.001 0 1 1 4.854 3.8a7.431 7.431 0 0 0-1.988 5.037 1 1 0 0 1-1 .995Zm16.268 0a1 1 0 0 1-1-1A7.431 7.431 0 0 0 15.146 3.8a1 1 0 0 1 1.471-1.354 9.425 9.425 0 0 1 2.517 6.391 1 1 0 0 1-1 .995ZM6.823 17a3.453 3.453 0 0 0 6.354 0H6.823Z" />
                                                             </svg>
-                                                    <?php echo $order_tracking; ?>
+                                                            <div id="tooltip-no-arrow" role="tooltip"
+                                                                class="absolute z-10 invisible inline-block px-3 py-2 text-xs font-normal text-white rounded-lg shadow-sm opacity-0 tooltip bg-gray-700">
+                                                                Notify Customer
+                                                            </div>
                                                         </button>
+                                                <?php echo $order_tracking; ?>
                                             <?php } else if ($order_notify == 1) {
 
                                                 echo $order_tracking;
@@ -271,17 +279,17 @@
                                 ?>
                             </tr>
                             <!-- Modal container -->
-                            <div id="imageModal_<?php echo $rq_id; ?>"
+                            <div id="imageModal_<?php echo $order_code; ?>"
                                 class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
                                 <!-- Modal content -->
                                 <div class="bg-white p-4 rounded-md shadow-md max-w-md w-full mx-auto relative">
                                     <!-- Close button (x icon) -->
                                     <span
                                         class="cursor-pointer absolute top-0.5 right-2 text-gray-800 hover:text-red-500 text-4xl"
-                                        id="closeModal_<?php echo $rq_id; ?>">&times;</span>
+                                        id="closeModal_<?php echo $order_code; ?>">&times;</span>
                                     <!-- Image container -->
-                                    <div id="modalContent_<?php echo $rq_id; ?>"><img class="pb-5 rounded-t-lg"
-                                            src="<?php echo $rq_img; ?>" alt="product image" /></div>
+                                    <div id="modalContent_<?php echo $order_code; ?>"><img class="pb-5 rounded-t-lg"
+                                            src="<?php echo $pd_img; ?>" alt="product image" /></div>
                                 </div>
                             </div>
 
@@ -289,15 +297,15 @@
                                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="relative p-4 w-full max-w-md max-h-full">
                                     <!-- Modal content -->
-                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                    <div class="relative rounded-lg shadow bg-gray-700">
                                         <!-- Modal header -->
                                         <div
-                                            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600">
+                                            <h3 class="text-lg font-semibold text-white">
                                                 Tracking Number
                                             </h3>
                                             <button type="button"
-                                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                class="text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:bg-gray-600 hover:text-white"
                                                 data-modal-hide="crud-modal_<?php echo $order_code; ?>">
                                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                     fill="none" viewBox="0 0 14 14">
@@ -313,27 +321,28 @@
                                                 <div class="grid gap-4 mb-4">
                                                     <div class="col-span-2">
                                                         <label for="name"
-                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-0">Order
+                                                            class="block mb-2 text-sm font-medium text-white mt-0">Order
                                                             ID</label>
                                                         <input type="text" name="name" id="name"
                                                             value="<?php echo $order_id; ?>"
-                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                            class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
                                                             disabled>
                                                         <input type="hidden" name="order_code"
                                                             value="<?php echo $order_code; ?>">
-                                                        <input type="text" name="email" value="<?php echo $order_ct_email; ?>">
+                                                        <input type="hidden" name="email"
+                                                            value="<?php echo $order_ct_email; ?>">
                                                     </div>
                                                     <div class="col-span-2">
                                                         <label for="name"
-                                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tracking
+                                                            class="block mb-2 text-sm font-medium text-white">Tracking
                                                             Number</label>
                                                         <input type="text" name="tracking_number" id="name"
-                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                            placeholder="Type product name" required="">
+                                                            class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500"
+                                                            placeholder="Type tracking number" required="">
                                                     </div>
                                                 </div>
                                                 <button type="submit" id="sendEmail"
-                                                    class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    class="text-white inline-flex items-center focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
                                                     Done
                                                 </button>
                                             </form>
@@ -341,8 +350,25 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <script>
+                                // JavaScript to handle modal functionality for each row
+                                document.getElementById('openModal_<?php echo $order_code; ?>').addEventListener('click', function () {
+                                    document.getElementById('imageModal_<?php echo $order_code; ?>').classList.remove('hidden');
+                                });
+
+                                document.getElementById('closeModal_<?php echo $order_code; ?>').addEventListener('click', function () {
+                                    document.getElementById('imageModal_<?php echo $order_code; ?>').classList.add('hidden');
+                                });
+                            </script>
                             <?php
                         }
+                    } else {
+                        echo "<tbody>";
+                        echo "<tr class='border-b bg-gray-800 border-gray-700 hover:bg-gray-900'>";
+                        echo "<td colspan='6' class='px-6 py-4 text-center'>No Order Found</td>";
+                        echo "</tr>";
+                        echo "</tbody>";
                     }
                     ?>
                 </tbody>

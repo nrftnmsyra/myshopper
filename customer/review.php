@@ -52,7 +52,7 @@
                     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <li class="inline-flex items-center">
                             <a href="order.php"
-                                class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue">
+                                class="inline-flex items-center text-sm font-medium text-gray-400 hover:text-blue">
                                 <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="currentColor" viewBox="0 0 20 20">
                                     <path
@@ -69,7 +69,7 @@
                                         d="m1 9 4-4-4-4" />
                                 </svg>
                                 <a href="order_details.php?order_code=<?php echo $order_code; ?>"
-                                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue">
+                                    class="inline-flex items-center text-sm font-medium text-gray-400 hover:text-blue">
                                     Order Details
                                 </a>
                             </div>
@@ -81,13 +81,13 @@
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="m1 9 4-4-4-4" />
                                 </svg>
-                                <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Review</span>
+                                <span class="ms-1 text-sm font-medium md:ms-2 text-gray-400">Review</span>
                             </div>
                         </li>
                     </ol>
                 </nav>
                 <div class="mt-1 mb-2.5 flex justify-start item-start space-y-2 flex-col">
-                    <h1 class="mt-1 mb-2.5 text-xl dark:text-black lg:text-4xl font-bold leading-7 lg:leading-9 text-gray-800">
+                    <h1 class="mt-1 mb-2.5 text-xl text-black lg:text-4xl font-bold leading-7 lg:leading-9">
                         Review
                     </h1>
                 </div>
@@ -95,7 +95,7 @@
                     class="flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
                     <div class="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
                         <div
-                            class="rounded-lg flex flex-col justify-start items-start dark:bg-gray-800 bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
+                            class="rounded-lg flex flex-col justify-start items-start bg-gray-800 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
                             <?php
                             $selectQuery2 = "SELECT
                     i.*,
@@ -141,14 +141,14 @@
                                                 <img class="mr-2 my-2 h-28 w-28 rounded-md border object-cover object-center"
                                                     src="<?php echo $row2['pd_img']; ?>" alt="" />
                                                 <div class="flex flex-col px-4 py-4">
-                                                    <span class="text-xl font-semibold dark:text-white">
+                                                    <span class="text-xl font-semibold text-white">
                                                         <?php echo $row2['pd_name']; ?>
                                                     </span>
-                                                    <span class="mt-1 mb-2.5 float-right dark:text-white">Quantity :
+                                                    <span class="mt-1 mb-2.5 float-right text-white">Quantity :
                                                         <?php echo $row2['order_pd_qty']; ?>
                                                     </span>
-                                                    <p class="text-sm dark:text-white leading-none text-gray-800">
-                                                        <span class="dark:text-gray-400 text-gray-300">
+                                                    <p class="text-sm text-white leading-none">
+                                                        <span class="text-gray-400">
                                                             <?php echo $row2['pd_description']; ?>
                                                         </span>
                                                     </p>
@@ -156,7 +156,7 @@
                                             </div>
                                         </div>
                                         <div id="2" class="ml-auto pr-4"> <!-- Added ml-auto for right alignment -->
-                                            <p class="text-lg font-bold dark:text-white">RM
+                                            <p class="text-lg font-bold text-white">RM
                                                 <?php echo number_format($row2['order_total_price'] * $row2['order_pd_qty'], 2); ?>
                                             </p>
                                         </div>
@@ -194,12 +194,12 @@
                             </div>
 
                             <textarea id="message" rows="4" name="rv_description"
-                                class="mt-5 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                class="mt-5 block p-2.5 w-full text-sm rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Share more thoughts on the product to help other buyers."></textarea>
                             <div class="mt-4 flex items-center justify-center w-full">
                                 <div class="mt-4 flex flex-col items-center justify-center w-full">
                                     <label for="dropzone-file"
-                                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-700 border-gray-600 hover:border-gray-500 hover:bg-gray-600">
                                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                             <svg class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -207,17 +207,18 @@
                                                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
                                                 </path>
                                             </svg>
-                                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                            <p class="mb-2 text-sm text-gray-400">
                                                 <span class="font-semibold">Click to upload</span>
                                             </p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX.
-                                                800x400px)</p>
+                                            <p class="text-xs text-gray-400">PNG or
+                                    JPG (MAX.
+                                    1080x1080px).</p>
                                         </div>
                                         <input id="dropzone-file" type="file" name="rv_img[]" class="hidden" multiple
                                             onchange="updateFileNames(this)">
                                     </label>
                                     <span id="selected-file-names"
-                                        class="mt-2 text-sm text-gray-500 dark:text-gray-400"></span>
+                                        class="mt-2 text-sm text-gray-400"></span>
                                 </div>
 
                             </div>

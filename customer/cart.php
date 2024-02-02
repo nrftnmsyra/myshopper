@@ -14,9 +14,11 @@
                 // Select data from the table
                 $selectQuery = "SELECT
                         personalshopper.ps_username,
+                        personalshopper.ps_img,
                         personalshopper.ps_email,
                         product.pd_name,
                         product.pd_img,
+                        product.pd_quantity,
                         cart.cart_ct_email,
                         cart.cart_pd_id,
                         cart.cart_qty,
@@ -43,6 +45,7 @@
                     while ($row = $result->fetch_assoc()) {
                         $ps_email = $row['ps_email'];
                         $ps_username = $row['ps_username'];
+                        $ps_img = $row['ps_img'];
 
                         // Store product details in the array with the personal shopper as the key
                         $groupedProducts[$ps_email][] = $row;
@@ -51,14 +54,20 @@
                     // Iterate through the grouped products
                     foreach ($groupedProducts as $ps_email => $products) {
                         $ps_username = $products[0]['ps_username']; // Assuming ps_username is the same for all products of the same personal shopper
+                        $ps_img = $products[0]['ps_img'];
                         $totalPrice = 0; // Initialize total price for the current personal shopper
                 
                         ?>
                         <div class="mb-5 w-full border rounded-lg shadow bg-gray-800 border-gray-900 px-6 py-4">
-                            <div>
-                                <h2 class="text-2xl tracking-tight text-white font-bold border-b border-gray-600 p-3">
-                                    <?php echo $ps_username; ?>
-                                </h2>
+                            <div class="border-b border-gray-600">
+                                <a href="ps_details.php?ps_email=<?php echo $ps_email; ?>">
+                                    <div class="w-fit flex items-center mb-2.5">
+                                        <img class="w-8 h-8 rounded-full" src="<?php echo $ps_img; ?>" alt="Jese image">
+                                        <h2 class="text-2xl w-full tracking-tight text-white font-bold p-3">
+                                            <?php echo $ps_username; ?>
+                                        </h2>
+                                    </div>
+                                </a>
                             </div>
 
                             <?php
@@ -67,6 +76,7 @@
                                 $cart_ct_email = $product['cart_ct_email'];
                                 $cart_pd_id = $product['cart_pd_id'];
                                 $pd_name = $product['pd_name'];
+                                $pd_quantity = $product['pd_quantity'];
                                 $pd_img = $product['pd_img'];
                                 $cart_qty = $product['cart_qty'];
                                 $cart_pd_price = $product['cart_pd_price'];
@@ -101,17 +111,18 @@
                                         </div>
                                         </a>
                                         <!-- Quantity input for the current product -->
-                                        <div>
-                                            <label for="quantity" class="mb-2 font-normal text-gray-400">Quantity
-                                                :</label>
+                                        <div class="flex items-center">
+                                            <label for="quantity" class="mt-1.5 mb-2 font-normal text-gray-400">Quantity</label>
+
                                             <!-- input number -->
-                                            <div class="py-2 px-3 inline-block border rounded-lg bg-slate-900 border-gray-700"
+                                            <div class="ml-1.5 py-2 px-3 inline-block border rounded-lg bg-slate-900 border-gray-700"
                                                 data-hs-input-number>
                                                 <div class="flex items-center gap-x-1.5">
                                                     <button type="button"
                                                         class="w-6 h-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border shadow-sm disabled:opacity-50 disabled:pointer-events-none bg-slate-900 border-gray-700 text-white hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-600"
                                                         data-hs-input-number-decrement
-                                                        onclick="decrementValue('<?php echo $cart_pd_id; ?>')">
+                                                        onclick="decrementValue('<?php echo $cart_pd_id; ?>')"
+                                                        max="<?php echo $pd_quantity; ?>">
                                                         <svg class="flex-shrink-0 w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg"
                                                             width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -139,6 +150,11 @@
                                                     </button>
                                                 </div>
                                             </div>
+                                            <div class="flex flex-wrap text-gray-500 ml-2">
+                                                <span class="text-sm">
+                                                    <?php echo $pd_quantity; ?> lefts
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -157,18 +173,94 @@
                                             id="hs-default-checkbox">
                                     </div>
                                 </div>
+                                <script>
+                                    function updateTotal(price, cartPdId, psEmail) {
+                                        var quantity = document.getElementById('quantityInput_' + cartPdId).value;
+                                        var productPrice = price;
+                                        var newTotal = quantity * productPrice;
+                                        document.getElementById('result_' + cartPdId).innerText = newTotal.toFixed(2);
+
+                                        // Update the total for the personal shopper
+                                        updatePersonalShopperTotal(psEmail);
+                                    }
+
+                                    function incrementValue(cartPdId, psEmail) {
+                                        var input = document.getElementById('quantityInput_' + cartPdId);
+                                        var currentQuantity = parseInt(input.value);
+                                        var maxQuantity = <?php echo $pd_quantity; ?>;
+
+                                        console.log('Current Quantity:', currentQuantity);
+                                        console.log('Max Quantity:', maxQuantity);
+
+                                        if (currentQuantity < maxQuantity) {
+                                            input.value = currentQuantity + 1;
+                                            updateQuantity('increment', cartPdId, psEmail);
+                                        }
+                                    }
+
+                                    function decrementValue(cartPdId, psEmail) {
+                                        var input = document.getElementById('quantityInput_' + cartPdId);
+                                        if (parseInt(input.value) > 1) {
+                                            input.value = parseInt(input.value) - 1;
+                                        }
+                                        updateQuantity('decrement', cartPdId, psEmail);
+                                    }
+
+                                    function updateQuantity(operation, cartPdId, psEmail) {
+                                        var input = document.getElementById('quantityInput_' + cartPdId);
+                                        var newQuantity = parseInt(input.value);
+
+
+                                        // Update the input field with the new quantity
+                                        input.value = newQuantity;
+
+                                        // Send an AJAX request to update the quantity in the database
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: 'cart_update.php',
+                                            data: { quantity: newQuantity, cartPdId: cartPdId },
+                                            dataType: 'text',
+                                            success: function (response) {
+                                                console.log('New Quantity:', newQuantity);
+                                                console.log('Cart Product ID:', cartPdId);
+                                                console.log('Quantity updated successfully:', response);
+
+                                                // After updating quantity, also update the total
+                                                updateTotal(<?php echo $cart_pd_price; ?>, cartPdId, psEmail);
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error('AJAX request failed:', status, error);
+                                            }
+                                        });
+                                    }
+
+                                    function updatePersonalShopperTotal(psEmail) {
+                                        // Calculate the new total for the personal shopper
+                                        var psTotal = 0;
+                                        $('[id^=result_]').each(function () {
+                                            var resultId = $(this).attr('id');
+                                            var resultPsEmail = resultId.split('_')[1];
+                                            if (resultPsEmail === psEmail) {
+                                                psTotal += parseFloat($(this).text());
+                                            }
+                                        });
+
+                                        // Log debug information to the console
+                                        console.log('psEmail:', psEmail);
+                                        console.log('Matching elements:', $('[id^=result_]').filter('[id$=' + psEmail + ']'));
+
+                                        // Find and update the total element for the personal shopper
+                                        $('#total_' + psEmail).text(psTotal.toFixed(2));
+                                    }
+                                </script>
                                 <?php
                             }
                             ?>
                             <!-- Display total price and checkout button in a single div -->
                             <!-- Display total price and checkout button in a single div, sticking to the right -->
                             <div class="border-t border-gray-600 flex justify-between p-3">
-                                <h1 id="totalPrice" class="text-xl font-semibold text-white whitespace-nowrap">Total : RM
+                                <h1 id="totalPrice" class="text-xl font-semibold text-white whitespace-nowrap">
                                 </h1>
-                                <p class="text-xl font-semibold text-white whitespace-nowrap"
-                                    id="total_<?php echo $ps_email; ?>">
-                                    <?= number_format(0.00, 2) ?>
-                                </p>
                                 <div class="flex items-center ml-auto">
                                     <!-- Checkout button on the right side -->
                                     <button type="submit"
@@ -214,7 +306,7 @@
                                 helpful shoppers now!</p>
                         </h2>
                         <button
-                            class="block mx-auto item-center text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700"
+                            class="block mx-auto item-center text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-500 hover:bg-blue-600 focus:ring-blue-700"
                             type="button" onClick="parent.location='index.php'">
                             Go Shopping Now
                         </button>
@@ -236,78 +328,7 @@
 </html>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
-    function updateTotal(price, cartPdId, psEmail) {
-        var quantity = document.getElementById('quantityInput_' + cartPdId).value;
-        var productPrice = price;
-        var newTotal = quantity * productPrice;
-        document.getElementById('result_' + cartPdId).innerText = newTotal.toFixed(2);
 
-        // Update the total for the personal shopper
-        updatePersonalShopperTotal(psEmail);
-    }
-
-    function incrementValue(cartPdId, psEmail) {
-        var input = document.getElementById('quantityInput_' + cartPdId);
-        input.value = parseInt(input.value) + 1;
-        updateQuantity('increment', cartPdId, psEmail);
-    }
-
-    function decrementValue(cartPdId, psEmail) {
-        var input = document.getElementById('quantityInput_' + cartPdId);
-        if (parseInt(input.value) > 1) {
-            input.value = parseInt(input.value) - 1;
-        }
-        updateQuantity('decrement', cartPdId, psEmail);
-    }
-
-    function updateQuantity(operation, cartPdId, psEmail) {
-        var input = document.getElementById('quantityInput_' + cartPdId);
-        var newQuantity = parseInt(input.value);
-
-
-        // Update the input field with the new quantity
-        input.value = newQuantity;
-
-        // Send an AJAX request to update the quantity in the database
-        $.ajax({
-            type: 'POST',
-            url: 'cart_update.php',
-            data: { quantity: newQuantity, cartPdId: cartPdId },
-            dataType: 'text',
-            success: function (response) {
-                console.log('New Quantity:', newQuantity);
-                console.log('Cart Product ID:', cartPdId);
-                console.log('Quantity updated successfully:', response);
-
-                // After updating quantity, also update the total
-                updateTotal(<?php echo $cart_pd_price; ?>, cartPdId, psEmail);
-            },
-            error: function (xhr, status, error) {
-                console.error('AJAX request failed:', status, error);
-            }
-        });
-    }
-
-    function updatePersonalShopperTotal(psEmail) {
-        // Calculate the new total for the personal shopper
-        var psTotal = 0;
-        $('[id^=result_]').each(function () {
-            var resultId = $(this).attr('id');
-            var resultPsEmail = resultId.split('_')[1];
-            if (resultPsEmail === psEmail) {
-                psTotal += parseFloat($(this).text());
-            }
-        });
-
-        // Log debug information to the console
-        console.log('psEmail:', psEmail);
-        console.log('Matching elements:', $('[id^=result_]').filter('[id$=' + psEmail + ']'));
-
-        // Find and update the total element for the personal shopper
-        $('#total_' + psEmail).text(psTotal.toFixed(2));
-    }
-</script>
 <script>
     function deleteCart(cart_pd_id, email) {
         // Redirect to Page 2 with the ID as a URL parameter

@@ -20,13 +20,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $file_type = $_FILES["files"]["type"][$key];
         $file_size = $_FILES["files"]["size"][$key];
 
-        // Generate a unique identifier and append it to the original file name
-        $new_file_name = $email . '_' . $file_name;
+        // Check if the file is not empty
+        if ($file_size > 0) {
+            // Generate a unique identifier and append it to the original file name
+            $new_file_name = $email . '_' . $file_name;
 
-        $file_path = $uploadDirectory . $new_file_name;
+            $file_path = $uploadDirectory . $new_file_name;
 
-        move_uploaded_file($tmp_name, $file_path);
+            move_uploaded_file($tmp_name, $file_path);
+
+            // You can add additional processing code here for the uploaded file
+        }
     }
+
 
 
     // Insert data into the "request" table
@@ -36,8 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($insert_stmt->execute()) {
         // Registration successful
-        echo json_encode($response);
-        echo '<script>alert("Request successfully added."); window.location = "../customer/index.php";</script>';
+        echo '<script>alert("Request added successfully"); window.location = "../customer/index.php";</script>';
     } else {
         // Registration failed
         echo '<script>alert("Operation failed. Please try again.")</script>';

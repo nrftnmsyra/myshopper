@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pd_id = clean_input($_POST["pd_id"]);
     $pd_price = clean_input($_POST["pd_price"]);
     $pd_quantity = clean_input($_POST["pd_quantity"]);
+    $pd_availability = clean_input($_POST["pd_availability"]);
     $pd_description = clean_input($_POST["pd_description"]);
     $current_image = clean_input($_POST["current_image"]);
 
@@ -41,12 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Update product table
     $updateProductQuery = "UPDATE product SET pd_name = '$pd_name', pd_price = '$pd_price', 
-                           pd_quantity = '$pd_quantity', pd_description = '$pd_description', 
+                           pd_quantity = '$pd_quantity',pd_availability = '$pd_availability', pd_description = '$pd_description', 
                            pd_img = '$newPdPhotoPath' WHERE pd_id = '$pd_id'";
     $resultProduct = $conn->query($updateProductQuery);
 
     if ($resultProduct) {
-        header("Location: product.php"); // Redirect to a success page
+        echo '<script>alert("Product updated successfully"); window.location = "product.php";</script>';
     } else {
         echo "Error updating product data: " . $conn->error;
     }

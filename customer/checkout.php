@@ -71,11 +71,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (!$stmtInsert->execute()) {
                     die('Error: ' . $stmtInsert->error);
                 } else {
-                    $clearCartQuery = "DELETE FROM cart WHERE cart_ct_email = ? AND cart_pd_id = ?";
-                    $stmtClearCart = $conn->prepare($clearCartQuery);
-                    $stmtClearCart->bind_param("si", $email, $product['product_id']);
-                    $stmtClearCart->execute();
-                    $stmtClearCart->close();
+                    // $clearCartQuery = "DELETE FROM cart WHERE cart_ct_email = ? AND cart_pd_id = ?";
+                    // $stmtClearCart = $conn->prepare($clearCartQuery);
+                    // $stmtClearCart->bind_param("si", $email, $product['product_id']);
+                    // $stmtClearCart->execute();
+                    // $stmtClearCart->close();
                 }
             }
             $stmtInsert->close();
@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     } else {
         // Handle the case where no products are selected for checkout
-        echo '<script>alert("No products selected for checkout.")';
+        echo '<script>alert("No products selected for checkout")';
     }
 } else {
     // Handle the case where the request method is not POST
